@@ -2,7 +2,7 @@ site: Gesko
 title: Gesko
 greetings: Hi 👋
 description: >-
-  just a minimalist, personal blog test only
+  just a minimalist, personal blog new
 lang: en-US
 timezone:  Europe/Rome
 repo: https://github.com/p0wex/Gesko # site repo [optional]
@@ -19,11 +19,15 @@ author:
   email: your-email@email.com # email adress
 
 # Font Settings
-googlewebfonts: family=Ubuntu:wght@400;700
+# googlewebfonts: family=SourceSans 3:wght@400;700
+# googlewebfonts: Fira+Code:wght@400;500;700
+# googlewebfonts: Ubuntu:wght@400;500;700
 
 # URL settings
 url: "https://mvineza.github.io" # Domain Name of host. [username].github.io for github pages
+# url: ""
 baseurl: "/spindel" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
+# baseurl: "" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
 permalink: pretty
 
 # local

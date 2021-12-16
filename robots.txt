@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: https://p0wex.github.io/sitemap.xml
+Sitemap: https://mvineza.github.io/sitemap.xml

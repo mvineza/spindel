@@ -197,6 +197,10 @@ code {
 pre code {
 	background-color: unset;
 	color: unset;
+	white-space: pre;
+	overflow-x: scroll;
+	overflow-y: hidden;
+	display: block;
 }
 
 pre {

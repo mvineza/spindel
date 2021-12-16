@@ -14,6 +14,10 @@ CBD mode PKCS7 format uses padding to complete the block length when encrypting 
 
 Attacker can leverage this behaviour to get the plaintext by manipulating the ciphertext byte by byte in a trial and error fashion and observing whether the application will return error (invalid padding) or success (valid padding).
 
+```
+this is a test aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+```
+
 This kind of crypto may be safe but the real attack surface is on whether your app is returning error on invalid padding which will give an attacker chance to brute force the correct plaintext.
 
 ```php
@@ -32,6 +36,10 @@ function decryptString($encryptedText, $passphrase) {
     return $str; 
   }
 }
+```
+
+```
+echo hello
 ```
 
 This is also a type of CCA or Chosen Ciphertext Attack.

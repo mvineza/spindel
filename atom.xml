@@ -4,7 +4,7 @@
  <title>Gesko</title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2021-12-16T17:09:52+01:00</updated>
+ <updated>2021-12-16T17:29:19+01:00</updated>
  <id></id>
  <author>
    <name>gesko</name>
@@ -24,6 +24,9 @@
 
 &lt;p&gt;Attacker can leverage this behaviour to get the plaintext by manipulating the ciphertext byte by byte in a trial and error fashion and observing whether the application will return error (invalid padding) or success (valid padding).&lt;/p&gt;
 
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;this is a test aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
 &lt;p&gt;This kind of crypto may be safe but the real attack surface is on whether your app is returning error on invalid padding which will give an attacker chance to brute force the correct plaintext.&lt;/p&gt;
 
 &lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// example file from HTB lazy&lt;/span&gt;
@@ -41,6 +44,9 @@
     &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo hello
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;p&gt;This is also a type of CCA or Chosen Ciphertext Attack.&lt;/p&gt;

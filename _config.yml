@@ -2,7 +2,7 @@ site: Gesko
 title: Gesko
 greetings: Hi 👋
 description: >-
-  just a minimalist, personal blog
+  just a minimalist, personal blog test only
 lang: en-US
 timezone:  Europe/Rome
 repo: https://github.com/p0wex/Gesko # site repo [optional]

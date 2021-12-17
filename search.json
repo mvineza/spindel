@@ -10,6 +10,15 @@
     } ,
   
     {
+      "title"    : "Linux",
+      "description" : "What is the difference between various font formats?",
+      "category" : "",
+      "tags"     : "web, crypto, enum",
+      "url"      : "/2021/12/16/linux",
+      "date"     : "2021-12-16 00:00:00 +0100"
+    } ,
+  
+    {
       "title"    : "Difference between font formats",
       "description" : "What is the difference between various font formats?",
       "category" : "",

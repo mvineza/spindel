@@ -1,22 +1,20 @@
-site: Gesko
-title: Gesko
+site: Spindel
+title: Spindel
 greetings: Hi 👋
 description: >-
-  just a minimalist, personal blog new
+  just a minimalist, personal blog
 lang: en-US
-timezone:  Europe/Rome
-repo: https://github.com/p0wex/Gesko # site repo [optional]
+timezone:  Asia/Singapore
+repo: https://github.com/mvineza/spindel # site repo [optional]
 data-theme: dark # default theme "dark" | "light"
 discus-identifier: powex # replace with your disqus shortname
 
 author:
-  name: gesko
+  name: spindel
   bio: just a minimalist, personal blog
-  userpicture: 
-  username: # general username
-  github: # github username
-  twitter: # twitter username
-  email: your-email@email.com # email adress
+  userpicture:
+  github: mvineza
+  email: rell.vineza14@yahoo.com # email adress
 
 # Font Settings
 # googlewebfonts: family=SourceSans 3:wght@400;700
@@ -24,10 +22,10 @@ author:
 # googlewebfonts: Ubuntu:wght@400;500;700
 
 # URL settings
-url: "https://mvineza.github.io" # Domain Name of host. [username].github.io for github pages
-# url: ""
-baseurl: "/spindel" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
-# baseurl: "" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
+# url: "https://mvineza.github.io" # Domain Name of host. [username].github.io for github pages
+url: ""
+# baseurl: "/spindel" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
+baseurl: "" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
 permalink: pretty
 
 # local

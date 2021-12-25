@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Padding Oracle Attack
+description: Padding Oracle Attack
+summary: Padding Oracle Attack
 tags: [web,crypto,foothold]
 minute: 1
 ---

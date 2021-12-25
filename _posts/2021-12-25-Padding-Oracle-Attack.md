@@ -1,8 +1,6 @@
 ---
 layout: post
 title: Padding Oracle Attack
-description: What is the difference between various font formats?
-summary: What is the difference between various font formats?
 tags: [web,crypto,foothold]
 minute: 1
 ---

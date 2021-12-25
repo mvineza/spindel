@@ -9,7 +9,7 @@ minute: 1
 ## Overview
 CBD mode PKCS7 format uses padding to complete the block length when encrypting plaintext.
 
-![](/assets/Padding%20Oracle%20Attack/padding.png)
+![](/assets/Padding Oracle Attack/padding.png)
 
 Attacker can leverage this behaviour to get the plaintext by manipulating the ciphertext byte by byte in a trial and error fashion and observing whether the application will return error (invalid padding) or success (valid padding).
 

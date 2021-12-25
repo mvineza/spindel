@@ -2,10 +2,10 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
 
  <title>Spindel</title>
- <link href="/atom.xml" rel="self"/>
- <link href="/"/>
- <updated>2021-12-25T15:14:55+08:00</updated>
- <id></id>
+ <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
+ <link href="https://mvineza.github.io/spindel/"/>
+ <updated>2021-12-25T15:16:11+08:00</updated>
+ <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
@@ -14,9 +14,9 @@
  
  <entry>
    <title>Padding Oracle Attack</title>
-   <link href="/2021/12/25/padding-oracle-attack"/>
+   <link href="https://mvineza.github.io/spindel/2021/12/25/padding-oracle-attack"/>
    <updated>2021-12-25T00:00:00+08:00</updated>
-   <id>/2021/12/25/Padding-Oracle-Attack</id>
+   <id>https://mvineza.github.io/2021/12/25/Padding-Oracle-Attack</id>
    <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;CBD mode PKCS7 format uses padding to complete the block length when encrypting plaintext.&lt;/p&gt;
 

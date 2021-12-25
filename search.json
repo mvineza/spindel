@@ -2,7 +2,7 @@
   
     {
       "title"    : "Padding Oracle Attack",
-      "description" : "",
+      "description" : "Padding Oracle Attack",
       "category" : "",
       "tags"     : "web, crypto, foothold",
       "url"      : "/spindel/2021/12/25/padding-oracle-attack",

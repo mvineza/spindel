@@ -21,12 +21,12 @@ author:
 # googlewebfonts: Fira+Code:wght@400;500;700
 # googlewebfonts: Ubuntu:wght@400;500;700
 
-# URL settings
-# Local development - remove urls
+URL settings
+Local development - remove urls
 # url: ""
 # baseurl: "" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
-url: "https://mvineza.github.io" # Domain Name of host. [username].github.io for github pages
-baseurl: "/spindel" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
+# url: "https://mvineza.github.io" # Domain Name of host. [username].github.io for github pages
+# baseurl: "/spindel" # sub folder for jekyll site. only if jekyll site not in root of host. leave blank if not wishd. always add / in front.
 permalink: pretty
 
 # local

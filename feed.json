@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/01/16/cms-made-simple",
+            "title": "CMS Made Simple",
+            "summary": "CMS Made Simple",
+            "content_text": "OverviewOpen Source Content Management System : : CMS Made SimpleVersion  Via changelog /doc/CHANGELOG.txt  Inside admin page, bottom partCredentialsadmin:  Passwords are  stored in database using 1-way password schememysql&gt; select user_id,username,password from cms_users;+---------+----------+----------------------------------+| user_id | username | password                         |+---------+----------+----------------------------------+|       1 | admin    | 9dfb6c17c8992e3a821c47b68fe8e76a ||       2 | editor   | 5aee9dbd2a188839105073571bee1b1f |  You can crack it via hascat# 62def4866937f08cc13bab43bb14e6f7 - hashed password# 5a599ef579066807 - salthashcat -m 20 62def4866937f08cc13bab43bb14e6f7:5a599ef579066807 /usr/share/wordlists/rockyou.txtInteresting URL PathsReference: http://svn.cmsmadesimple.org/svn/cmsmadesimple/trunk/Interesting Filesconfig.phpCookie Format# Example:# CMSSESSID9d372ef93962=75gsp75a2vdo6ijapmnvqrkdb2CMSSESSID*Some Exploits# CVE-2019-9053 - change TIME to 2 for better resultsearchploit -m php/webapps/46635.pyReferences  Identifying &amp; Exploiting SSTI &amp; XSS in CMS Made Simple",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p><img src=\"/spindel/assets/CMS%20Made%20Simple/20E7EA44-40D7-4648-B62C-75B0B1FF9941.png\" alt=\"\" /></p><p><a href=\"http://www.cmsmadesimple.org/\">Open Source Content Management System : : CMS Made Simple</a></p><h2 id=\"version\">Version</h2><ul>  <li>Via changelog <code class=\"language-plaintext highlighter-rouge\">/doc/CHANGELOG.txt</code></li>  <li>Inside admin page, bottom part</li></ul><h2 id=\"credentials\">Credentials</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>admin:</code></pre></div></div><ul>  <li>Passwords are  stored in database using 1-way password scheme</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>mysql&gt; select user_id,username,password from cms_users;+---------+----------+----------------------------------+| user_id | username | password                         |+---------+----------+----------------------------------+|       1 | admin    | 9dfb6c17c8992e3a821c47b68fe8e76a ||       2 | editor   | 5aee9dbd2a188839105073571bee1b1f |</code></pre></div></div><ul>  <li>You can crack it via hascat</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># 62def4866937f08cc13bab43bb14e6f7 - hashed password</span><span class=\"c\"># 5a599ef579066807 - salt</span>hashcat <span class=\"nt\">-m</span> 20 62def4866937f08cc13bab43bb14e6f7:5a599ef579066807 /usr/share/wordlists/rockyou.txt</code></pre></div></div><h2 id=\"interesting-url-paths\">Interesting URL Paths</h2><p><img src=\"/spindel/assets/CMS%20Made%20Simple/49CFCD40-2C62-453A-872C-91DEAAAF5E2C.png\" alt=\"\" /></p><p>Reference: http://svn.cmsmadesimple.org/svn/cmsmadesimple/trunk/</p><h2 id=\"interesting-files\">Interesting Files</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>config.php</code></pre></div></div><h2 id=\"cookie-format\">Cookie Format</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># Example:</span><span class=\"c\"># CMSSESSID9d372ef93962=75gsp75a2vdo6ijapmnvqrkdb2</span>CMSSESSID<span class=\"k\">*</span></code></pre></div></div><h2 id=\"some-exploits\">Some Exploits</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># CVE-2019-9053 - change TIME to 2 for better result</span>searchploit <span class=\"nt\">-m</span> php/webapps/46635.py</code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://www.netsparker.com/blog/web-security/exploiting-ssti-and-xss-in-cms-made-simple/\">Identifying &amp; Exploiting SSTI &amp; XSS in CMS Made Simple</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/01/16/cms-made-simple",
+            
+            
+            
+            "tags": ["web","cms","enum"],
+            
+            "date_published": "2022-01-16T00:00:00+08:00",
+            "date_modified": "2022-01-16T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/01/15/bypass-aslr-nx-64-bit-rop-chain",
             "title": "Bypass ASLR + NX (64-bit) - ROP Chain",
             "summary": "Bypass ASLR + NX (64-bit) - ROP Chain",

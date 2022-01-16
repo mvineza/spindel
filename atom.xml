@@ -4,13 +4,81 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-15T10:11:22+08:00</updated>
+ <updated>2022-01-16T09:26:00+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>CMS Made Simple</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/16/cms-made-simple"/>
+   <updated>2022-01-16T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/16/CMS-Made-Simple</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/CMS%20Made%20Simple/20E7EA44-40D7-4648-B62C-75B0B1FF9941.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.cmsmadesimple.org/&quot;&gt;Open Source Content Management System : : CMS Made Simple&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;version&quot;&gt;Version&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Via changelog &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/doc/CHANGELOG.txt&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Inside admin page, bottom part&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;admin:
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Passwords are  stored in database using 1-way password scheme&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;mysql&amp;gt; select user_id,username,password from cms_users;
++---------+----------+----------------------------------+
+| user_id | username | password                         |
++---------+----------+----------------------------------+
+|       1 | admin    | 9dfb6c17c8992e3a821c47b68fe8e76a |
+|       2 | editor   | 5aee9dbd2a188839105073571bee1b1f |
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You can crack it via hascat&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 62def4866937f08cc13bab43bb14e6f7 - hashed password&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# 5a599ef579066807 - salt&lt;/span&gt;
+hashcat &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 20 62def4866937f08cc13bab43bb14e6f7:5a599ef579066807 /usr/share/wordlists/rockyou.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/CMS%20Made%20Simple/49CFCD40-2C62-453A-872C-91DEAAAF5E2C.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Reference: http://svn.cmsmadesimple.org/svn/cmsmadesimple/trunk/&lt;/p&gt;
+
+&lt;h2 id=&quot;interesting-files&quot;&gt;Interesting Files&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;config.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;cookie-format&quot;&gt;Cookie Format&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Example:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# CMSSESSID9d372ef93962=75gsp75a2vdo6ijapmnvqrkdb2&lt;/span&gt;
+CMSSESSID&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;some-exploits&quot;&gt;Some Exploits&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# CVE-2019-9053 - change TIME to 2 for better result&lt;/span&gt;
+searchploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; php/webapps/46635.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.netsparker.com/blog/web-security/exploiting-ssti-and-xss-in-cms-made-simple/&quot;&gt;Identifying &amp;amp; Exploiting SSTI &amp;amp; XSS in CMS Made Simple&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Bypass ASLR + NX (64-bit) - ROP Chain</title>

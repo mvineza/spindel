@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Malicious SCF File Upload",
+      "description" : "Malicious SCF File Upload",
+      "category" : "",
+      "tags"     : "windows, rce, foothold, smb",
+      "url"      : "/spindel/2022/01/23/malicious-scf-upload",
+      "date"     : "2022-01-23 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "IIS",
       "description" : "IIS",
       "category" : "",

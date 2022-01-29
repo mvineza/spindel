@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "NFS no_root_squash",
+      "description" : "NFS no_root_squash",
+      "category" : "",
+      "tags"     : "linux, privesc, nfs",
+      "url"      : "/spindel/2022/01/29/nfs-no-root-squash",
+      "date"     : "2022-01-29 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Zipped LNK files over SMB",
       "description" : "Zipped LNK files over SMB",
       "category" : "",

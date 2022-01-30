@@ -33,6 +33,10 @@
 <lastmod>2022-01-29T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>https://mvineza.github.io/spindel/2022/01/30/ms-sql</loc>
+<lastmod>2022-01-30T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>https://mvineza.github.io/spindel/about/</loc>
 </url>
 <url>
@@ -49,6 +53,9 @@
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/bof/</loc>
+</url>
+<url>
+<loc>https://mvineza.github.io/spindel/tag/foothold/</loc>
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/linux/</loc>
@@ -72,6 +79,6 @@
 <loc>https://mvineza.github.io/spindel/tag/nfs/</loc>
 </url>
 <url>
-<loc>https://mvineza.github.io/spindel/tag/foothold/</loc>
+<loc>https://mvineza.github.io/spindel/tag/db/</loc>
 </url>
 </urlset>

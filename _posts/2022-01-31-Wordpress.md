@@ -9,7 +9,7 @@ minute: 2
 ## Version
 * On meta generators
 
-![](Wordpress/3101332D-061A-4AFA-ACEA-18A476551E16.png)
+![](/assets/Wordpress/3101332D-061A-4AFA-ACEA-18A476551E16.png)
 
 * Check interesting URL paths below
 
@@ -19,7 +19,7 @@ minute: 2
 * There is no default credentials. Installation will ask user to provide the creds.
 * You can guess valid usernames though
 
-![](Wordpress/FCE001CA-BCC0-44B1-94FF-9B2152812FDF.png)
+![](/assets/Wordpress/FCE001CA-BCC0-44B1-94FF-9B2152812FDF.png)
 
 ## Recon
 ```bash
@@ -30,10 +30,10 @@ nmap -p80 --script http-wordpress-enum,http-wordpress-users 10.10.71.200
 # information will not be displayed)
 # NOTE: wpscan may not report all vulnerabilities specially
 # on plugins
-wpscan --url http://10.10.10.29 --api-token g9UH90Nh1cssy7LFYTbhRUSaifo4XRHzap4el2v34b4
+wpscan --url http://10.10.10.29 --api-token {API_TOKEN}
 
 # Similar to above but on another path
-wpscan --url http://10.10.10.29/wordpress --api-token g9UH90Nh1cssy7LFYTbhRUSaifo4XRHzap4el2v34b4
+wpscan --url http://10.10.10.29/wordpress --api-token {API_TOKEN}
 ```
 
 * Check for `colorlib` in HTML elements. This is a WP plugin.
@@ -79,7 +79,7 @@ cd ~/data/tools/webapp/wpxploit
 wpscan --url http://10.10.127.229/wordpress --usernames admin --passwords /usr/share/wordlists/rockyou.txt
 ```
 
-* Once you have the credentials, try [[PHP Reverse Shell]]
+* Once you have the credentials you can try uploading a PHP reverse shell
 * TIP: bruteforce is done by sending this POST data containing username and password
 
 ```xml
@@ -189,14 +189,14 @@ Content-Length: 95
 ## Themes
 * Maybe you can also find theme exploits?
 
-![](Wordpress/17000E5E-19E8-4681-A8D6-E9D0AA546605.png)
+![](/assets/Wordpress/17000E5E-19E8-4681-A8D6-E9D0AA546605.png)
 
 ## Plugins
 * You can search for plugin exploits also, one way of determining the plugin used is via html elements. Version can also be determined there.
 
-![](Wordpress/98C48061-F8E3-4613-B122-E45B3D750365.png)
+![](/assets/Wordpress/98C48061-F8E3-4613-B122-E45B3D750365.png)
 
-![](Wordpress/0B054482-2FAF-43DA-B89C-1A847D63C7D9.png)
+![](/assets/Wordpress/0B054482-2FAF-43DA-B89C-1A847D63C7D9.png)
 
 * You can also add `--plugins-detection aggressive --plugins-version-detection aggressive` in `wpscan`
 

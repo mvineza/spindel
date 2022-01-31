@@ -9,7 +9,7 @@ minute: 2
 ## Version
 * On meta generators
 
-![](/assets/Wordpress/3101332D-061A-4AFA-ACEA-18A476551E16.png)
+![](/spindel/assets/Wordpress/3101332D-061A-4AFA-ACEA-18A476551E16.png)
 
 * Check interesting URL paths below
 
@@ -19,7 +19,7 @@ minute: 2
 * There is no default credentials. Installation will ask user to provide the creds.
 * You can guess valid usernames though
 
-![](/assets/Wordpress/FCE001CA-BCC0-44B1-94FF-9B2152812FDF.png)
+![](/spindel/assets/Wordpress/FCE001CA-BCC0-44B1-94FF-9B2152812FDF.png)
 
 ## Recon
 ```bash
@@ -189,14 +189,14 @@ Content-Length: 95
 ## Themes
 * Maybe you can also find theme exploits?
 
-![](/assets/Wordpress/17000E5E-19E8-4681-A8D6-E9D0AA546605.png)
+![](/spindel/assets/Wordpress/17000E5E-19E8-4681-A8D6-E9D0AA546605.png)
 
 ## Plugins
 * You can search for plugin exploits also, one way of determining the plugin used is via html elements. Version can also be determined there.
 
-![](/assets/Wordpress/98C48061-F8E3-4613-B122-E45B3D750365.png)
+![](/spindel/assets/Wordpress/98C48061-F8E3-4613-B122-E45B3D750365.png)
 
-![](/assets/Wordpress/0B054482-2FAF-43DA-B89C-1A847D63C7D9.png)
+![](/spindel/assets/Wordpress/0B054482-2FAF-43DA-B89C-1A847D63C7D9.png)
 
 * You can also add `--plugins-detection aggressive --plugins-version-detection aggressive` in `wpscan`
 

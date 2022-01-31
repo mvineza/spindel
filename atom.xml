@@ -4,13 +4,233 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-30T14:36:03+08:00</updated>
+ <updated>2022-01-31T14:04:20+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Wordpress</title>
+   <link href="https://mvineza.github.io/spindel/2022/01/31/wordpress"/>
+   <updated>2022-01-31T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/01/31/Wordpress</id>
+   <content type="html">&lt;h2 id=&quot;version&quot;&gt;Version&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;On meta generators&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Wordpress/3101332D-061A-4AFA-ACEA-18A476551E16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check interesting URL paths below&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Seems you really need to find valid credentials to wordpress before exploiting&lt;/li&gt;
+  &lt;li&gt;Try going to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/?author=1&lt;/code&gt; and enumerate from there to see the usernames&lt;/li&gt;
+  &lt;li&gt;There is no default credentials. Installation will ask user to provide the creds.&lt;/li&gt;
+  &lt;li&gt;You can guess valid usernames though&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Wordpress/FCE001CA-BCC0-44B1-94FF-9B2152812FDF.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;recon&quot;&gt;Recon&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Kickoff nmap&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-wordpress-enum,http-wordpress-users 10.10.71.200
+
+&lt;span class=&quot;c&quot;&gt;# Using wpscan (you can remove api token but some&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# information will not be displayed)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# NOTE: wpscan may not report all vulnerabilities specially&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# on plugins&lt;/span&gt;
+wpscan &lt;span class=&quot;nt&quot;&gt;--url&lt;/span&gt; http://10.10.10.29 &lt;span class=&quot;nt&quot;&gt;--api-token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;API_TOKEN&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Similar to above but on another path&lt;/span&gt;
+wpscan &lt;span class=&quot;nt&quot;&gt;--url&lt;/span&gt; http://10.10.10.29/wordpress &lt;span class=&quot;nt&quot;&gt;--api-token&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;API_TOKEN&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Check for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;colorlib&lt;/code&gt; in HTML elements. This is a WP plugin.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# you may find version here&lt;/span&gt;
+/wp-links-opml
+/wp-links-opml.php
+/readme.html
+
+&lt;span class=&quot;c&quot;&gt;# uploads directory&lt;/span&gt;
+/wp-content/uploads/YYYY/DD/FILENAME
+
+&lt;span class=&quot;c&quot;&gt;# login&lt;/span&gt;
+/wp-login.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-files&quot;&gt;Interesting files&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# DB credentials&lt;/span&gt;
+wp-config.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;brute-force&quot;&gt;Brute Force&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Using nmap&lt;/span&gt;
+map &lt;span class=&quot;nt&quot;&gt;-p80&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; http-wordpress-brute 10.10.10.29
+
+&lt;span class=&quot;c&quot;&gt;# User IDs can be extracted from here. You can use&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# burp sniper intruder and generate a list of user&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# id from 1 to 100 using bash for loop.&lt;/span&gt;
+curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; GET http://10.10.10.29/?author&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+
+&lt;span class=&quot;c&quot;&gt;# You can use this python script from&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# https://github.com/relarizky/wpxploit&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# This can take around 30 minutes to complete&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# TIP: try using &quot;admin&quot; as username first&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/data/tools/webapp/wpxploit
+./exploit.py http://10.10.127.229/wordpress 5 15
+
+&lt;span class=&quot;c&quot;&gt;# You can also use wpscan&lt;/span&gt;
+wpscan &lt;span class=&quot;nt&quot;&gt;--url&lt;/span&gt; http://10.10.127.229/wordpress &lt;span class=&quot;nt&quot;&gt;--usernames&lt;/span&gt; admin &lt;span class=&quot;nt&quot;&gt;--passwords&lt;/span&gt; /usr/share/wordlists/rockyou.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Once you have the credentials you can try uploading a PHP reverse shell&lt;/li&gt;
+  &lt;li&gt;TIP: bruteforce is done by sending this POST data containing username and password&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;methodCall&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;methodName&amp;gt;&lt;/span&gt;
+    wp.getUsersBlogs
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/methodName&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;params&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;param&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;
+        admin
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/param&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;param&amp;gt;&lt;/span&gt;
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;value&amp;gt;&lt;/span&gt;
+        gansta1
+      &lt;span class=&quot;nt&quot;&gt;&amp;lt;/value&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;/param&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;nt&quot;&gt;&amp;lt;/params&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/methodCall&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-url-paths-1&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# most can be reported by wpscan&lt;/span&gt;
+/wp-content/uploads/
+/wp-admin/
+/wp-admin/update-core.php
+/wp-admin/upgrade.php
+/install.php
+/wp-cron.php
+
+&lt;span class=&quot;c&quot;&gt;# can accept post requests if active&lt;/span&gt;
+/xmlrpc.php
+
+&lt;span class=&quot;c&quot;&gt;# others&lt;/span&gt;
+/plugins
+/wp-content/plugins
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;For xmlrpc.php, you can use burpsuite to send some POST requests like this.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;POST /wordpress/xmlrpc.php HTTP/1.1
+Host: 10.10.10.29
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101 Firefox/78.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Connection: close
+Upgrade-Insecure-Requests: 1
+Content-Length: 95
+
+&amp;lt;methodCall&amp;gt;
+&amp;lt;methodName&amp;gt;system.listMethods&amp;lt;/methodName&amp;gt;
+&amp;lt;params&amp;gt;&amp;lt;/params&amp;gt;
+&amp;lt;/methodCall&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;xml-rpc-calls&quot;&gt;XML RPC calls&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# List all method calls&lt;/span&gt;
+&amp;lt;methodCall&amp;gt;
+&amp;lt;methodName&amp;gt;system.listMethods&amp;lt;/methodName&amp;gt;
+&amp;lt;params&amp;gt;&amp;lt;/params&amp;gt;
+&amp;lt;/methodCall&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# Get blogs&lt;/span&gt;
+&amp;lt;methodCall&amp;gt;
+&amp;lt;methodName&amp;gt;wp.getUsersBlogs&amp;lt;/methodName&amp;gt;
+&amp;lt;params&amp;gt;
+&amp;lt;param&amp;gt;&amp;lt;value&amp;gt;username&amp;lt;/value&amp;gt;&amp;lt;/param&amp;gt;
+&amp;lt;param&amp;gt;&amp;lt;value&amp;gt;password&amp;lt;/value&amp;gt;&amp;lt;/param&amp;gt;
+&amp;lt;/params&amp;gt;
+&amp;lt;/methodCall&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# Uploading a file&lt;/span&gt;
+&amp;lt;?xml &lt;span class=&quot;nv&quot;&gt;version&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'1.0'&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;encoding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'utf-8'&lt;/span&gt;?&amp;gt;
+&amp;lt;methodCall&amp;gt;
+	&amp;lt;methodName&amp;gt;wp.uploadFile&amp;lt;/methodName&amp;gt;
+	&amp;lt;params&amp;gt;
+		&amp;lt;param&amp;gt;&amp;lt;value&amp;gt;&amp;lt;string&amp;gt;1&amp;lt;/string&amp;gt;&amp;lt;/value&amp;gt;&amp;lt;/param&amp;gt;
+		&amp;lt;param&amp;gt;&amp;lt;value&amp;gt;&amp;lt;string&amp;gt;username&amp;lt;/string&amp;gt;&amp;lt;/value&amp;gt;&amp;lt;/param&amp;gt;
+		&amp;lt;param&amp;gt;&amp;lt;value&amp;gt;&amp;lt;string&amp;gt;password&amp;lt;/string&amp;gt;&amp;lt;/value&amp;gt;&amp;lt;/param&amp;gt;
+		&amp;lt;param&amp;gt;
+			&amp;lt;value&amp;gt;
+				&amp;lt;struct&amp;gt;
+					&amp;lt;member&amp;gt;
+						&amp;lt;name&amp;gt;name&amp;lt;/name&amp;gt;
+						&amp;lt;value&amp;gt;&amp;lt;string&amp;gt;filename.jpg&amp;lt;/string&amp;gt;&amp;lt;/value&amp;gt;
+					&amp;lt;/member&amp;gt;
+					&amp;lt;member&amp;gt;
+						&amp;lt;name&amp;gt;type&amp;lt;/name&amp;gt;
+						&amp;lt;value&amp;gt;&amp;lt;string&amp;gt;mime/type&amp;lt;/string&amp;gt;&amp;lt;/value&amp;gt;
+					&amp;lt;/member&amp;gt;
+					&amp;lt;member&amp;gt;
+						&amp;lt;name&amp;gt;bits&amp;lt;/name&amp;gt;
+						&amp;lt;value&amp;gt;&amp;lt;&lt;span class=&quot;nb&quot;&gt;base64&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;&amp;lt;&lt;span class=&quot;o&quot;&gt;![&lt;/span&gt;CDATA[---base64-encoded-data---]]&amp;gt;&amp;lt;/base64&amp;gt;&amp;lt;/value&amp;gt;
+					&amp;lt;/member&amp;gt;
+				&amp;lt;/struct&amp;gt;
+			&amp;lt;/value&amp;gt;
+		&amp;lt;/param&amp;gt;
+	&amp;lt;/params&amp;gt;
+&amp;lt;/methodCall&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;themes&quot;&gt;Themes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Maybe you can also find theme exploits?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Wordpress/17000E5E-19E8-4681-A8D6-E9D0AA546605.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;plugins&quot;&gt;Plugins&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;You can search for plugin exploits also, one way of determining the plugin used is via html elements. Version can also be determined there.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Wordpress/98C48061-F8E3-4613-B122-E45B3D750365.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Wordpress/0B054482-2FAF-43DA-B89C-1A847D63C7D9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You can also add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--plugins-detection aggressive --plugins-version-detection aggressive&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;wpscan&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;troubleshoting&quot;&gt;Troubleshoting&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Sending &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;POST&lt;/code&gt; to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/xmlrpc.php&lt;/code&gt; produces 200 OK but with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;parse error. not well formed&lt;/code&gt; message most likely caused by &lt;a href=&quot;https://github.com/maxcutler/python-wordpress-xmlrpc/issues/110&quot;&gt;missing php/xml parser library&lt;/a&gt; inside the server. I encountered this in HTB Tenten.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting/pentesting-web/wordpress&quot;&gt;Wordpress - HackTricks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;HTB Tenten&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>MS SQL</title>

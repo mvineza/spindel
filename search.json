@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Ret2libc - system()",
+      "description" : "Ret2libc - system()",
+      "category" : "",
+      "tags"     : "bof, privesc",
+      "url"      : "/spindel/2022/02/01/ret2libc-system",
+      "date"     : "2022-02-01 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Wordpress",
       "description" : "Wordpress",
       "category" : "",

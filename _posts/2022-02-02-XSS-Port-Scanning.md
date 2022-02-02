@@ -9,7 +9,7 @@ minute: 1
 ## Overview
 An attacker which is outside of your internal network can force you to browse a webpage containing malicuous javascript.
 
-This javascript code will scan your internal network and sends result back to attacker.
+This javascript code will scan your internal network and can be modified to send results back to attacker.
 
 ## Sample Code
 ```javascript

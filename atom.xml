@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-02T13:52:32+08:00</updated>
+ <updated>2022-02-02T13:57:00+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -20,7 +20,7 @@
    <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
 &lt;p&gt;An attacker which is outside of your internal network can force you to browse a webpage containing malicuous javascript.&lt;/p&gt;
 
-&lt;p&gt;This javascript code will scan your internal network and sends result back to attacker.&lt;/p&gt;
+&lt;p&gt;This javascript code will scan your internal network and can be modified to send results back to attacker.&lt;/p&gt;
 
 &lt;h2 id=&quot;sample-code&quot;&gt;Sample Code&lt;/h2&gt;
 &lt;div class=&quot;language-javascript highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;script&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;

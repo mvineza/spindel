@@ -4,13 +4,61 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-02T13:57:00+08:00</updated>
+ <updated>2022-02-06T17:21:23+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Moodle</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/06/moodle"/>
+   <updated>2022-02-06T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/06/Moodle</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;CMS for online learning for students&lt;/p&gt;
+
+&lt;h2 id=&quot;finding-version&quot;&gt;Finding Version&lt;/h2&gt;
+&lt;p&gt;https://docs.moodle.org/34/en/Single_view&lt;/p&gt;
+
+&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;p&gt;Seems there are no default creds. But we can try these:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;moodlebox:Moodlebox4$
+moodlebox:moodlebox
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-paths&quot;&gt;Interesting Paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# might contains versions&lt;/span&gt;
+/mod/forum/upgrade.txt
+/composer.lock
+
+&lt;span class=&quot;c&quot;&gt;# stringnames.txt contains a list of all the strings used during the install process&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;install&lt;/span&gt;/stringnames.txt
+
+&lt;span class=&quot;c&quot;&gt;# others&lt;/span&gt;
+/backup
+/mod/chat/?id&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+/INSTALL.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;brute-force&quot;&gt;Brute Force&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Haven't confirmed if this is working&lt;/span&gt;
+wfuzz &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Z&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--hl&lt;/span&gt; 296,6 &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; POST &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'Cookie: MoodleSession=u0chdlm9finmc3sscsuggodg75'&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;username=admin&amp;amp;password=FUZZ&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/wordlists/rockyou.txt &lt;span class=&quot;s1&quot;&gt;'http://teacher.htb/moodle/login/index.php'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting/pentesting-web/moodle&quot;&gt;Moodle - HackTricks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.moodle.org/311/en/Administration_FAQ#I_have_forgotten_the_admin_password&quot;&gt;Forgotten creds&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://portswigger.net/daily-swig/finders-cheaters-rce-bug-in-moodle-e-learning-platform-could-be-abused-to-steal-data-manipulate-results&quot;&gt;Unauthenticated Exploit&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.moodle.org/dev/Moodle_Penetration_Testing&quot;&gt;Moodle Penetration Testing - MoodleDocs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://docs.moodle.org/311/en/Site_backup&quot;&gt;Site backup - MoodleDocs&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>XSS Port Scanning</title>

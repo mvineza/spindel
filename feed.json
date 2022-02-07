@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/02/07/nibble",
+            "title": "Nibble",
+            "summary": "Nibble",
+            "content_text": "Overview  No longer maintained  Successor is Bludit blogDefault Credentialsadmin:&lt;none&gt;Interesting URL Paths# contains version/README/admin/boot/rules/98-constants.bit# contains users/content/private/users.xml# others/admin.php/admin//content//content/private/plugins/my_image/db.xml/content/private/config.xmlIP BlacklistingNibbleblog blacklists an IP address for five minutes after five unsuccessful login attempts. We can confirm this configuration by checking  the source code .This can be bypassed by randomizing the X-Forwarded-For header. See bruteforce tool below.Exploits  Arbritraty File Upload Exploit (v4.0.3) - make sure to generate payload via msfvenom firstTools  Admin login page bruteforcerReferences  Nibbleblog - Easy, fast and free Blog system  eighty-two - Brute-forcing the admin password on Nibbles",
+            "content_html": "<h2 id=\"overview\">Overview</h2><ul>  <li>No longer maintained</li>  <li>Successor is Bludit blog</li></ul><h2 id=\"default-credentials\">Default Credentials</h2><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>admin:&lt;none&gt;</code></pre></div></div><h2 id=\"interesting-url-paths\">Interesting URL Paths</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># contains version</span>/README/admin/boot/rules/98-constants.bit<span class=\"c\"># contains users</span>/content/private/users.xml<span class=\"c\"># others</span>/admin.php/admin//content//content/private/plugins/my_image/db.xml/content/private/config.xml</code></pre></div></div><h2 id=\"ip-blacklisting\">IP Blacklisting</h2><p>Nibbleblog blacklists an IP address for five minutes after five unsuccessful login attempts. We can confirm this configuration by checking  <a href=\"https://github.com/dignajar/nibbleblog/blob/2a5f242d89b85c0aae2df95c4c95bc627ade54fd/admin/boot/rules/3-variables.bit#L44-L45\">the source code</a> .</p><p>This can be bypassed by randomizing the <code class=\"language-plaintext highlighter-rouge\">X-Forwarded-For</code> header. See bruteforce tool below.</p><h2 id=\"exploits\">Exploits</h2><ul>  <li><a href=\"https://github.com/TheRealHetfield/exploits\">Arbritraty File Upload Exploit (v4.0.3)</a> - make sure to generate payload via msfvenom first</li></ul><h2 id=\"tools\">Tools</h2><ul>  <li><a href=\"https://eightytwo.net/blog/brute-forcing-the-admin-password-on-nibbles/\">Admin login page bruteforcer</a></li></ul><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://www.nibbleblog.com/\">Nibbleblog - Easy, fast and free Blog system</a></li>  <li><a href=\"https://eightytwo.net/blog/brute-forcing-the-admin-password-on-nibbles/\">eighty-two - Brute-forcing the admin password on Nibbles</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/02/07/nibble",
+            
+            
+            
+            "tags": ["web","enum","cms","php"],
+            
+            "date_published": "2022-02-07T00:00:00+08:00",
+            "date_modified": "2022-02-07T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/02/06/moodle",
             "title": "Moodle",
             "summary": "Moodle",

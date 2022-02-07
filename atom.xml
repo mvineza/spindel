@@ -4,13 +4,67 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-06T17:21:23+08:00</updated>
+ <updated>2022-02-07T19:15:13+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Nibble</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/07/nibble"/>
+   <updated>2022-02-07T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/07/Nibble</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;No longer maintained&lt;/li&gt;
+  &lt;li&gt;Successor is Bludit blog&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;default-credentials&quot;&gt;Default Credentials&lt;/h2&gt;
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;admin:&amp;lt;none&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# contains version&lt;/span&gt;
+/README
+/admin/boot/rules/98-constants.bit
+
+&lt;span class=&quot;c&quot;&gt;# contains users&lt;/span&gt;
+/content/private/users.xml
+
+&lt;span class=&quot;c&quot;&gt;# others&lt;/span&gt;
+/admin.php
+/admin/
+/content/
+/content/private/plugins/my_image/db.xml
+/content/private/config.xml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;ip-blacklisting&quot;&gt;IP Blacklisting&lt;/h2&gt;
+&lt;p&gt;Nibbleblog blacklists an IP address for five minutes after five unsuccessful login attempts. We can confirm this configuration by checking  &lt;a href=&quot;https://github.com/dignajar/nibbleblog/blob/2a5f242d89b85c0aae2df95c4c95bc627ade54fd/admin/boot/rules/3-variables.bit#L44-L45&quot;&gt;the source code&lt;/a&gt; .&lt;/p&gt;
+
+&lt;p&gt;This can be bypassed by randomizing the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;X-Forwarded-For&lt;/code&gt; header. See bruteforce tool below.&lt;/p&gt;
+
+&lt;h2 id=&quot;exploits&quot;&gt;Exploits&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/TheRealHetfield/exploits&quot;&gt;Arbritraty File Upload Exploit (v4.0.3)&lt;/a&gt; - make sure to generate payload via msfvenom first&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://eightytwo.net/blog/brute-forcing-the-admin-password-on-nibbles/&quot;&gt;Admin login page bruteforcer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.nibbleblog.com/&quot;&gt;Nibbleblog - Easy, fast and free Blog system&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://eightytwo.net/blog/brute-forcing-the-admin-password-on-nibbles/&quot;&gt;eighty-two - Brute-forcing the admin password on Nibbles&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Moodle</title>

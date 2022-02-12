@@ -58,7 +58,7 @@ Accept-Language: en-US,en;q=0.9
 * Refresh the page
 * Go to `/logs`
 
-![](Cookie%20(Session)%20Hijacking/79797591-B0CB-47DA-A97A-26504675CB4D.png)
+![](/spindel/assets/Cookie%20(Session)%20Hijacking/79797591-B0CB-47DA-A97A-26504675CB4D.png)
 
 ## Other payloads
 ```bash

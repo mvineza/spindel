@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Cookie/Session Hijacking",
+      "description" : "Cookie/Session Hijacking",
+      "category" : "",
+      "tags"     : "web, xss",
+      "url"      : "/spindel/2022/02/12/cookie-session-hijacking",
+      "date"     : "2022-02-12 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Nibble",
       "description" : "Nibble",
       "category" : "",

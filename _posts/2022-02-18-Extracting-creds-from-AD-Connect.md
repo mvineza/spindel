@@ -103,5 +103,5 @@ Get-ItemProperty -Path "C:\Program Files\Microsoft Azure AD Sync\Bin\miiserver.e
 ```
 
 ## References
-* HTB Mo teverde
+* HTB Monteverde
 * [Azure AD Connect for Red Teamers - XPN InfoSec Blog](https://blog.xpnsec.com/azuread-connect-for-redteam/)

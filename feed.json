@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/02/19/october-cms",
+            "title": "October CMS",
+            "summary": "October CMS",
+            "content_text": "Credentials# defaultadmin:admin# othersoctober:passwdVersion Detection  Doesn’t discloseInteresting URL Paths# admin portal/backend/backend/auth/signin# media uploads directory - you can put reverse shell here/storage/app/media/Interesting Files and Directories# credentialsconfig/database.phpCredentials  You can register user without email verificationPlugins# account managementRainLab.UserSome Exploits and Vulnerabilities  File upload - bypass by using .php5 extensionReferences  HTB October",
+            "content_html": "<h2 id=\"credentials\">Credentials</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># default</span>admin:admin<span class=\"c\"># others</span>october:passwd</code></pre></div></div><h2 id=\"version-detection\">Version Detection</h2><ul>  <li>Doesn’t disclose</li></ul><h2 id=\"interesting-url-paths\">Interesting URL Paths</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># admin portal</span>/backend/backend/auth/signin<span class=\"c\"># media uploads directory - you can put reverse shell here</span>/storage/app/media/</code></pre></div></div><h2 id=\"interesting-files-and-directories\">Interesting Files and Directories</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># credentials</span>config/database.php</code></pre></div></div><h2 id=\"credentials-1\">Credentials</h2><ul>  <li>You can register user without email verification</li></ul><h2 id=\"plugins\">Plugins</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># account management</span>RainLab.User</code></pre></div></div><h2 id=\"some-exploits-and-vulnerabilities\">Some Exploits and Vulnerabilities</h2><ul>  <li>File upload - bypass by using <code class=\"language-plaintext highlighter-rouge\">.php5</code> extension</li></ul><h2 id=\"references\">References</h2><ul>  <li>HTB October</li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/02/19/october-cms",
+            
+            
+            
+            "tags": ["php","enum","cms"],
+            
+            "date_published": "2022-02-19T00:00:00+08:00",
+            "date_modified": "2022-02-19T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/02/18/extracting-creds-from-ad-connect",
             "title": "Extracting creds from AD Connect",
             "summary": "Extracting creds from AD Connect",

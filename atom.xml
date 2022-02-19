@@ -4,13 +4,66 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-18T19:45:22+08:00</updated>
+ <updated>2022-02-19T18:50:38+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>October CMS</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/19/october-cms"/>
+   <updated>2022-02-19T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/19/October-CMS</id>
+   <content type="html">&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# default&lt;/span&gt;
+admin:admin
+
+&lt;span class=&quot;c&quot;&gt;# others&lt;/span&gt;
+october:passwd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;version-detection&quot;&gt;Version Detection&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Doesn’t disclose&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# admin portal&lt;/span&gt;
+/backend/backend/auth/signin
+
+&lt;span class=&quot;c&quot;&gt;# media uploads directory - you can put reverse shell here&lt;/span&gt;
+/storage/app/media/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-files-and-directories&quot;&gt;Interesting Files and Directories&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# credentials&lt;/span&gt;
+config/database.php
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;credentials-1&quot;&gt;Credentials&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;You can register user without email verification&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;plugins&quot;&gt;Plugins&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# account management&lt;/span&gt;
+RainLab.User
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;some-exploits-and-vulnerabilities&quot;&gt;Some Exploits and Vulnerabilities&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;File upload - bypass by using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.php5&lt;/code&gt; extension&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB October&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Extracting creds from AD Connect</title>

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "October CMS",
+      "description" : "October CMS",
+      "category" : "",
+      "tags"     : "php, enum, cms",
+      "url"      : "/spindel/2022/02/19/october-cms",
+      "date"     : "2022-02-19 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Extracting creds from AD Connect",
       "description" : "Extracting creds from AD Connect",
       "category" : "",

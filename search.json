@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Network Scripts Command Injection",
+      "description" : "Network Scripts Command Injection",
+      "category" : "",
+      "tags"     : "linux, privesc, networking",
+      "url"      : "/spindel/2022/02/22/network-scripts-command-injection",
+      "date"     : "2022-02-22 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "October CMS",
       "description" : "October CMS",
       "category" : "",

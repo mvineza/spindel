@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "SSH run-parts",
+      "description" : "SSH run-parts",
+      "category" : "",
+      "tags"     : "linux, privesc",
+      "url"      : "/spindel/2022/02/23/ssh-run-parts",
+      "date"     : "2022-02-23 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Network Scripts Command Injection",
       "description" : "Network Scripts Command Injection",
       "category" : "",

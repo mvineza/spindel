@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/02/25/gitlab",
+            "title": "Gitlab",
+            "summary": "Gitlab",
+            "content_text": "Credentialsroot:&lt;random token set during installation&gt;Finding version  Log in &gt; helpInteresting Files and Directories# contains private key/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml# contains root password#   gitlab_rails['initial_root_password'] = '&lt;my_strong_password&gt;'/etc/gitlab/gitlab.rbcat /etc/gitlab/gitlab.rb | grep git_data_dirs# - Contains repositories from other users# - Looks like only contains bare repos, no actual files/var/opt/gitlab/git-data/repositories# You can find clues here about private or hidden reposgrep -r securedocker /var/log/gitlab 2&gt; /dev/nullCommands# gitlab console - can be used for management such as password#                  resets# https://docs.gitlab.com/ee/administration/troubleshooting/gitlab_rails_cheat_sheet.htmlgitlab-rails console# Mirroring an exposed .git directory and recreating the fileswget --mirror -I .git 10.10.10.70/.gitgit checkout -- .Other Enumeration Methods  Check public projects  Check users  Check activities  Look for private projectsSignup  There might be whitelisted domains on emails you can use  Try to use the domain of the boxReferences  Pentesting Git source repositories",
+            "content_html": "<h2 id=\"credentials\">Credentials</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>root:&lt;random token <span class=\"nb\">set </span>during installation&gt;</code></pre></div></div><h2 id=\"finding-version\">Finding version</h2><ul>  <li>Log in &gt; help</li></ul><h2 id=\"interesting-files-and-directories\">Interesting Files and Directories</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># contains private key</span>/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml<span class=\"c\"># contains root password</span><span class=\"c\">#   gitlab_rails['initial_root_password'] = '&lt;my_strong_password&gt;'</span>/etc/gitlab/gitlab.rb<span class=\"nb\">cat</span> /etc/gitlab/gitlab.rb | <span class=\"nb\">grep </span>git_data_dirs<span class=\"c\"># - Contains repositories from other users</span><span class=\"c\"># - Looks like only contains bare repos, no actual files</span>/var/opt/gitlab/git-data/repositories<span class=\"c\"># You can find clues here about private or hidden repos</span><span class=\"nb\">grep</span> <span class=\"nt\">-r</span> securedocker /var/log/gitlab 2&gt; /dev/null</code></pre></div></div><h2 id=\"commands\">Commands</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># gitlab console - can be used for management such as password</span><span class=\"c\">#                  resets</span><span class=\"c\"># https://docs.gitlab.com/ee/administration/troubleshooting/gitlab_rails_cheat_sheet.html</span>gitlab-rails console<span class=\"c\"># Mirroring an exposed .git directory and recreating the files</span>wget <span class=\"nt\">--mirror</span> <span class=\"nt\">-I</span> .git 10.10.10.70/.gitgit checkout <span class=\"nt\">--</span> <span class=\"nb\">.</span></code></pre></div></div><h2 id=\"other-enumeration-methods\">Other Enumeration Methods</h2><ul>  <li>Check public projects</li>  <li>Check users</li>  <li>Check activities</li>  <li>Look for private projects</li></ul><h2 id=\"signup\">Signup</h2><ul>  <li>There might be whitelisted domains on emails you can use</li>  <li>Try to use the domain of the box</li></ul><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://www.errno.fr/Attacking_source_repositories.html\">Pentesting Git source repositories</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/02/25/gitlab",
+            
+            
+            
+            "tags": ["git","enum"],
+            
+            "date_published": "2022-02-25T00:00:00+08:00",
+            "date_modified": "2022-02-25T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/02/23/ssh-run-parts",
             "title": "SSH run-parts",
             "summary": "SSH run-parts",

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Gitlab",
+      "description" : "Gitlab",
+      "category" : "",
+      "tags"     : "git, enum",
+      "url"      : "/spindel/2022/02/25/gitlab",
+      "date"     : "2022-02-25 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "SSH run-parts",
       "description" : "SSH run-parts",
       "category" : "",

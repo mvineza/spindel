@@ -4,13 +4,76 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-23T18:14:53+08:00</updated>
+ <updated>2022-02-25T20:16:01+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Gitlab</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/25/gitlab"/>
+   <updated>2022-02-25T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/25/Gitlab</id>
+   <content type="html">&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;root:&amp;lt;random token &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;during installation&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;finding-version&quot;&gt;Finding version&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Log in &amp;gt; help&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;interesting-files-and-directories&quot;&gt;Interesting Files and Directories&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# contains private key&lt;/span&gt;
+/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml
+
+&lt;span class=&quot;c&quot;&gt;# contains root password&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   gitlab_rails['initial_root_password'] = '&amp;lt;my_strong_password&amp;gt;'&lt;/span&gt;
+/etc/gitlab/gitlab.rb
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/gitlab/gitlab.rb | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;git_data_dirs
+
+&lt;span class=&quot;c&quot;&gt;# - Contains repositories from other users&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# - Looks like only contains bare repos, no actual files&lt;/span&gt;
+/var/opt/gitlab/git-data/repositories
+
+&lt;span class=&quot;c&quot;&gt;# You can find clues here about private or hidden repos&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; securedocker /var/log/gitlab 2&amp;gt; /dev/null
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;commands&quot;&gt;Commands&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# gitlab console - can be used for management such as password&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#                  resets&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# https://docs.gitlab.com/ee/administration/troubleshooting/gitlab_rails_cheat_sheet.html&lt;/span&gt;
+gitlab-rails console
+
+&lt;span class=&quot;c&quot;&gt;# Mirroring an exposed .git directory and recreating the files&lt;/span&gt;
+wget &lt;span class=&quot;nt&quot;&gt;--mirror&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; .git 10.10.10.70/.git
+git checkout &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;other-enumeration-methods&quot;&gt;Other Enumeration Methods&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Check public projects&lt;/li&gt;
+  &lt;li&gt;Check users&lt;/li&gt;
+  &lt;li&gt;Check activities&lt;/li&gt;
+  &lt;li&gt;Look for private projects&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;signup&quot;&gt;Signup&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;There might be whitelisted domains on emails you can use&lt;/li&gt;
+  &lt;li&gt;Try to use the domain of the box&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.errno.fr/Attacking_source_repositories.html&quot;&gt;Pentesting Git source repositories&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>SSH run-parts</title>

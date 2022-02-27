@@ -9,7 +9,7 @@ minute: 1
 ## What is Dynamic DNS Updates?
 * Improves management of DNS records
 * For example, a new end device who receives an IP via DHCP can register itself by adding A record into the DNS
-* More info: [How to configure DNS dynamic updates in Windows Server - Windows Server | Microsoft Docs](https://docs.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-dns-dynamic-updates-windows-server-2003)
+* More info: [Microsoft Docs](https://docs.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-dns-dynamic-updates-windows-server-2003)
 
 ![](/spindel/assets/Insecure%20Dynamic%20DNS%20Updates/secure-dns.png)
 

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Insecure Dynamic DNS Updates",
+      "description" : "Insecure Dynamic DNS Updates",
+      "category" : "",
+      "tags"     : "dns, windows, foothold",
+      "url"      : "/spindel/2022/02/27/insecure-dynamic-dns-updates",
+      "date"     : "2022-02-27 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Gitlab",
       "description" : "Gitlab",
       "category" : "",

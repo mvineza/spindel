@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-27T17:16:06+08:00</updated>
+ <updated>2022-02-27T17:20:32+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -21,16 +21,7 @@
 &lt;ul&gt;
   &lt;li&gt;Improves management of DNS records&lt;/li&gt;
   &lt;li&gt;For example, a new end device who receives an IP via DHCP can register itself by adding A record into the DNS&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;More info: [How to configure DNS dynamic updates in Windows Server - Windows Server&lt;/td&gt;
-          &lt;td&gt;Microsoft Docs](https://docs.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-dns-dynamic-updates-windows-server-2003)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
+  &lt;li&gt;More info: &lt;a href=&quot;https://docs.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-dns-dynamic-updates-windows-server-2003&quot;&gt;Microsoft Docs&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;&lt;img src=&quot;/spindel/assets/Insecure%20Dynamic%20DNS%20Updates/secure-dns.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;

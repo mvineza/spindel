@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Malicious DLL Injection",
+      "description" : "Malicious DLL Injection",
+      "category" : "",
+      "tags"     : "dns, privesc, windows",
+      "url"      : "/spindel/2022/03/01/malicious-dll-injection",
+      "date"     : "2022-03-01 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Insecure Dynamic DNS Updates",
       "description" : "Insecure Dynamic DNS Updates",
       "category" : "",

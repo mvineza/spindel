@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-01T18:15:35+08:00</updated>
+ <updated>2022-03-01T18:20:13+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -104,18 +104,7 @@
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;HTB Resolute&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[Escalating Privileges with DNSAdmins Group&lt;/td&gt;
-          &lt;td&gt;by Nairuz Abulhul&lt;/td&gt;
-          &lt;td&gt;R3d Buck3T&lt;/td&gt;
-          &lt;td&gt;Medium](https://medium.com/r3d-buck3t/escalating-privileges-with-dnsadmins-group-active-directory-6f7adbc7005b)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/r3d-buck3t/escalating-privileges-with-dnsadmins-group-active-directory-6f7adbc7005b&quot;&gt;Escalating Privileges with DNSAdmins Group&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.ired.team/offensive-security-experiments/active-directory-kerberos-abuse/from-dnsadmins-to-system-to-domain-compromise#abuse-dns-with-dnscmd&quot;&gt;From DnsAdmins to SYSTEM to Domain Compromise&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>

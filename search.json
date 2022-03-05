@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "PD4ML Attachment from DynamoDB",
+      "description" : "PD4ML Attachment from DynamoDB",
+      "category" : "",
+      "tags"     : "privesc, foothold, web, aws",
+      "url"      : "/spindel/2022/03/05/pd4ml-attachment-from-dynamodb",
+      "date"     : "2022-03-05 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Malicious DLL Injection",
       "description" : "Malicious DLL Injection",
       "category" : "",

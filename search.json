@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "AS-REP Roasting using Impacket",
+      "description" : "AS-REP Roasting using Impacket",
+      "category" : "",
+      "tags"     : "windows, ad, kerberos, foothold",
+      "url"      : "/spindel/2022/03/07/as-rep-roasting-using-impacket",
+      "date"     : "2022-03-07 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "PD4ML Attachment from DynamoDB",
       "description" : "PD4ML Attachment from DynamoDB",
       "category" : "",

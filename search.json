@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Kerberoasting - Impacket",
+      "description" : "Kerberoasting - Impacket",
+      "category" : "",
+      "tags"     : "windows, ad, kerberos, foothold",
+      "url"      : "/spindel/2022/03/10/kerberoasting-impacket",
+      "date"     : "2022-03-10 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Kerberoasting - Rubeus",
       "description" : "Kerberoasting - Rubeus",
       "category" : "",

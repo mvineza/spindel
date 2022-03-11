@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "PHP XDebug",
+      "description" : "PHP XDebug",
+      "category" : "",
+      "tags"     : "php, rce, foothold",
+      "url"      : "/spindel/2022/03/11/php-xdebug",
+      "date"     : "2022-03-11 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Kerberoasting - Impacket",
       "description" : "Kerberoasting - Impacket",
       "category" : "",

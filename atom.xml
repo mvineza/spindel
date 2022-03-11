@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-11T19:03:44+08:00</updated>
+ <updated>2022-03-11T19:16:18+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -56,17 +56,7 @@
 &lt;ul&gt;
   &lt;li&gt;HTB Olympus&lt;/li&gt;
   &lt;li&gt;https://paper.seebug.org/397/&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[The Exploits of Xdebug in PhpStorm&lt;/td&gt;
-          &lt;td&gt;by Knownsec 404 team&lt;/td&gt;
-          &lt;td&gt;Medium](https://medium.com/@knownsec404team/the-exploits-of-xdebug-in-phpstorm-2ca140e91dc)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@knownsec404team/the-exploits-of-xdebug-in-phpstorm-2ca140e91dc&quot;&gt;The Exploits of Xdebug in PhpStorm&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>

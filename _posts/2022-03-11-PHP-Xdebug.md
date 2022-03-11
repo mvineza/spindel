@@ -39,4 +39,4 @@ while True:
 ## References
 * HTB Olympus
 * https://paper.seebug.org/397/
-* [The Exploits of Xdebug in PhpStorm | by Knownsec 404 team | Medium](https://medium.com/@knownsec404team/the-exploits-of-xdebug-in-phpstorm-2ca140e91dc)
+* [The Exploits of Xdebug in PhpStorm](https://medium.com/@knownsec404team/the-exploits-of-xdebug-in-phpstorm-2ca140e91dc)

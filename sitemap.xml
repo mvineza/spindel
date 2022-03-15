@@ -113,6 +113,10 @@
 <lastmod>2022-03-11T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>https://mvineza.github.io/spindel/2022/03/15/kibana-lfi-to-rce</loc>
+<lastmod>2022-03-15T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>https://mvineza.github.io/spindel/about/</loc>
 </url>
 <url>
@@ -153,6 +157,9 @@
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/web/</loc>
+</url>
+<url>
+<loc>https://mvineza.github.io/spindel/tag/kibana/</loc>
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/dns/</loc>

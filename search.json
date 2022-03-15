@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Kibana LFI to RCE",
+      "description" : "Kibana LFI to RCE",
+      "category" : "",
+      "tags"     : "kibana, exploit, rce",
+      "url"      : "/spindel/2022/03/15/kibana-lfi-to-rce",
+      "date"     : "2022-03-15 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "PHP XDebug",
       "description" : "PHP XDebug",
       "category" : "",

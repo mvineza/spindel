@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-17T18:31:31+08:00</updated>
+ <updated>2022-03-17T18:36:21+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -164,16 +164,7 @@ curl http://docker-rodeo.thm:5000/v2/cmnatic/myapp1/manifests/latest | &lt;span 
   &lt;li&gt;&lt;a href=&quot;https://owasp.org/www-chapter-sydney/files/docker-containers.pdf&quot;&gt;Hacking Dockers and Containers (OWASP)&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/sneakerhax/OffensiveDocker&quot;&gt;GitHub - sneakerhax/OffensiveDocker: Offensive security tools Dockerized&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://i.blackhat.com/us-18/Thu-August-9/us-18-McGrew-An-Attacker-Looks-At-Docker-Approaching-Multi-Container-Applications-wp.pdf&quot;&gt;An Attacker Looks at Docker (BlackHat)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[Lesson 4: Hacking Containers Like A Boss&lt;/td&gt;
-          &lt;td&gt;Practical DevSecOps](https://www.practical-devsecops.com/lesson-4-hacking-containers-like-a-boss/)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.practical-devsecops.com/lesson-4-hacking-containers-like-a-boss/&quot;&gt;Lesson 4: Hacking Containers Like A Boss&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt&quot;&gt;Cgroups&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;https://research.nccgroup.com/wp-content/uploads/2020/07/ncc_group_understanding_hardening_linux_containers-1-1.pdf&lt;/li&gt;
 &lt;/ul&gt;

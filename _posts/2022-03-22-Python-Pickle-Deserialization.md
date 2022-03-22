@@ -42,7 +42,7 @@ check()
 ```
 
 ## Troubleshooting
-When I did HTB Canape, my exploit didn't work when I tried to use the HTLM form in firefox.
+When I did HTB Canape, my exploit didn't work when I tried to use the HTML form in firefox.
 
 ![](/spindel/assets/Python%20Pickle%20Deserialization/FF16D104-763D-42D2-BF3D-C8181797ADAA.png)
 
@@ -129,5 +129,4 @@ submit()
 * HTB Canape
 * [Python Pickle Injection](http://xhyumiracle.com/python-pickle-injection/)
 * [Exploiting Insecure Deserialization bugs found in the Wild (Python Pickles)](https://macrosec.tech/index.php/2021/06/29/exploiting-insecuredeserialization-bugs-found-in-the-wild-python-pickles/)
-* [Pickle Arbitrary Code Execution | root4loot](https://root4loot.com/post/exploiting_cpickle/)
-* test
+* [Pickle Arbitrary Code Execution](https://root4loot.com/post/exploiting_cpickle/)

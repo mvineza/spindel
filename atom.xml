@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-22T23:05:27+08:00</updated>
+ <updated>2022-03-23T00:37:29+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -52,7 +52,7 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
-&lt;p&gt;When I did HTB Canape, my exploit didn’t work when I tried to use the HTLM form in firefox.&lt;/p&gt;
+&lt;p&gt;When I did HTB Canape, my exploit didn’t work when I tried to use the HTML form in firefox.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/spindel/assets/Python%20Pickle%20Deserialization/FF16D104-763D-42D2-BF3D-C8181797ADAA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -141,17 +141,7 @@
   &lt;li&gt;HTB Canape&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;http://xhyumiracle.com/python-pickle-injection/&quot;&gt;Python Pickle Injection&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://macrosec.tech/index.php/2021/06/29/exploiting-insecuredeserialization-bugs-found-in-the-wild-python-pickles/&quot;&gt;Exploiting Insecure Deserialization bugs found in the Wild (Python Pickles)&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[Pickle Arbitrary Code Execution&lt;/td&gt;
-          &lt;td&gt;root4loot](https://root4loot.com/post/exploiting_cpickle/)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
-  &lt;li&gt;test&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://root4loot.com/post/exploiting_cpickle/&quot;&gt;Pickle Arbitrary Code Execution&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>

@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-22T18:16:31+08:00</updated>
+ <updated>2022-03-22T23:05:27+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -151,6 +151,7 @@
       &lt;/tbody&gt;
     &lt;/table&gt;
   &lt;/li&gt;
+  &lt;li&gt;test&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>

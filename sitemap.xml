@@ -125,6 +125,10 @@
 <lastmod>2022-03-22T00:00:00+08:00</lastmod>
 </url>
 <url>
+<loc>https://mvineza.github.io/spindel/2022/03/25/monitoring-processes-using-snmp</loc>
+<lastmod>2022-03-25T00:00:00+08:00</lastmod>
+</url>
+<url>
 <loc>https://mvineza.github.io/spindel/about/</loc>
 </url>
 <url>
@@ -176,10 +180,10 @@
 <loc>https://mvineza.github.io/spindel/tag/kibana/</loc>
 </url>
 <url>
-<loc>https://mvineza.github.io/spindel/tag/python/</loc>
+<loc>https://mvineza.github.io/spindel/tag/wordpress/</loc>
 </url>
 <url>
-<loc>https://mvineza.github.io/spindel/tag/bof/</loc>
+<loc>https://mvineza.github.io/spindel/tag/python/</loc>
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/devops/</loc>
@@ -189,6 +193,9 @@
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/smb/</loc>
+</url>
+<url>
+<loc>https://mvineza.github.io/spindel/tag/snmp/</loc>
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/windows/</loc>
@@ -215,6 +222,6 @@
 <loc>https://mvineza.github.io/spindel/tag/git/</loc>
 </url>
 <url>
-<loc>https://mvineza.github.io/spindel/tag/wordpress/</loc>
+<loc>https://mvineza.github.io/spindel/tag/bof/</loc>
 </url>
 </urlset>

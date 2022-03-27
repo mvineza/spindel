@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "boot2docker",
+      "description" : "boot2docker",
+      "category" : "",
+      "tags"     : "docker, enum",
+      "url"      : "/spindel/2022/03/27/boot2docker",
+      "date"     : "2022-03-27 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Monitoring Processes via SNMP",
       "description" : "Monitoring Processes via SNMP",
       "category" : "",

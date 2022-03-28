@@ -4,13 +4,108 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-03-27T18:11:27+08:00</updated>
+ <updated>2022-03-28T19:05:08+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>DPAPI (Data Protection API)</title>
+   <link href="https://mvineza.github.io/spindel/2022/03/28/dpapi"/>
+   <updated>2022-03-28T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/03/28/DPAPI</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Perform symmetric encryption of asymmetric private keys, using a user or system secret as a significant contribution of entropy&lt;/li&gt;
+  &lt;li&gt;Can be stored on xml files but may also be stored on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.bin&lt;/code&gt; files&lt;/li&gt;
+  &lt;li&gt;Typically starts at this set of standard bytes&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;01 00 00 00 D0 8C 9D DF 01 15 D1 11 8C 7A 00 C0 4F C2 97 EB
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;relationship-between-different-windows-security-mechanism&quot;&gt;Relationship between different Windows security mechanism&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DPAPI%20(Data%20Protection%20API)/3D767BD7-4352-49B1-B03F-5B7FB49A778F.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;decryption-overview&quot;&gt;Decryption Overview&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DPAPI%20(Data%20Protection%20API)/F9D490E0-C3F6-424D-A690-02BF3C9B1631.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;decrypting-dpapi-blob-using-passcape&quot;&gt;Decrypting DPAPI Blob using passcape&lt;/h2&gt;
+&lt;p&gt;Enter the blob. I got the blob by converting the content of xml file into a bin file then transfer it to windows 10 vm.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# From attacker&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;admin-pass.xml | xxd &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; blob.bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DPAPI%20(Data%20Protection%20API)/F67DF87A-0162-4641-A25C-2EE039390CA1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At this point, the software automatically detects the master key GUI to use. I also transferred the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;CREDHIST&lt;/code&gt; file of victim to my windows 10 vm.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DPAPI%20(Data%20Protection%20API)/F06BF5D9-D1AA-43E8-A559-B77E73FBEEA2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DPAPI%20(Data%20Protection%20API)/3D9DAF45-2234-465A-9454-06D94F3DA755.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Then I needed to get the user SID from mimikatz output. The password, well, I got it from registry.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DPAPI%20(Data%20Protection%20API)/120FD0D1-606E-419F-93CC-DBB8BEFD6F32.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Unfortunately, I only have a trial version of the program so It only showed 1st 10 characters of the decrypted data.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/DPAPI%20(Data%20Protection%20API)/26F28151-7805-40D0-9AC2-FB70942B1992.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But this is a good thing, because atleast now I know there is a way to recover some data from dpapi blob. And also, I was able to validate what master key GUID and CREDHIST corresponds to the blob.&lt;/p&gt;
+
+&lt;p&gt;Next quesion is, what alternative tool I can use?&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://tools.thehacker.recipes/mimikatz/modules/dpapi/blob&quot;&gt;blob - The Hacker Tools&lt;/a&gt; - this doesn’t work&lt;/li&gt;
+  &lt;li&gt;Gotcha! from &lt;a href=&quot;https://github.com/GhostPack/SharpDPAPI/blob/master/README.md#blob&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;.&lt;span class=&quot;se&quot;&gt;\S&lt;/span&gt;harpDPAPI.exe blob /target:blob.bin &lt;span class=&quot;s1&quot;&gt;'{98fafef2-d8a0-4b4f-917d-d8a1f5889c81}:DB6A7CB1AE10BFD70EA9BD8A4D10608A08D0969F'&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;mimikatz-commands&quot;&gt;Mimikatz Commands&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Shows structure of blob&lt;/span&gt;
+dpapi::blob /in:blob.bin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;master-key-characteristics&quot;&gt;Master Key Characteristics&lt;/h2&gt;
+&lt;p&gt;Here is an example from HTB helpline mimikatz output&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# This is also the filenames that you can see under&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# `AppData\Roaming\Microsoft\Protect`&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; GUID      :  &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;98fafef2-d8a0-4b4f-917d-d8a1f5889c81&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# The actual key in long format.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; MasterKey :  daae4d9c34452f4bc6a17ccf4d87c369a15fcd5f81be5fc7211721a321f309392578ec1c225647cc2048d
+90854c7d94224cde619e23e04a0dbbaddb19efdf305
+
+&lt;span class=&quot;c&quot;&gt;# Key in SHA1 format.&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt; sha1&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;key&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; :  db6a7cb1ae10bfd70ea9bd8a4d10608a08d0969f
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/login-securite/DonPAPI&quot;&gt;GitHub - login-securite/DonPAPI: Dumping DPAPI credz remotely&lt;/a&gt; - looks like unstable, i always get &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;EAccessViolation&lt;/code&gt; erorr&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/GhostPack/SharpDPAPI&quot;&gt;GitHub - GhostPack/SharpDPAPI: SharpDPAPI is a C# port of some Mimikatz DPAPI functionality.&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/jordanbtucker/dpapick&quot;&gt;GitHub - jordanbtucker/dpapick: DPAPI offline decryption utility&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/AlessandroZ/LaZagne&quot;&gt;GitHub - AlessandroZ/LaZagne: Credentials recovery project&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/windows/windows-local-privilege-escalation/dpapi-extracting-passwords&quot;&gt;Hacktricks - Extracting passwords from DPAPI&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.checkymander.com/red%20team/viscosity/decrypt-viscosity-passwords/&quot;&gt;Decrypting Viscosity Passwords - MM&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Data_Protection_API&quot;&gt;Data Protection API - Wikipedia&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.usenix.org/legacy/event/woot10/tech/full_papers/Burzstein.pdf&quot;&gt;Recovering Windows Secrets and EFS Certificates Offline&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://2018.offzone.moscow/getfile/?bmFtZT0xMi0wMF9XaW5kb3dzX0RQQVBJX1Nla3JldGlraS5wZGYmSUQ9NDEx&quot;&gt;DPAPI for pentesters by Konstantin Evdokimiv&lt;/a&gt; - looks great but haven’t read yet&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>boot2docker</title>

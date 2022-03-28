@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "DPAPI (Data Protection API)",
+      "description" : "DPAPI (Data Protection API)",
+      "category" : "",
+      "tags"     : "windows, crypto",
+      "url"      : "/spindel/2022/03/28/dpapi",
+      "date"     : "2022-03-28 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "boot2docker",
       "description" : "boot2docker",
       "category" : "",

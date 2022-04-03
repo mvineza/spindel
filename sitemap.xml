@@ -161,6 +161,9 @@
 <loc>https://mvineza.github.io/spindel/tag/aws/</loc>
 </url>
 <url>
+<loc>https://mvineza.github.io/spindel/tag/sqli/</loc>
+</url>
+<url>
 <loc>https://mvineza.github.io/spindel/tag/privesc/</loc>
 </url>
 <url>
@@ -188,10 +191,10 @@
 <loc>https://mvineza.github.io/spindel/tag/kibana/</loc>
 </url>
 <url>
-<loc>https://mvineza.github.io/spindel/tag/wordpress/</loc>
+<loc>https://mvineza.github.io/spindel/tag/python/</loc>
 </url>
 <url>
-<loc>https://mvineza.github.io/spindel/tag/python/</loc>
+<loc>https://mvineza.github.io/spindel/tag/bof/</loc>
 </url>
 <url>
 <loc>https://mvineza.github.io/spindel/tag/devops/</loc>
@@ -230,6 +233,6 @@
 <loc>https://mvineza.github.io/spindel/tag/git/</loc>
 </url>
 <url>
-<loc>https://mvineza.github.io/spindel/tag/bof/</loc>
+<loc>https://mvineza.github.io/spindel/tag/wordpress/</loc>
 </url>
 </urlset>

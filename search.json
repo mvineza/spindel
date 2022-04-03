@@ -19,6 +19,15 @@
     } ,
   
     {
+      "title"    : "Bypass PIE (32-bit) - Ret2libc",
+      "description" : "Bypass PIE (32-bit) - Ret2libc",
+      "category" : "",
+      "tags"     : "bof, linux, privesc",
+      "url"      : "/spindel/2022/04/03/bypass-pie-32bit-ret2libc",
+      "date"     : "2022-04-03 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "DPAPI (Data Protection API)",
       "description" : "DPAPI (Data Protection API)",
       "category" : "",

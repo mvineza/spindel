@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Java JSF ViewState Deserialization",
+      "description" : "Java JSF ViewState Deserialization",
+      "category" : "",
+      "tags"     : "java, deserialization, foothold",
+      "url"      : "/spindel/2022/04/05/java-jsf-viewstate-deserialization",
+      "date"     : "2022-04-05 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Node JS Deserialization - Cookie",
       "description" : "Node JS Deserialization - Cookie",
       "category" : "",

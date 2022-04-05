@@ -3,7 +3,7 @@ layout: post
 title: Python Pickle Deserialization
 description: Python Pickle Deserialization
 summary: Python Pickle Deserialization
-tags: [python,deserial,foothold]
+tags: [python,deserialization,foothold]
 minute: 1
 ---
 ## Payload Format

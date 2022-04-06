@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "ManageEngine Service Desk Plus (SDP)",
+      "description" : "ManageEngine Service Desk Plus (SDP)",
+      "category" : "",
+      "tags"     : "windows, enum, java, postgres",
+      "url"      : "/spindel/2022/04/06/manageengine-service-desk-plus-sdp",
+      "date"     : "2022-04-06 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Java JSF ViewState Deserialization",
       "description" : "Java JSF ViewState Deserialization",
       "category" : "",

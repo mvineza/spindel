@@ -4,13 +4,67 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-07T17:27:09+08:00</updated>
+ <updated>2022-04-08T18:04:02+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Adminer File Disclosure</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/08/adminer-file-disclosure"/>
+   <updated>2022-04-08T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/08/Adminer-File-Disclosure</id>
+   <content type="html">&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+&lt;p&gt;Attacker can point adminer into a rogue mysql server to get access to internal files inside the victim machine.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Adminer%20File%20Disclosure/EF3B2DBA-F55A-487A-A698-BB47C683143C.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;protocol-flaw-in-mysql&quot;&gt;Protocol Flaw in MySQL&lt;/h1&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;The transfer of the file from the client host to the server host is initiated by the MySQL server. In theory, a patched server could be built that would tell the client program to transfer a file of the server’s choosing rather than the file named by the client in the LOAD DATA statement. Such a server could access any file on the client host to which the client user has read access. (A patched server could in fact reply with a file-transfer request to any statement, not just LOAD DATA LOCAL, so a more fundamental issue is that clients should not connect to untrusted servers.)&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h1 id=&quot;steps&quot;&gt;Steps&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;Update &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rogue_mysql_server.py&lt;/code&gt; with the file you want to read and run it&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ~/data/tools
+&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;rogue_mysql_server.py | egrep &lt;span class=&quot;s1&quot;&gt;'filename ='&lt;/span&gt;
+python2 rogue_mysql_server.py
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Open wireshark and filter mysql packets&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Adminer%20File%20Disclosure/EA76910F-225D-4CD4-AA58-A0B7B73F1FFC.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Login to adminer and point it to attacker rogue mysql. The rest can be any value.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Adminer%20File%20Disclosure/2C2CD67E-0CD7-40AC-B898-E61DEF389D83.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Go back to wire shark and check the mysql response from victim.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Adminer%20File%20Disclosure/0EE58AEE-B02F-4189-8DCF-96A72324C37B.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Adminer%20File%20Disclosure/0B1373DE-095F-440A-ACBF-62BC821E42DC.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h1 id=&quot;references&quot;&gt;References&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://sansec.io/research/adminer-4.6.2-file-disclosure-vulnerability&quot;&gt;PHP tool ‘Adminer’ leaks passwords – Sansec&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.exploit-db.com/exploits/43593&quot;&gt;Adminer 4.3.1 - Server-Side Request Forgery - PHP webapps Exploit&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://podalirius.net/en/cves/2021-xxxxx/&quot;&gt;Alternative to the above&lt;/a&gt; - much easier to use&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Hashes</title>

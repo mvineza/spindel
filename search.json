@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Kerberoasting using Powershell",
+      "description" : "Kerberoasting using Powershell",
+      "category" : "",
+      "tags"     : "foothold, windows, ad, kerberos",
+      "url"      : "/spindel/2022/04/09/kerberoasting-using-powershell",
+      "date"     : "2022-04-09 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Adminer File Disclosure",
       "description" : "Adminer File Disclosure",
       "category" : "",

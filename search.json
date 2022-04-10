@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Powershell Web Access",
+      "description" : "Powershell Web Access",
+      "category" : "",
+      "tags"     : "enum, windows, powershell, web",
+      "url"      : "/spindel/2022/04/10/powershell-web-access",
+      "date"     : "2022-04-10 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Kerberoasting using Powershell",
       "description" : "Kerberoasting using Powershell",
       "category" : "",

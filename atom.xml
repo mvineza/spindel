@@ -4,13 +4,42 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-10T18:25:36+08:00</updated>
+ <updated>2022-04-10T18:27:10+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Powershell Web Access</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/10/powershell-web-access"/>
+   <updated>2022-04-10T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/10/Powershell-Web-Access</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Web-based powershell console&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Powershell%20Web%20Access/F6375AEF-BA00-4D83-9547-EB1F0F49D9E4.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# login&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/remote&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;logging-in-as-local-account&quot;&gt;Logging in as local account&lt;/h2&gt;
+&lt;p&gt;Prepend &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\&lt;/code&gt; or &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;.\&lt;/code&gt; to be treated as local account instead of domain account.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Powershell%20Web%20Access/935C5BE2-2EE2-47FA-B462-203F32529863.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Or you can also use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;COMPUTER_NAME\USER_NAME&lt;/code&gt; format.&lt;/p&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB Giddy&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Kerberoasting using Powershell</title>

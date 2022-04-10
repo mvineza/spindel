@@ -3,7 +3,7 @@ layout: post
 title: Kerberoasting using Powershell
 description: Kerberoasting using Powershell
 summary: Kerberoasting using Powershell
-tags: [foothold,windows,ad,kerberos]
+tags: [foothold,windows,ad,kerberos,powershell]
 minute: 1
 ---
 ## Overview

@@ -4,13 +4,45 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-12T18:03:24+08:00</updated>
+ <updated>2022-04-15T17:16:02+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Gitlab LFI and Cookie Deserialization</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/15/gitlab-lfi-and-cookie-deserialization"/>
+   <updated>2022-04-15T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/15/Gitlab-LFI-and-Cookie-Deserialization</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Attacker can get &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;secret_key_base&lt;/code&gt; from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml&lt;/code&gt; and use that to generate a shell payload that can be converted into an RCE via cookie deserailization attack.&lt;/p&gt;
+
+&lt;h2 id=&quot;requirements-and-environment-setup&quot;&gt;Requirements and Environment Setup&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Valid account&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;versions-affected&quot;&gt;Versions Affected&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Gitlab 12.8.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Be sure to add &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/users/sign_in&lt;/code&gt; on the target url&lt;/li&gt;
+  &lt;li&gt;If user has a max limit of 1 project only, this exploit is not possible&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://hackerone.com/reports/827052&quot;&gt;HackerOne&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/leecybersec/gitlab-rce&quot;&gt;GitHub - leecybersec/gitlab-rce&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Python AES Encryption and Decryption</title>

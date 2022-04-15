@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Gitlab LFI and Cookie Deserialization",
+      "description" : "Gitlab LFI and Cookie Deserialization",
+      "category" : "",
+      "tags"     : "git, deserial, foothold, rce, lfi",
+      "url"      : "/spindel/2022/04/15/gitlab-lfi-and-cookie-deserialization",
+      "date"     : "2022-04-15 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Python AES Encryption and Decryption",
       "description" : "Python AES Encryption and Decryption",
       "category" : "",

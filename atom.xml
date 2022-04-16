@@ -4,13 +4,42 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-15T17:16:02+08:00</updated>
+ <updated>2022-04-16T18:32:37+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>LD_PRELOAD</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/16/ld-preload"/>
+   <updated>2022-04-16T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/16/LD_PRELOAD</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Allows you to load any libraries before loading actual libraries needed by the app&lt;/li&gt;
+  &lt;li&gt;Can be set via &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;LD_PRELOAD&lt;/code&gt; environment variable or on &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/etc/ld.so.preload&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mav8557/Father?fbclid=IwAR2_dWGrUAHhfMOtMP9ovuXw4Hp7xCdm4DHWay99AObhaG5zuCrJAsZbHjE&quot;&gt;Father&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;example-exploits-leveraging-this-technique&quot;&gt;Example exploits leveraging this technique&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.exploit-db.com/exploits/41154&quot;&gt;GNU Screen 4.5.0 - Local Privilege Escalation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;https://securityboulevard.com/2020/10/not-so-random-using-ld_preload-to-hijack-the-rand-function/&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.hackingarticles.in/linux-privilege-escalation-using-ld_preload/&quot;&gt;Linux Privilege Escalation using LD_Preload&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Gitlab LFI and Cookie Deserialization</title>

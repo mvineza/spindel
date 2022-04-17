@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Wordpress Job-Manager Plugin File Disclosure",
+      "description" : "Wordpress Job-Manager Plugin File Disclosure",
+      "category" : "",
+      "tags"     : "foothold, wordpress, web",
+      "url"      : "/spindel/2022/04/17/wordpress-jobmanager-plugin-file-disclosure",
+      "date"     : "2022-04-17 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "LD_PRELOAD",
       "description" : "LD_PRELOAD",
       "category" : "",

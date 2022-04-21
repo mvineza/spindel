@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Android APK Command Injection via msfvenom template",
+      "description" : "Android APK Command Injection via msfvenom template",
+      "category" : "",
+      "tags"     : "linux, foothold, android",
+      "url"      : "/spindel/2022/04/21/android-apk-command-injection-via-msfvenom-template",
+      "date"     : "2022-04-21 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Eternal Blue",
       "description" : "Eternal Blue",
       "category" : "",

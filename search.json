@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "NFS hidden mount",
+      "description" : "NFS hidden mount",
+      "category" : "",
+      "tags"     : "linux, nfs, pivot",
+      "url"      : "/spindel/2022/04/28/nfs-hidden-mount",
+      "date"     : "2022-04-28 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Fuzzing and Binary Inspection Techniques",
       "description" : "Fuzzing and Binary Inspection Techniques",
       "category" : "",

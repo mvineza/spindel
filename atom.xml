@@ -4,13 +4,58 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-24T18:01:14+08:00</updated>
+ <updated>2022-04-28T16:24:25+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>NFS hidden mount</title>
+   <link href="https://mvineza.github.io/spindel/2022/04/28/nfs-hidden-mount"/>
+   <updated>2022-04-28T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/04/28/NFS-hidden-mount</id>
+   <content type="html">&lt;ul&gt;
+  &lt;li&gt;In THM overpass 3 box, i encountered an NFS port open and listening to all address but I cannot reach it from attacker machine. I suspect firewall is restricting the access.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# ss output&lt;/span&gt;
+tcp   LISTEN      0       64                 0.0.0.0:2049         0.0.0.0:&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;                                                                                     
+tcp   ESTAB       0       0                127.0.0.1:42724      127.0.0.1:2049                                                                                  
+tcp   ESTAB       0       0                127.0.0.1:2049       127.0.0.1:42724                                                                                 
+tcp   LISTEN      0       64                    &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;::]:2049            &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;::]:&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;    
+
+&lt;span class=&quot;c&quot;&gt;# /etc/exports&lt;/span&gt;
+/home/james &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;rw,fsid&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0,sync,no_root_squash,insecure&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;So in order to access it, I used SSH tunnel technique and mount it on attacker machine via localhost.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# from attacker machine&lt;/span&gt;
+ssh &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 3049:127.0.0.1:2049 paradox@10.10.190.17
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I tried to mount it but it failed with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mount(2): No such file or directory&lt;/code&gt; error.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# from attacker machine&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;mount &lt;span class=&quot;nt&quot;&gt;-vv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nfs &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3049 127.0.0.1:/ /mnt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I saw some redhat &lt;a href=&quot;https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/5/html/deployment_guide/s1-nfs-server-config-exports&quot;&gt;reference&lt;/a&gt; about &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;fsid&lt;/code&gt; and I tried to change my mount a bit and it worked!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# / instead of /home/james&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;mount &lt;span class=&quot;nt&quot;&gt;-vv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nfs &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3049 127.0.0.1:/ /mnt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Fuzzing and Binary Inspection Techniques</title>

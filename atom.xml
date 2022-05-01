@@ -4,13 +4,103 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-04-30T18:58:46+08:00</updated>
+ <updated>2022-05-01T10:16:45+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>DNS (Domain Name System)</title>
+   <link href="https://mvineza.github.io/spindel/2022/05/01/dns-domain-name-system"/>
+   <updated>2022-05-01T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/05/01/DNS--Domain-Name-System-</id>
+   <content type="html">&lt;h2 id=&quot;interesting-files&quot;&gt;Interesting Files&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# bind key&lt;/span&gt;
+/etc/bind/ddns.key
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;commands&quot;&gt;Commands&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# interactive&lt;/span&gt;
+nslookup
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; server 10.10.10.161
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 127.0.0.1           &lt;span class=&quot;c&quot;&gt;# lookup localhost&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 127.0.0.2           &lt;span class=&quot;c&quot;&gt;# some systems have this&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; 10.10.10.161        &lt;span class=&quot;c&quot;&gt;# lookup its ip&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;zone-transfer&quot;&gt;Zone Transfer&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Usually you can do this if DNS is running via TCP instead of UDP&lt;/li&gt;
+  &lt;li&gt;You need a domain name in order for this to work&lt;/li&gt;
+  &lt;li&gt;You can have clues on how many domains it holds based from failed transfer output&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dig axfr @mantis                  
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 server found&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...redacted...]
+&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;reverse-dns&quot;&gt;Reverse DNS&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Checks loopback addresses - looks like command is no longer&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# valid&lt;/span&gt;
+dnsrecon &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.83 &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; 10.0.0.0/8 &lt;span class=&quot;nt&quot;&gt;--db&lt;/span&gt; olympus.db
+dnsrecon &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.83 &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; 172.16.0.0/12 &lt;span class=&quot;nt&quot;&gt;--db&lt;/span&gt; olympus.db
+dnsrecon &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.83 &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; 192.168.0.0/16 &lt;span class=&quot;nt&quot;&gt;--db&lt;/span&gt; olympus.db
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;dynamic-dns-no-ip&quot;&gt;Dynamic DNS (no-ip)&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# adding record setting a specific IP&lt;/span&gt;
+curl &lt;span class=&quot;s1&quot;&gt;&apos;http://dynadns:sndanyd@dynstr/nic/update?hostname=hacker.dnsalias.htb&amp;amp;myip=10.10.14.45&apos;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# adding a record using IP by client&lt;/span&gt;
+curl &lt;span class=&quot;s1&quot;&gt;&apos;http://dynadns:sndanyd@dynstr/nic/update?hostname=hacker.dnsalias.htb&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;DDNS server implementations
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;https://www.yingtongli.me/blog/2017/04/18/dynamic-dns.html&quot;&gt;php&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/kbabioch/php-ddns/blob/master/update.php&quot;&gt;php 2&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/randomnoun/ddserver&quot;&gt;perl&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;https://github.com/benjaminbear/docker-ddns-server&quot;&gt;golang&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;API
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;table&gt;
+          &lt;tbody&gt;
+            &lt;tr&gt;
+              &lt;td&gt;[Perform Update (RA-API)&lt;/td&gt;
+              &lt;td&gt;Dyn Help Center](https://help.dyn.com/remote-access-api/perform-update/)&lt;/td&gt;
+            &lt;/tr&gt;
+          &lt;/tbody&gt;
+        &lt;/table&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/hash3liZer/Subrake&quot;&gt;GitHub - hash3liZer/Subrake: A Subdomain Enumeration and Validation tool for Bug Bounty and Pentesters.&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting/pentesting-dns&quot;&gt;53 - Pentesting DNS - HackTricks&lt;/a&gt; f&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>AD Recycle Bin</title>

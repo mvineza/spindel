@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "DNS (Domain Name System)",
+      "description" : "DNS (Domain Name System)",
+      "category" : "",
+      "tags"     : "enum, dns, network",
+      "url"      : "/spindel/2022/05/01/dns-domain-name-system",
+      "date"     : "2022-05-01 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "AD Recycle Bin",
       "description" : "AD Recycle Bin",
       "category" : "",

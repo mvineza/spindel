@@ -4,13 +4,45 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-01T10:16:45+08:00</updated>
+ <updated>2022-05-03T17:19:07+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>LSA Secrets</title>
+   <link href="https://mvineza.github.io/spindel/2022/05/03/lsa-secrets"/>
+   <updated>2022-05-03T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/05/03/LSA-Secrets</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;LSA secrets is a special protected storage for important data used by the Local Security Authority (LSA) in Windows. LSA is designed for managing a system’s local security policy, auditing, authenticating, logging users on to the system, storing private data. Users’ and system’s sensitive data is stored in secrets. Access to all secret data is available to system only.&lt;/p&gt;
+
+&lt;p&gt;LSASS (Local Security Authority Subsystem Service) is the service corresponding to this and it stores the credentials in memory on behalf of user that has an active session.&lt;/p&gt;
+
+&lt;p&gt;LSASS may store credentials in multiple forms, including reversibly encrypted password, Kerberos tickets, NT hash, LM hash, DPAPI keys,and Smartcard PIN.&lt;/p&gt;
+
+&lt;p&gt;Credentials are stored in LSASS for sessions that have been established since the last reboot and have not been closed. For example, credentials are created in memory when a user does any of the following (this is not an exhaustive list).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Logs on to a local session or RDP session on the computer&lt;/li&gt;
+  &lt;li&gt;Runs a process using RunAs&lt;/li&gt;
+  &lt;li&gt;Runs an active Windows service on the computer&lt;/li&gt;
+  &lt;li&gt;Creates a scheduled task or batch job.&lt;/li&gt;
+  &lt;li&gt;Runs PsExec with explicit creds, such as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;PsExec \\server -u user -p pwd cmd&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Uses WinRM with CredSSP.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.ired.team/offensive-security/credential-access-and-credential-dumping/dumping-lsa-secrets&quot;&gt;Dumping LSA Secrets - Red Teaming Experiments&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.passcape.com/index.php?section=docsys&amp;amp;cmd=details&amp;amp;id=23&quot;&gt;Windows LSA secrets&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;http://moyix.blogspot.com/2008/02/decrypting-lsa-secrets.html&quot;&gt;Decrypting LSA Secrets&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>DNS (Domain Name System)</title>

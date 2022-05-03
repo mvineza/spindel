@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "LSA Secrets",
+      "description" : "LSA Secrets",
+      "category" : "",
+      "tags"     : "windows, crypto",
+      "url"      : "/spindel/2022/05/03/lsa-secrets",
+      "date"     : "2022-05-03 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "DNS (Domain Name System)",
       "description" : "DNS (Domain Name System)",
       "category" : "",

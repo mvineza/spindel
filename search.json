@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Wordpress 5 RCE",
+      "description" : "Wordpress 5 RCE",
+      "category" : "",
+      "tags"     : "rce, wordpress, foothold, web",
+      "url"      : "/spindel/2022/05/17/wordpress-5-rce",
+      "date"     : "2022-05-17 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "HTA Handler RCE (CVE-2017-0199)",
       "description" : "HTA Handler RCE (CVE-2017-0199)",
       "category" : "",

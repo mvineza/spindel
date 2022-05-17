@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-17T18:17:28+08:00</updated>
+ <updated>2022-05-17T18:23:04+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -21,20 +21,10 @@
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://blog.sonarsource.com/wordpress-image-remote-code-execution?redirect=rips&quot;&gt;WordPress 5.0.0 Remote Code Execution&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;table&gt;
-      &lt;tbody&gt;
-        &lt;tr&gt;
-          &lt;td&gt;[The detailed analysis of WordPress 5.0 RCE&lt;/td&gt;
-          &lt;td&gt;by Knownsec 404 team&lt;/td&gt;
-          &lt;td&gt;Medium](https://medium.com/@knownsec404team/the-detailed-analysis-of-wordpress-5-0-rce-a171ed719681)&lt;/td&gt;
-        &lt;/tr&gt;
-      &lt;/tbody&gt;
-    &lt;/table&gt;
-  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://medium.com/@knownsec404team/the-detailed-analysis-of-wordpress-5-0-rce-a171ed719681&quot;&gt;The detailed analysis of WordPress 5.0 RCE - by Knownsec 404 team&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://pentest-tools.com/blog/wordpress-remote-code-execution-exploit-cve-2019-8942/&quot;&gt;Analysis of a WordPress Remote Code Execution Attack - Pentest-Tools.com Blog&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;https://github.com/v0lck3r/CVE-2019-8943.git&lt;/li&gt;
-  &lt;li&gt;Metasploit&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/v0lck3r/CVE-2019-8943.git&quot;&gt;CVE-2019-8943 exploit by v0lck3r&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;Metasploit Commands&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;use exploit/multi/http/wp_crop_rce

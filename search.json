@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Splunk Wispherer",
+      "description" : "Splunk Wispherer",
+      "category" : "",
+      "tags"     : "rce, devops",
+      "url"      : "/spindel/2022/05/18/splunk-wispherer",
+      "date"     : "2022-05-18 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Wordpress 5 RCE",
       "description" : "Wordpress 5 RCE",
       "category" : "",

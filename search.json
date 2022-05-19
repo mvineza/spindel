@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Nuxeo",
+      "description" : "Nuxeo",
+      "category" : "",
+      "tags"     : "rce, cms, enum, java, ssti, web",
+      "url"      : "/spindel/2022/05/19/nuxeo",
+      "date"     : "2022-05-19 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Splunk Wispherer",
       "description" : "Splunk Wispherer",
       "category" : "",

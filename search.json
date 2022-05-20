@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Dangerous Functions",
+      "description" : "Dangerous Functions",
+      "category" : "",
+      "tags"     : "rce",
+      "url"      : "/spindel/2022/05/20/dangerous-functions",
+      "date"     : "2022-05-20 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Nuxeo",
       "description" : "Nuxeo",
       "category" : "",

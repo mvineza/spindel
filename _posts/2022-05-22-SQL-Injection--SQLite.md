@@ -56,6 +56,4 @@ user=foo' UNION SELECT name,2,3,password from users where name like '%lucas_%'--
 
 ## Reference
 * [PayloadsAllTheThings/SQLite Injection.md at master · swisskyrepo/PayloadsAllTheThings · GitHub](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/SQLite%20Injection.md)
-* [Injecting SQLite database
-based application](https://www.exploit-db.com/docs/english/41397-injecting-sqlite-database-based-applications.pdf[Injecting SQLite database
-based application](https://www.exploit-db.com/docs/english/41397-injecting-sqlite-database-based-applications.pdf)
+* [Injecting SQLite database based application](https://www.exploit-db.com/docs/english/41397-injecting-sqlite-database-based-applications.pdf)

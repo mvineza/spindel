@@ -1,6 +1,24 @@
 [
   
     {
+      "title"    : "SQL Injection - SQLite",
+      "description" : "SQL Injection - SQLite",
+      "category" : "",
+      "tags"     : "sqli, db, enum",
+      "url"      : "/spindel/2022/05/22/sql-injection-sqlite",
+      "date"     : "2022-05-22 00:00:00 +0800"
+    } ,
+  
+    {
+      "title"    : "Dangerous Functions",
+      "description" : "Dangerous Functions",
+      "category" : "",
+      "tags"     : "rce",
+      "url"      : "/spindel/2022/05/22/dangerous-functions",
+      "date"     : "2022-05-22 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Dangerous Functions",
       "description" : "Dangerous Functions",
       "category" : "",

@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-22T18:30:05+08:00</updated>
+ <updated>2022-05-22T18:37:39+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -64,9 +64,7 @@ user=foo&apos;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;UNION&lt;/span&gt; &
 &lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/SQLite%20Injection.md&quot;&gt;PayloadsAllTheThings/SQLite Injection.md at master · swisskyrepo/PayloadsAllTheThings · GitHub&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;[Injecting SQLite database
-based application](https://www.exploit-db.com/docs/english/41397-injecting-sqlite-database-based-applications.pdf&lt;a href=&quot;https://www.exploit-db.com/docs/english/41397-injecting-sqlite-database-based-applications.pdf&quot;&gt;Injecting SQLite database
-based application&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.exploit-db.com/docs/english/41397-injecting-sqlite-database-based-applications.pdf&quot;&gt;Injecting SQLite database based application&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 </content>
  </entry>

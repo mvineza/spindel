@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Decyrpting Admin password using DNSpy debug",
+      "description" : "Decyrpting Admin password using DNSpy debug",
+      "category" : "",
+      "tags"     : "windows, re, privesc, foothold, dotnet",
+      "url"      : "/spindel/2022/05/24/decyrpting-admin-password-using-dnspy-debug",
+      "date"     : "2022-05-24 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "SQL Injection - SQLite",
       "description" : "SQL Injection - SQLite",
       "category" : "",

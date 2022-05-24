@@ -4,13 +4,85 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-22T18:37:39+08:00</updated>
+ <updated>2022-05-24T18:03:25+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Decyrpting Admin password using DNSpy debug</title>
+   <link href="https://mvineza.github.io/spindel/2022/05/24/decyrpting-admin-password-using-dnspy-debug"/>
+   <updated>2022-05-24T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/05/24/Decyrpting-Admin-password-using-DNSpy-debug</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Attacker can get admin password via decompiled .NET app from a misconfigured SMB share.&lt;/p&gt;
+
+&lt;h2 id=&quot;environment-setup&quot;&gt;Environment Setup&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HqkLdap.exe&lt;/code&gt; - .NET app downloaded from SMB share&lt;/li&gt;
+  &lt;li&gt;Windows box to decompile the app&lt;/li&gt;
+  &lt;li&gt;Low privileged creds to navigate on running app over the network&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Explore app and gather LDAP settings&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;setdir c:&lt;span class=&quot;se&quot;&gt;\p&lt;/span&gt;rogram files&lt;span class=&quot;se&quot;&gt;\h&lt;/span&gt;qk&lt;span class=&quot;se&quot;&gt;\l&lt;/span&gt;dap
+
+Current directory &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;to ldap
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;list
+
+Use the query ID numbers below with the RUNQUERY &lt;span class=&quot;nb&quot;&gt;command &lt;/span&gt;and the directory names with the SETDIR &lt;span class=&quot;nb&quot;&gt;command
+
+ &lt;/span&gt;QUERY FILES IN CURRENT DIRECTORY
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;1]   HqkLdap.exe
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;2]   Ldap.conf
+
+Current Directory: ldap
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;runquery 2
+
+Invalid database configuration found. Please contact your system administrator
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt;showquery 2
+
+&lt;span class=&quot;nv&quot;&gt;Domain&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nest.local
+&lt;span class=&quot;nv&quot;&gt;Port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;389
+&lt;span class=&quot;nv&quot;&gt;BaseOu&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;OU&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;WBQ Users,OU&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Production,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;nest,DC&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;local
+&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Administrator
+&lt;span class=&quot;nv&quot;&gt;Password&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;yyEq0Uvvhq2uQOcWG8peLoeRQehqip/fKdeG/kjEVb4&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Transfer &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;HqkLdap.exe&lt;/code&gt; to windows box&lt;/li&gt;
+  &lt;li&gt;Create txt file and paste the LDAP config gathered above&lt;/li&gt;
+  &lt;li&gt;Download &lt;a href=&quot;https://github.com/dnSpy/dnSpy&quot;&gt;dnSpy&lt;/a&gt; and decompile app&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Decyrpting%20Admin%20password%20using%20DNSpy%20debug/91469A27-CCC3-4850-ADAB-B91EE820BB2E.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Run debugger and step through each process until you see the decryption part for the admin password&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Decyrpting%20Admin%20password%20using%20DNSpy%20debug/A08CFDDB-A099-4111-8FD3-E53F3C515355.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Decyrpting%20Admin%20password%20using%20DNSpy%20debug/A962D76D-5848-4A06-BE28-CBCC3A042C18.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You can now use the credentials with &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;psexec&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=tDbVw6uGx8g&quot;&gt;HTB Nest&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>SQL Injection - SQLite</title>

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Uploading malicuous JAR or WAR file",
+      "description" : "Uploading malicuous JAR or WAR file",
+      "category" : "",
+      "tags"     : "devops, tomcat, java, rce, foothold",
+      "url"      : "/spindel/2022/05/28/uploading-malicuous-jar-or-war-file",
+      "date"     : "2022-05-28 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Decyrpting Admin password using DNSpy debug",
       "description" : "Decyrpting Admin password using DNSpy debug",
       "category" : "",

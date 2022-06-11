@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Access ADB as root",
+      "description" : "Access ADB as root",
+      "category" : "",
+      "tags"     : "android, privesc, mobile",
+      "url"      : "/spindel/2022/06/11/access-adb-as-root",
+      "date"     : "2022-06-11 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "AI",
       "description" : "AI",
       "category" : "",

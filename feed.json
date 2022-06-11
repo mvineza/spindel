@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/06/11/access-adb-as-root",
+            "title": "Access ADB as root",
+            "summary": "Access ADB as root",
+            "content_text": "  Do local port forwarding so you can access abd shell on localhostssh kristi@htb -p 2222 -L 5555:localhost:5555  Connect to adb shelladb connect localhost:5555  Verify➜  explore adb devices               List of devices attachedhtb:2222\tofflinelocalhost:5555\tdevice  Enjoyadb -s localhost shell127|x86_64:/ $ whoamishellx86_64:/ $ su:/ # cat data/root.txtf04fc82b6d49b41c9b08982be59338c5:/ #",
+            "content_html": "<ul>  <li>Do local port forwarding so you can access abd shell on localhost</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>ssh kristi@htb <span class=\"nt\">-p</span> 2222 <span class=\"nt\">-L</span> 5555:localhost:5555</code></pre></div></div><ul>  <li>Connect to adb shell</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>adb connect localhost:5555</code></pre></div></div><ul>  <li>Verify</li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>➜  explore adb devices               List of devices attachedhtb:2222\tofflinelocalhost:5555\tdevice</code></pre></div></div><ul>  <li>Enjoy</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>adb -s localhost shell127|x86_64:/ $ whoamishellx86_64:/ $ su:/ # cat data/root.txtf04fc82b6d49b41c9b08982be59338c5:/ #</code></pre></div></div>",
+            "url": "https://mvineza.github.io/spindel/2022/06/11/access-adb-as-root",
+            
+            
+            
+            "tags": ["android","privesc","mobile"],
+            
+            "date_published": "2022-06-11T00:00:00+08:00",
+            "date_modified": "2022-06-11T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/06/08/ai",
             "title": "AI",
             "summary": "AI",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-03-28T00:00:00+08:00",
             "date_modified": "2022-03-28T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/03/27/boot2docker",
-            "title": "boot2docker",
-            "summary": "boot2docker",
-            "content_text": "OverviewOld way of running docker containers on system that doesn’t natively support docker such as Windows.Credentials# defaultdocker:tcuserCommands# confirm if you are running on boot2docker vm.# example output:#   Linux bc56e3cc55e9 4.14.154-boot2docker #1 SMP Thu Nov 14 19:19:08 UTC 2019 x86_64 GNU/Linuxuname -a# can you ssh to host VM using default creds?ssh docker@172.17.0.1Interesting Files and Directories# c:\\ in windows/cReferences  Installation  GitHub - boot2docker/boot2docker: DEPRECATED; see https://github.com/boot2docker/boot2docker/pull/1408",
-            "content_html": "<h2 id=\"overview\">Overview</h2><p>Old way of running docker containers on system that doesn’t natively support docker such as Windows.</p><p><img src=\"/spindel/assets/boot2docker/DC075513-10A7-4ADF-81BF-6CEF9297A2C1.png\" alt=\"\" /></p><h2 id=\"credentials\">Credentials</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># default</span>docker:tcuser</code></pre></div></div><h2 id=\"commands\">Commands</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># confirm if you are running on boot2docker vm.</span><span class=\"c\"># example output:</span><span class=\"c\">#   Linux bc56e3cc55e9 4.14.154-boot2docker #1 SMP Thu Nov 14 19:19:08 UTC 2019 x86_64 GNU/Linux</span><span class=\"nb\">uname</span> <span class=\"nt\">-a</span><span class=\"c\"># can you ssh to host VM using default creds?</span>ssh docker@172.17.0.1</code></pre></div></div><h2 id=\"interesting-files-and-directories\">Interesting Files and Directories</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># c:\\ in windows</span>/c</code></pre></div></div><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://www.youtube.com/watch?v=Y80oQLfAwqk\">Installation</a></li>  <li><a href=\"https://github.com/boot2docker/boot2docker#ssh-into-vm\">GitHub - boot2docker/boot2docker: DEPRECATED; see https://github.com/boot2docker/boot2docker/pull/1408</a></li></ul>",
-            "url": "https://mvineza.github.io/spindel/2022/03/27/boot2docker",
-            
-            
-            
-            "tags": ["docker","enum"],
-            
-            "date_published": "2022-03-27T00:00:00+08:00",
-            "date_modified": "2022-03-27T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

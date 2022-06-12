@@ -17,6 +17,30 @@
 "items": [
     
         {
+            "id": "https://mvineza.github.io/spindel/2022/06/12/xss-and-deserialization-chain-attack",
+            "title": "XSS and Deserialization Chain Attack",
+            "summary": "XSS and Deserialization Chain Attack",
+            "content_text": "OverviewThis attack was from HTB Cereal which performs a deserializaton attack. In order to execute the deserialization payload, an XSS payload must be triggered to bypass the IP restriction.This attack also makes use of a forged JWT token.The method here came from 0xdf writeup.",
+            "content_html": "<h2 id=\"overview\">Overview</h2><p>This attack was from HTB Cereal which performs a deserializaton attack. In order to execute the deserialization payload, an XSS payload must be triggered to bypass the IP restriction.</p><p>This attack also makes use of a forged JWT token.</p><p><img src=\"/spindel/assets/XSS%20and%20Deserialization%20Chain%20Attack/628EB962-448D-40D8-B32F-537C8811796D.png\" alt=\"\" /></p><p>The method here came from 0xdf <a href=\"https://0xdf.gitlab.io/2021/05/29/htb-cereal.html\">writeup</a>.</p>",
+            "url": "https://mvineza.github.io/spindel/2022/06/12/xss-and-deserialization-chain-attack",
+            
+            
+            
+            "tags": ["xss","deserial","dotnet","jwt","windows"],
+            
+            "date_published": "2022-06-12T00:00:00+08:00",
+            "date_modified": "2022-06-12T00:00:00+08:00",
+            
+                "author":  {
+                "name": "spindel",
+                "url": null,
+                "avatar": null
+                }
+                
+            
+        },
+    
+        {
             "id": "https://mvineza.github.io/spindel/2022/06/11/access-adb-as-root",
             "title": "Access ADB as root",
             "summary": "Access ADB as root",
@@ -846,30 +870,6 @@
             
             "date_published": "2022-04-03T00:00:00+08:00",
             "date_modified": "2022-04-03T00:00:00+08:00",
-            
-                "author":  {
-                "name": "spindel",
-                "url": null,
-                "avatar": null
-                }
-                
-            
-        },
-    
-        {
-            "id": "https://mvineza.github.io/spindel/2022/03/28/dpapi",
-            "title": "DPAPI (Data Protection API)",
-            "summary": "DPAPI (Data Protection API)",
-            "content_text": "Overview  Perform symmetric encryption of asymmetric private keys, using a user or system secret as a significant contribution of entropy  Can be stored on xml files but may also be stored on .bin files  Typically starts at this set of standard bytes01 00 00 00 D0 8C 9D DF 01 15 D1 11 8C 7A 00 C0 4F C2 97 EBRelationship between different Windows security mechanismDecryption OverviewDecrypting DPAPI Blob using passcapeEnter the blob. I got the blob by converting the content of xml file into a bin file then transfer it to windows 10 vm.# From attackercat admin-pass.xml | xxd -r -p &gt; blob.binAt this point, the software automatically detects the master key GUI to use. I also transferred the CREDHIST file of victim to my windows 10 vm.Then I needed to get the user SID from mimikatz output. The password, well, I got it from registry.Unfortunately, I only have a trial version of the program so It only showed 1st 10 characters of the decrypted data.But this is a good thing, because atleast now I know there is a way to recover some data from dpapi blob. And also, I was able to validate what master key GUID and CREDHIST corresponds to the blob.Next quesion is, what alternative tool I can use?  blob - The Hacker Tools - this doesn’t work  Gotcha! from here.\\SharpDPAPI.exe blob /target:blob.bin '{98fafef2-d8a0-4b4f-917d-d8a1f5889c81}:DB6A7CB1AE10BFD70EA9BD8A4D10608A08D0969F'Mimikatz Commands# Shows structure of blobdpapi::blob /in:blob.binMaster Key CharacteristicsHere is an example from HTB helpline mimikatz output# This is also the filenames that you can see under# `AppData\\Roaming\\Microsoft\\Protect`* GUID      :  {98fafef2-d8a0-4b4f-917d-d8a1f5889c81}# The actual key in long format.* MasterKey :  daae4d9c34452f4bc6a17ccf4d87c369a15fcd5f81be5fc7211721a321f309392578ec1c225647cc2048d90854c7d94224cde619e23e04a0dbbaddb19efdf305# Key in SHA1 format.* sha1(key) :  db6a7cb1ae10bfd70ea9bd8a4d10608a08d0969fTools  GitHub - login-securite/DonPAPI: Dumping DPAPI credz remotely - looks like unstable, i always get EAccessViolation erorr  GitHub - GhostPack/SharpDPAPI: SharpDPAPI is a C# port of some Mimikatz DPAPI functionality.  GitHub - jordanbtucker/dpapick: DPAPI offline decryption utility  GitHub - AlessandroZ/LaZagne: Credentials recovery projectReferences  Hacktricks - Extracting passwords from DPAPI  Decrypting Viscosity Passwords - MM  Data Protection API - Wikipedia  Recovering Windows Secrets and EFS Certificates Offline  DPAPI for pentesters by Konstantin Evdokimiv - looks great but haven’t read yet",
-            "content_html": "<h2 id=\"overview\">Overview</h2><ul>  <li>Perform symmetric encryption of asymmetric private keys, using a user or system secret as a significant contribution of entropy</li>  <li>Can be stored on xml files but may also be stored on <code class=\"language-plaintext highlighter-rouge\">.bin</code> files</li>  <li>Typically starts at this set of standard bytes</li></ul><div class=\"language-plaintext highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>01 00 00 00 D0 8C 9D DF 01 15 D1 11 8C 7A 00 C0 4F C2 97 EB</code></pre></div></div><h2 id=\"relationship-between-different-windows-security-mechanism\">Relationship between different Windows security mechanism</h2><p><img src=\"/spindel/assets/DPAPI%20(Data%20Protection%20API)/3D767BD7-4352-49B1-B03F-5B7FB49A778F.png\" alt=\"\" /></p><h2 id=\"decryption-overview\">Decryption Overview</h2><p><img src=\"/spindel/assets/DPAPI%20(Data%20Protection%20API)/F9D490E0-C3F6-424D-A690-02BF3C9B1631.png\" alt=\"\" /></p><h2 id=\"decrypting-dpapi-blob-using-passcape\">Decrypting DPAPI Blob using passcape</h2><p>Enter the blob. I got the blob by converting the content of xml file into a bin file then transfer it to windows 10 vm.</p><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># From attacker</span><span class=\"nb\">cat </span>admin-pass.xml | xxd <span class=\"nt\">-r</span> <span class=\"nt\">-p</span> <span class=\"o\">&gt;</span> blob.bin</code></pre></div></div><p><img src=\"/spindel/assets/DPAPI%20(Data%20Protection%20API)/F67DF87A-0162-4641-A25C-2EE039390CA1.png\" alt=\"\" /></p><p>At this point, the software automatically detects the master key GUI to use. I also transferred the <code class=\"language-plaintext highlighter-rouge\">CREDHIST</code> file of victim to my windows 10 vm.</p><p><img src=\"/spindel/assets/DPAPI%20(Data%20Protection%20API)/F06BF5D9-D1AA-43E8-A559-B77E73FBEEA2.png\" alt=\"\" /></p><p><img src=\"/spindel/assets/DPAPI%20(Data%20Protection%20API)/3D9DAF45-2234-465A-9454-06D94F3DA755.png\" alt=\"\" /></p><p>Then I needed to get the user SID from mimikatz output. The password, well, I got it from registry.</p><p><img src=\"/spindel/assets/DPAPI%20(Data%20Protection%20API)/120FD0D1-606E-419F-93CC-DBB8BEFD6F32.png\" alt=\"\" /></p><p>Unfortunately, I only have a trial version of the program so It only showed 1st 10 characters of the decrypted data.</p><p><img src=\"/spindel/assets/DPAPI%20(Data%20Protection%20API)/26F28151-7805-40D0-9AC2-FB70942B1992.png\" alt=\"\" /></p><p>But this is a good thing, because atleast now I know there is a way to recover some data from dpapi blob. And also, I was able to validate what master key GUID and CREDHIST corresponds to the blob.</p><p>Next quesion is, what alternative tool I can use?</p><ul>  <li><a href=\"https://tools.thehacker.recipes/mimikatz/modules/dpapi/blob\">blob - The Hacker Tools</a> - this doesn’t work</li>  <li>Gotcha! from <a href=\"https://github.com/GhostPack/SharpDPAPI/blob/master/README.md#blob\">here</a></li></ul><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code>.<span class=\"se\">\\S</span>harpDPAPI.exe blob /target:blob.bin <span class=\"s1\">'{98fafef2-d8a0-4b4f-917d-d8a1f5889c81}:DB6A7CB1AE10BFD70EA9BD8A4D10608A08D0969F'</span></code></pre></div></div><h2 id=\"mimikatz-commands\">Mimikatz Commands</h2><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># Shows structure of blob</span>dpapi::blob /in:blob.bin</code></pre></div></div><h2 id=\"master-key-characteristics\">Master Key Characteristics</h2><p>Here is an example from HTB helpline mimikatz output</p><div class=\"language-bash highlighter-rouge\"><div class=\"highlight\"><pre class=\"highlight\"><code><span class=\"c\"># This is also the filenames that you can see under</span><span class=\"c\"># `AppData\\Roaming\\Microsoft\\Protect`</span><span class=\"k\">*</span> GUID      :  <span class=\"o\">{</span>98fafef2-d8a0-4b4f-917d-d8a1f5889c81<span class=\"o\">}</span><span class=\"c\"># The actual key in long format.</span><span class=\"k\">*</span> MasterKey :  daae4d9c34452f4bc6a17ccf4d87c369a15fcd5f81be5fc7211721a321f309392578ec1c225647cc2048d90854c7d94224cde619e23e04a0dbbaddb19efdf305<span class=\"c\"># Key in SHA1 format.</span><span class=\"k\">*</span> sha1<span class=\"o\">(</span>key<span class=\"o\">)</span> :  db6a7cb1ae10bfd70ea9bd8a4d10608a08d0969f</code></pre></div></div><h2 id=\"tools\">Tools</h2><ul>  <li><a href=\"https://github.com/login-securite/DonPAPI\">GitHub - login-securite/DonPAPI: Dumping DPAPI credz remotely</a> - looks like unstable, i always get <code class=\"language-plaintext highlighter-rouge\">EAccessViolation</code> erorr</li>  <li><a href=\"https://github.com/GhostPack/SharpDPAPI\">GitHub - GhostPack/SharpDPAPI: SharpDPAPI is a C# port of some Mimikatz DPAPI functionality.</a></li>  <li><a href=\"https://github.com/jordanbtucker/dpapick\">GitHub - jordanbtucker/dpapick: DPAPI offline decryption utility</a></li>  <li><a href=\"https://github.com/AlessandroZ/LaZagne\">GitHub - AlessandroZ/LaZagne: Credentials recovery project</a></li></ul><h2 id=\"references\">References</h2><ul>  <li><a href=\"https://book.hacktricks.xyz/windows/windows-local-privilege-escalation/dpapi-extracting-passwords\">Hacktricks - Extracting passwords from DPAPI</a></li>  <li><a href=\"https://blog.checkymander.com/red%20team/viscosity/decrypt-viscosity-passwords/\">Decrypting Viscosity Passwords - MM</a></li>  <li><a href=\"https://en.wikipedia.org/wiki/Data_Protection_API\">Data Protection API - Wikipedia</a></li>  <li><a href=\"https://www.usenix.org/legacy/event/woot10/tech/full_papers/Burzstein.pdf\">Recovering Windows Secrets and EFS Certificates Offline</a></li>  <li><a href=\"https://2018.offzone.moscow/getfile/?bmFtZT0xMi0wMF9XaW5kb3dzX0RQQVBJX1Nla3JldGlraS5wZGYmSUQ9NDEx\">DPAPI for pentesters by Konstantin Evdokimiv</a> - looks great but haven’t read yet</li></ul>",
-            "url": "https://mvineza.github.io/spindel/2022/03/28/dpapi",
-            
-            
-            
-            "tags": ["windows","crypto"],
-            
-            "date_published": "2022-03-28T00:00:00+08:00",
-            "date_modified": "2022-03-28T00:00:00+08:00",
             
                 "author":  {
                 "name": "spindel",

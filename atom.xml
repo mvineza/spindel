@@ -4,13 +4,29 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-06-11T18:02:35+08:00</updated>
+ <updated>2022-06-12T18:18:45+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>XSS and Deserialization Chain Attack</title>
+   <link href="https://mvineza.github.io/spindel/2022/06/12/xss-and-deserialization-chain-attack"/>
+   <updated>2022-06-12T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/06/12/XSS-and-Deserialization-Chain-Attack</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;This attack was from HTB Cereal which performs a deserializaton attack. In order to execute the deserialization payload, an XSS payload must be triggered to bypass the IP restriction.&lt;/p&gt;
+
+&lt;p&gt;This attack also makes use of a forged JWT token.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/XSS%20and%20Deserialization%20Chain%20Attack/628EB962-448D-40D8-B32F-537C8811796D.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;The method here came from 0xdf &lt;a href=&quot;https://0xdf.gitlab.io/2021/05/29/htb-cereal.html&quot;&gt;writeup&lt;/a&gt;.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Access ADB as root</title>

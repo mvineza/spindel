@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "XSS and Deserialization Chain Attack",
+      "description" : "XSS and Deserialization Chain Attack",
+      "category" : "",
+      "tags"     : "xss, deserial, dotnet, jwt, windows",
+      "url"      : "/spindel/2022/06/12/xss-and-deserialization-chain-attack",
+      "date"     : "2022-06-12 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Access ADB as root",
       "description" : "Access ADB as root",
       "category" : "",

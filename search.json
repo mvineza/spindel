@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "FTP",
+      "description" : "FTP",
+      "category" : "",
+      "tags"     : "ftp, enum",
+      "url"      : "/spindel/2022/06/13/ftp",
+      "date"     : "2022-06-13 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "XSS and Deserialization Chain Attack",
       "description" : "XSS and Deserialization Chain Attack",
       "category" : "",

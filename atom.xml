@@ -4,13 +4,126 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-06-12T18:18:45+08:00</updated>
+ <updated>2022-06-13T17:55:21+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>FTP</title>
+   <link href="https://mvineza.github.io/spindel/2022/06/13/ftp"/>
+   <updated>2022-06-13T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/06/13/FTP</id>
+   <content type="html">&lt;h2 id=&quot;initial&quot;&gt;Initial&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# kickoff nmap nse ftp scripts&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; ftp-bounce,ftp-libopie,ftp-proftpd-backdoor,ftp-syst,ftp-vsftpd-backdoor,ftp-vuln-cve2010-4221,tftp-enum 10.10.10.130
+
+&lt;span class=&quot;c&quot;&gt;# or just simply&lt;/span&gt;
+	
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;ftp-commands&quot;&gt;FTP Commands&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Make sure you include hidden files and directories&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-files-and-directories&quot;&gt;Interesting Files and Directories&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Contains list of disallowed users&lt;/span&gt;
+/etc/ftpusers
+
+&lt;span class=&quot;c&quot;&gt;# FTP Root location in Windows&lt;/span&gt;
+c:&lt;span class=&quot;se&quot;&gt;\i&lt;/span&gt;netpub&lt;span class=&quot;se&quot;&gt;\f&lt;/span&gt;tproot
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;username-enumeration&quot;&gt;Username enumeration&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# https://raw.githubusercontent.com/pentestmonkey/ftp-user-enum/master/ftp-user-enum.pl&lt;/span&gt;
+~/data/tools/ftp-user-enum.pl &lt;span class=&quot;nt&quot;&gt;-U&lt;/span&gt; users.txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 172.16.177.4
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;credentials&quot;&gt;Credentials&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Try some anonymous logins&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# manual authentication&lt;/span&gt;
+anonymous / anonymous
+anonymous /
+ftp / ftp
+ftpuser / ftpuser
+
+&lt;span class=&quot;c&quot;&gt;# via nmap&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; ftp-anon 10.10.51.236
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Try bruteforce&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# user and pass list can be extracted from&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# /usr/share/legion/wordlists/ftp-betterdefaultpasslist.txt&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /usr/share/legion/wordlists/ftp-betterdefaultpasslist.txt | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;:&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; users.txt
+&lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; /usr/share/legion/wordlists/ftp-betterdefaultpasslist.txt | &lt;span class=&quot;nb&quot;&gt;cut&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-d&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&apos;:&apos;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; passwords.txt
+hydra &lt;span class=&quot;nt&quot;&gt;-V&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-f&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-L&lt;/span&gt; users.txt &lt;span class=&quot;nt&quot;&gt;-P&lt;/span&gt; passwords.txt ftp://10.10.10.46 &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-vV&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# try also nmap&lt;/span&gt;
+nmap &lt;span class=&quot;nt&quot;&gt;-p21&lt;/span&gt; 10.10.10.46 &lt;span class=&quot;nt&quot;&gt;--script&lt;/span&gt; ftp-brute
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;downloading-files&quot;&gt;Downloading files&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# Make sure turn on binary mode on files such as&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# executables&lt;/span&gt;
+ftp&amp;gt; binary
+200 Type &lt;span class=&quot;nb&quot;&gt;set &lt;/span&gt;to I.
+ftp&amp;gt; mget &lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;
+mget chatserver.exe? y
+
+&lt;span class=&quot;c&quot;&gt;# using wget&lt;/span&gt;
+wget &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-passive&lt;/span&gt; ftp://anonymous:anonymous@access.htb
+
+&lt;span class=&quot;c&quot;&gt;# Recursive - sometimes this hangs, so just retry again&lt;/span&gt;
+wget &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; ftp://user:pass@server.com
+wget &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--no-passive&lt;/span&gt; ftp://user:pass@server.com/
+wget &lt;span class=&quot;nt&quot;&gt;-r&lt;/span&gt; ftp://user:pass@server.com/etc
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;uploading-files&quot;&gt;Uploading files&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;When a web server resources are hosted also on FTP, try to upload a reverse shell and access that reverse shell on the website&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;finding-exploits&quot;&gt;Finding Exploits&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# via expoitdb&lt;/span&gt;
+searchsploit vsftpd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;troubleshooting&quot;&gt;Troubleshooting&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;This error appeared in HTB Carrier. Type &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;passive&lt;/code&gt; to resolve it.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;Connected to 10.120.15.10.
+220 (vsFTPd 3.0.3)
+Name (10.120.15.10:root): 
+331 Please specify the password.
+Password:
+230 Login successful.
+Remote system type is UNIX.
+Using binary mode to transfer files.
+ftp&amp;gt; dir
+500 Illegal PORT command.
+ftp: bind: Address already in use
+ftp&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;other-resources&quot;&gt;Other resources&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting/pentesting-ftp&quot;&gt;21 - Pentesting FTP - HackTricks&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>XSS and Deserialization Chain Attack</title>

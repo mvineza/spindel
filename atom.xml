@@ -4,22 +4,13 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-06-27T18:25:26+08:00</updated>
+ <updated>2022-06-27T18:31:46+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
- 
- <entry>
-   <title>Ssti  Serverside Template Injection</title>
-   <link href="https://mvineza.github.io/spindel/2022/06/27/ssti-serverside-template-injection"/>
-   <updated>2022-06-27T00:00:00+08:00</updated>
-   <id>https://mvineza.github.io/2022/06/27/SSTI--ServerSide-Template-Injection-</id>
-   <content type="html">
-</content>
- </entry>
  
  <entry>
    <title>Papercut Print Logger</title>

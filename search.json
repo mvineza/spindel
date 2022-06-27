@@ -1,6 +1,24 @@
 [
   
     {
+      "title"    : "Ssti  Serverside Template Injection",
+      "description" : "",
+      "category" : "",
+      "tags"     : "",
+      "url"      : "/spindel/2022/06/27/ssti-serverside-template-injection",
+      "date"     : "2022-06-27 00:00:00 +0800"
+    } ,
+  
+    {
+      "title"    : "Papercut Print Logger",
+      "description" : "Papercut Print Logger",
+      "category" : "",
+      "tags"     : "enum, printers, windows",
+      "url"      : "/spindel/2022/06/27/papercut-print-logger",
+      "date"     : "2022-06-27 00:00:00 +0800"
+    } ,
+  
+    {
       "title"    : "Java Debug Wire Protocol (JDWP)",
       "description" : "Java Debug Wire Protocol (JDWP)",
       "category" : "",

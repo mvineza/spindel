@@ -4,13 +4,81 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-06-26T18:05:36+08:00</updated>
+ <updated>2022-06-27T18:25:26+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Ssti  Serverside Template Injection</title>
+   <link href="https://mvineza.github.io/spindel/2022/06/27/ssti-serverside-template-injection"/>
+   <updated>2022-06-27T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/06/27/SSTI--ServerSide-Template-Injection-</id>
+   <content type="html">
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Papercut Print Logger</title>
+   <link href="https://mvineza.github.io/spindel/2022/06/27/papercut-print-logger"/>
+   <updated>2022-06-27T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/06/27/Papercut-Print-Logger</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Print management software&lt;/li&gt;
+  &lt;li&gt;Shows print logs&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Papercut%20Print%20Logger/A4FC4428-8700-4923-A0BC-61A5EED2AA15.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The idea behind Papercut is pretty neat, a user can submit a print job to a Papercut printer, and walk to any physical printer they are nearby and release the print job. Users don’t have to select from dozens of printers and hope they get the right one&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Reference: &lt;a href=&quot;https://redblue42.code42.com/death-by-a-thousand-papercuts/&quot;&gt;Death By a Thousand Papercuts – Security Ops and Researcher Blog&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;ports&quot;&gt;Ports&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;9191/tcp&lt;/li&gt;
+  &lt;li&gt;9192/tcp&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;interesting-url-paths&quot;&gt;Interesting URL Paths&lt;/h2&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# admin login to management functions) (lost the admin password?&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/admin&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# end-user login so users can review their own print activity, etc.&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/user&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# central reports login&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/central-reports&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# admin login for the Web Cashier module&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;/webcashier&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# admin login for release functionality&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;http://papercutserver:9191/release&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;interesting-files-and-directories&quot;&gt;Interesting Files and Directories&lt;/h2&gt;
+&lt;div class=&quot;language-powershell highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;c&quot;&gt;# contains hashed admin credentials&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server.properties&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+
+&lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# others&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;C:\Program&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Files\PaperCut&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Print&lt;/span&gt;&lt;span class=&quot;w&quot;&gt; &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Logger\papercut-logger.conf&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;HTB Fuse&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.papercut.com/kb/Main/CommonSecurityQuestions#general-security-questions&quot;&gt;Security vulnerability information and common security questions - PaperCut&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.youtube.com/watch?v=fpKfILnsdM0&quot;&gt;Monitor with PaperCut print logger everything that comes out of the printer on your computer&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Java Debug Wire Protocol (JDWP)</title>

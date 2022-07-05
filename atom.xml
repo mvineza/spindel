@@ -4,13 +4,45 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-06-27T18:31:46+08:00</updated>
+ <updated>2022-07-05T17:39:44+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>SSL Heartbleed</title>
+   <link href="https://mvineza.github.io/spindel/2022/07/05/ssl-heartbleed"/>
+   <updated>2022-07-05T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/07/05/SSL-Heartbleed</id>
+   <content type="html">&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+&lt;p&gt;The SSL standard includes a heartbeat option, which allows a computer at one end of an SSL connection to send a short message to verify that the other computer is still online and get a response back. Researchers found that it’s possible to send a cleverly formed, malicious heartbeat message that tricks the computer at the other end into divulging secret information. Specifically, a vulnerable computer can be tricked into transmitting the contents of the server’s memory, known as RAM.&lt;/p&gt;
+
+&lt;p&gt;CVE-2014-0160&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/SSL%20Heartbleed/B780A93A-3E92-4ECC-AA5B-7129256A4A85.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;versions-affected&quot;&gt;Versions Affected&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;SSL V3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;public-exlploits&quot;&gt;Public Exlploits&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;you may need to run exploits multiple times to capture some output  from server memory such as scheduled processes&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://github.com/mpgn/heartbleed-PoC&quot;&gt;GitHub - mpgn/heartbleed-PoC: Hearbleed exploit to retrieve sensitive information CVE-2014-0160&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;https://www.vox.com/2014/6/19/18076318/heartbleed&quot;&gt;The Heartbleed Bug, explained - Vox&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://xkcd.com/1354/&quot;&gt;xkcd: Heartbleed Explanation&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Papercut Print Logger</title>

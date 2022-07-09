@@ -4,13 +4,51 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2022-07-08T18:23:00+08:00</updated>
+ <updated>2022-07-09T18:28:38+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
    <email>rell.vineza14@yahoo.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Inspecting Javascript Codes</title>
+   <link href="https://mvineza.github.io/spindel/2022/07/09/inspecting-javascript-codes"/>
+   <updated>2022-07-09T00:00:00+08:00</updated>
+   <id>https://mvineza.github.io/2022/07/09/Inspecting-Javascript-Codes</id>
+   <content type="html">&lt;h2 id=&quot;run-in-browser-console&quot;&gt;Run in browser console&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Inspecting%20Javascript%20Codes/F4C58ADC-468C-40D7-A895-F54427062713.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;bookmark&quot;&gt;Bookmark&lt;/h2&gt;
+&lt;p&gt;In HTB Bitlab, it has this weird bookmark script.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Inspecting%20Javascript%20Codes/F9B89878-F4F4-4B3A-8ECD-C17B9D2056BE.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;javascript:(function(){ var _0x4b18=[&quot;\x76\x61\x6C\x75\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x6C\x6F\x67\x69\x6E&quot;,&quot;\x67\x65\x74\x45\x6C\x65\x6D\x65\x6E\x74\x42\x79\x49\x64&quot;,&quot;\x63\x6C\x61\x76\x65&quot;,&quot;\x75\x73\x65\x72\x5F\x70\x61\x73\x73\x77\x6F\x72\x64&quot;,&quot;\x31\x31\x64\x65\x73\x30\x30\x38\x31\x78&quot;];document[_0x4b18[2]](_0x4b18[1])[_0x4b18[0]]= _0x4b18[3];document[_0x4b18[2]](_0x4b18[4])[_0x4b18[0]]= _0x4b18[5]; })()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;I turned out that this code was used to populate user credentials in Gitlab.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Inspecting%20Javascript%20Codes/5EF6DD23-870A-4A1E-ABAC-A1574DD64CF7.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;static-code-analysis&quot;&gt;Static Code Analysis&lt;/h2&gt;
+&lt;p&gt;When you where able to grab a copy of the code, here are different ways you can do:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Run &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;npm audit&lt;/code&gt; to show vulnerabilities&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;rabbithole-for-ctf-machines&quot;&gt;Rabbithole for CTF Machines&lt;/h2&gt;
+&lt;p&gt;I encountered this cool frontend app in HTB mango that connects to a public elasticsearch server.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Inspecting%20Javascript%20Codes/E08B4B10-E2EB-4FD4-823D-007B49212491.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Inspecting%20Javascript%20Codes/190D8175-4FA3-48C2-AA7B-686390CBD1E0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;At first I though the elasticsearch is running inside the HTB machine, but it turned out it was a public elasticsearch server! In this scenarios, its better to move to another thing to enumerate since the public elasticsearch instance is out of scope of the HTB machine.&lt;/p&gt;
+</content>
+ </entry>
  
  <entry>
    <title>Apache James</title>

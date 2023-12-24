@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2023-12-25T06:12:44+08:00</updated>
+ <updated>2023-12-25T06:15:55+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -19,7 +19,7 @@
    <id>https://mvineza.github.io/2023/12/25/Hack-The-Box-Keeper</id>
    <content type="html">&lt;h2 id=&quot;box-info&quot;&gt;Box Info&lt;/h2&gt;
 
-&lt;p&gt;&lt;img src=&quot;4deb4eb2b5b8b43b969f0cecda095d5b.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/4deb4eb2b5b8b43b969f0cecda095d5b.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Rating/Difficulty: easy&lt;/p&gt;
 &lt;h2 id=&quot;recon&quot;&gt;Recon&lt;/h2&gt;

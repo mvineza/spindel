@@ -50,17 +50,17 @@ OS and Service detection performed. Please report any incorrect results at https
 
 The box is running [request tracker](https://github.com/bestpractical/rt) app which I was able to login using default admin credentials of `root:password`.
 
-![](47389625bff13b1d3522417f525349a0.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/47389625bff13b1d3522417f525349a0.png)
 
 Ticketing systems normally have some scripting functionalities so I looked around and I found that it can [execute perl scripts ](https://docs.bestpractical.com/rt/4.4.3/customizing/scrip_conditions_and_action.html)on a certain condition.
 
-![](4de0a403ce25bd7bd5edb3310271c3cd.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/4de0a403ce25bd7bd5edb3310271c3cd.png)
 
 Since I'm an admin, I created my own script and used a perl function to ping my attacker IP whenever a ticket is created.
 
-![](db52f08db844d5652fac1d7e5f0f79c1.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/db52f08db844d5652fac1d7e5f0f79c1.png)
 
-![](8740d21e1e883f939924413906ebd3ea.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/8740d21e1e883f939924413906ebd3ea.png)
 
 After creating that script, I created a ticket and after a few seconds I received a ping request. I modified my payload to a reverse shell command which gave me foothold to the box as `www-data`.
 ## Privilege Escalation
@@ -117,26 +117,26 @@ Combined: ●{ø, Ï, ,, l, `, -, ', ], §, A, I, :, =, _, c, M}dgrød med flød
 
 Even using the tool, I still can't figure out the password. It's odd that there is a space on the master password and an unusual character `ø` . I looked around in Google about that generated string and I found this.
 
-![](0a48ed521bc8cc067b4e46c53b9d50bf.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/0a48ed521bc8cc067b4e46c53b9d50bf.png)
 
 Translating it to english results to this which looks like a type of dessert.
 
-![](8744e1e9b0ee55a9530220ba55770758.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/8744e1e9b0ee55a9530220ba55770758.png)
 
 I opened keepass database file and tried to use `Rødgrød med fløde` but it keeps crashing with this error.
 
 
-![](76b00dccb05045960ddbecc5bb92acbe.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/76b00dccb05045960ddbecc5bb92acbe.png)
 
 I tried pasting any random password without that special character and it worked fine so it looked like the linux keepass version I'm using is not happy with the special character.
 
 So I opened up a windows VM and used a native keepass. I was able to found that the password is `rødgrød med fløde` instead of `Rødgrød med fløde`.
 
-![](47e049cf23a48585b4e7b06321cb6734.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/47e049cf23a48585b4e7b06321cb6734.png)
 
 There is a private key in putty format inside the root credential.
 
-![](7517df4d9dab3bbc20774562498a4395.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/7517df4d9dab3bbc20774562498a4395.png)
 
 This may be the root SSH privatekey so I downloaded puttygen and [converted it into an openssh private key ](https://upsource-support.jetbrains.com/hc/en-us/articles/206545529-Converting-PuTTY-private-keys-to-OpenSSH-format)format.
 
@@ -166,17 +166,17 @@ root@keeper:~#
 
 I notice when I go directly to `http://tickets.keeper.htb` the default admin credentials doesn't work.
 
-![](c1646c6887e53e6e03ce48704f04f924.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/c1646c6887e53e6e03ce48704f04f924.png)
 
 It only works when I go first to the IP, then click the redirection link.
 
-![](447dc8cad530dfb330e3f22a3427df37.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/447dc8cad530dfb330e3f22a3427df37.png)
 
-![](181cda4bd86fee3c7b5aa2613073eab5.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/181cda4bd86fee3c7b5aa2613073eab5.png)
 
 Comparing the first and second request, I notice the referrer on the first has `/rt/`. That mostly likely means the proper endpoint to access is `/rt/`.
 
-![](30d6944065ff854716ce66a9ccd7aa80.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/30d6944065ff854716ce66a9ccd7aa80.png)
 
 I confirmed the credentials worked when I added `/rt/`.
 
@@ -193,22 +193,22 @@ So when I removed it from the endpoint, the CGI scripts handling the authenticat
 
 When doing actions inside the app, most of the time I see this warning.
 
-![](8e8a43a00be2d4116aa069b26af233c5.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/8e8a43a00be2d4116aa069b26af233c5.png)
 
 If I choose to resume, the request failed because it goes to `http://keeper.htb` instead of `http://tickets.keeper.htb`.
 
-![](f68ba58764fcac2ba25a8801b38bfebe.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/f68ba58764fcac2ba25a8801b38bfebe.png)
 
 As a quick fix, I used burp's match and replace rules to dynamically convert the host headers to `http://tickets.keeper.htb`.
 
-![](0f9f10d14218dea7109420af591b238e.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/0f9f10d14218dea7109420af591b238e.png)
 ### Easier foothold method
 
 After doing the box, I looked at other peoples' solution and I found out that the foothold is indeed way easier than the path I took (reverse shell).
 
 If I look at the user settings, I can see that user `lnorgaard`'s SSH credential is on the comment.
 
-![](5592777b80f44c6cc328a94d52bf363d.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/5592777b80f44c6cc328a94d52bf363d.png)
 
 I think my enumeration skills become rusty after not doing CTF for a long time.
 ### Keepass dump cron

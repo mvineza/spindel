@@ -4,7 +4,7 @@
  <title>Spindel</title>
  <link href="https://mvineza.github.io/spindel/atom.xml" rel="self"/>
  <link href="https://mvineza.github.io/spindel/"/>
- <updated>2023-12-25T06:15:55+08:00</updated>
+ <updated>2023-12-25T06:19:51+08:00</updated>
  <id>https://mvineza.github.io</id>
  <author>
    <name>spindel</name>
@@ -60,17 +60,17 @@ OS and Service detection performed. Please report any incorrect results at https
 
 &lt;p&gt;The box is running &lt;a href=&quot;https://github.com/bestpractical/rt&quot;&gt;request tracker&lt;/a&gt; app which I was able to login using default admin credentials of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;root:password&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;47389625bff13b1d3522417f525349a0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/47389625bff13b1d3522417f525349a0.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Ticketing systems normally have some scripting functionalities so I looked around and I found that it can &lt;a href=&quot;https://docs.bestpractical.com/rt/4.4.3/customizing/scrip_conditions_and_action.html&quot;&gt;execute perl scripts &lt;/a&gt;on a certain condition.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;4de0a403ce25bd7bd5edb3310271c3cd.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/4de0a403ce25bd7bd5edb3310271c3cd.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Since I’m an admin, I created my own script and used a perl function to ping my attacker IP whenever a ticket is created.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;db52f08db844d5652fac1d7e5f0f79c1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/db52f08db844d5652fac1d7e5f0f79c1.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;8740d21e1e883f939924413906ebd3ea.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/8740d21e1e883f939924413906ebd3ea.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;After creating that script, I created a ticket and after a few seconds I received a ping request. I modified my payload to a reverse shell command which gave me foothold to the box as &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;www-data&lt;/code&gt;.&lt;/p&gt;
 &lt;h2 id=&quot;privilege-escalation&quot;&gt;Privilege Escalation&lt;/h2&gt;
@@ -124,25 +124,25 @@ Combined: ●{ø, Ï, ,, l, `, -, &apos;&lt;/span&gt;, &lt;span class=&quot;o&qu
 
 &lt;p&gt;Even using the tool, I still can’t figure out the password. It’s odd that there is a space on the master password and an unusual character &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;ø&lt;/code&gt; . I looked around in Google about that generated string and I found this.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;0a48ed521bc8cc067b4e46c53b9d50bf.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/0a48ed521bc8cc067b4e46c53b9d50bf.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Translating it to english results to this which looks like a type of dessert.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;8744e1e9b0ee55a9530220ba55770758.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/8744e1e9b0ee55a9530220ba55770758.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I opened keepass database file and tried to use &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rødgrød med fløde&lt;/code&gt; but it keeps crashing with this error.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;76b00dccb05045960ddbecc5bb92acbe.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/76b00dccb05045960ddbecc5bb92acbe.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I tried pasting any random password without that special character and it worked fine so it looked like the linux keepass version I’m using is not happy with the special character.&lt;/p&gt;
 
 &lt;p&gt;So I opened up a windows VM and used a native keepass. I was able to found that the password is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;rødgrød med fløde&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;Rødgrød med fløde&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;47e049cf23a48585b4e7b06321cb6734.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/47e049cf23a48585b4e7b06321cb6734.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;There is a private key in putty format inside the root credential.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;7517df4d9dab3bbc20774562498a4395.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/7517df4d9dab3bbc20774562498a4395.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;This may be the root SSH privatekey so I downloaded puttygen and &lt;a href=&quot;https://upsource-support.jetbrains.com/hc/en-us/articles/206545529-Converting-PuTTY-private-keys-to-OpenSSH-format&quot;&gt;converted it into an openssh private key &lt;/a&gt;format.&lt;/p&gt;
 
@@ -170,17 +170,17 @@ root@keeper:~#
 
 &lt;p&gt;I notice when I go directly to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://tickets.keeper.htb&lt;/code&gt; the default admin credentials doesn’t work.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;c1646c6887e53e6e03ce48704f04f924.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/c1646c6887e53e6e03ce48704f04f924.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It only works when I go first to the IP, then click the redirection link.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;447dc8cad530dfb330e3f22a3427df37.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/447dc8cad530dfb330e3f22a3427df37.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;181cda4bd86fee3c7b5aa2613073eab5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/181cda4bd86fee3c7b5aa2613073eab5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Comparing the first and second request, I notice the referrer on the first has &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/rt/&lt;/code&gt;. That mostly likely means the proper endpoint to access is &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/rt/&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;30d6944065ff854716ce66a9ccd7aa80.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/30d6944065ff854716ce66a9ccd7aa80.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I confirmed the credentials worked when I added &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;/rt/&lt;/code&gt;.&lt;/p&gt;
 
@@ -196,22 +196,22 @@ root@keeper:/etc/nginx#
 
 &lt;p&gt;When doing actions inside the app, most of the time I see this warning.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;8e8a43a00be2d4116aa069b26af233c5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/8e8a43a00be2d4116aa069b26af233c5.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;If I choose to resume, the request failed because it goes to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://keeper.htb&lt;/code&gt; instead of &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://tickets.keeper.htb&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;f68ba58764fcac2ba25a8801b38bfebe.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/f68ba58764fcac2ba25a8801b38bfebe.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As a quick fix, I used burp’s match and replace rules to dynamically convert the host headers to &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;http://tickets.keeper.htb&lt;/code&gt;.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;0f9f10d14218dea7109420af591b238e.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/0f9f10d14218dea7109420af591b238e.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 &lt;h3 id=&quot;easier-foothold-method&quot;&gt;Easier foothold method&lt;/h3&gt;
 
 &lt;p&gt;After doing the box, I looked at other peoples’ solution and I found out that the foothold is indeed way easier than the path I took (reverse shell).&lt;/p&gt;
 
 &lt;p&gt;If I look at the user settings, I can see that user &lt;code class=&quot;language-plaintext highlighter-rouge&quot;&gt;lnorgaard&lt;/code&gt;’s SSH credential is on the comment.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;5592777b80f44c6cc328a94d52bf363d.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/spindel/assets/Hack%20The%20Box%20-%20Keeper/5592777b80f44c6cc328a94d52bf363d.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I think my enumeration skills become rusty after not doing CTF for a long time.&lt;/p&gt;
 &lt;h3 id=&quot;keepass-dump-cron&quot;&gt;Keepass dump cron&lt;/h3&gt;

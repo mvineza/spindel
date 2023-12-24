@@ -8,7 +8,7 @@ minute: 3
 ---
 ## Box Info
 
-![](4deb4eb2b5b8b43b969f0cecda095d5b.png)
+![](/spindel/assets/Hack%20The%20Box%20-%20Keeper/4deb4eb2b5b8b43b969f0cecda095d5b.png)
 
 Rating/Difficulty: easy
 ## Recon
